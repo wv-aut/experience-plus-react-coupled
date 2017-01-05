@@ -1,0 +1,44 @@
+
+/*
+Grids
+*/
+
+section {
+    lost-utility: clearfix;
+    lost-center: 980px;
+}
+
+container {
+
+}
+
+header {
+    lost-center: 980px;
+}
+
+main {
+    lost-center: 980px;
+}
+
+.center {
+    lost-align: center;
+}
+
+@media screen and (min-width: 40em) {
+
+    .grid-3 {
+            lost-column: 1/3;
+    }
+
+    .grid-2 {
+        lost-column: 1/2;
+    }
+}
+
+.grid-2-all {
+        lost-column: 1/2;
+    }
+
+.grid-3-all {
+        lost-column: 1/3;
+    }

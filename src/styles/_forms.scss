@@ -1,0 +1,106 @@
+.form{
+    font: Arial, Helvetica, sans-serif;
+    margin: 10px auto;
+    padding: 16px;
+    background: #F7F7F7;
+    lost-center: 500px;
+}
+
+.form-row {
+    lost-utility: clearfix;
+}
+
+.form h1{
+    background: #ccc;
+    padding: 20px 0;
+    font-size: 140%;
+    font-weight: 300;
+    text-align: center;
+    color: #fff;
+    margin: -16px -16px 16px -16px;
+}
+.form input[type="text"],
+.form input[type="date"],
+.form input[type="datetime"],
+.form input[type="email"],
+.form input[type="number"],
+.form input[type="search"],
+.form input[type="time"],
+.form input[type="url"],
+.form textarea,
+.form select 
+{
+    transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    height: 3rem;
+    background: #fff;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+
+    &.error  {
+        background:#F7F7F7; 
+        border-color: #ff6800;
+        border-width: 0.1rem;
+    }
+    & ~ span {
+       background:#ff6800; 
+       color: #fff;
+       padding: 0.5rem;
+       margin-top: -0.5rem;
+       margin-bottom: 0.5rem;
+    }
+}
+
+.form input[type="text"]:focus,
+.form input[type="date"]:focus,
+.form input[type="datetime"]:focus,
+.form input[type="email"]:focus,
+.form input[type="number"]:focus,
+.form input[type="search"]:focus,
+.form input[type="time"]:focus,
+.form input[type="url"]:focus,
+.form textarea:focus,
+.form select:focus
+{
+    box-shadow: 0 0 5px #ccc;
+    padding: 1rem;
+    border: 1px solid #ccc;
+}
+
+.form input[type="submit"],
+.form input[type="button"],
+button {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem;
+    background: #ff6800;
+    border-bottom: 1px solid #ff6800;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;    
+    color: #fff;
+}
+.form input[type="submit"]:hover,
+.form input[type="button"]:hover,
+button:hover {
+    background: #ff6800;
+    cursor:pointer
+}
+
+label{
+    
+    margin: 0px 0px 15px 0px;
+}
+
+label > span {
+    margin-bottom: 0.5rem;
+    width: 100%
+}
+
+
+

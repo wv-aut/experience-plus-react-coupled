@@ -1,0 +1,34 @@
+
+
+fieldset {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+label > span {
+    display: block;
+  
+}
+
+.options-2-prominent {
+    input[type=radio] {
+        visibility: hidden;
+        
+    }
+    input[type=radio]:checked ~ label {
+        display      : block;
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        background: #fff;
+    }
+
+    input[type=radio] ~ label {
+        display      : block;
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        background:#F7F7F7; 
+    }
+
+}
