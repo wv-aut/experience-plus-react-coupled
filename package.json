@@ -1,6 +1,6 @@
 {
   "name": "wv-experience-plus-frontend",
-  "version": "3.0.0-alpha.2",
+  "version": "0.0.1",
   "description": "Front end of Experience Plus",
   "main": "index.js",
   "engines": {
