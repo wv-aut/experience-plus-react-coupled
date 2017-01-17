@@ -29,6 +29,20 @@ if (project.env === 'development') {
     noInfo      : project.compiler_quiet,
     lazy        : false,
     stats       : project.compiler_stats
+    // proxy: {
+    //   '/*': {
+    //     target:  'http://worldvisionat.dev.dd:8083',
+    //     ignorePath: false,
+    //     changeOrigin: true,
+    //     secure: false,
+    //     autoRewrite: true,
+    //     // rewrite: function (req){
+    //     //   req.url = req.url.replace('worldvisionat.dev.dd:8083', 'localhost:8080');
+    //     //   console.log(req);
+    //     // },
+    //     cookieDomainRewrite: 'localhost'
+    //   }
+    // }
   }))
   app.use(require('webpack-hot-middleware')(compiler))
 

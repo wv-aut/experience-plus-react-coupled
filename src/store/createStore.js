@@ -3,6 +3,7 @@ import thunk from 'redux-thunk'
 import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
+import { fetchApiKeyifNeeded } from './auth'
 
 export default (initialState = {}) => {
   // ======================================================
@@ -25,7 +26,7 @@ export default (initialState = {}) => {
   }
 
   // ======================================================
-  // Store Instantiation and HMR Setup
+  // Store Instantiation
   // ======================================================
   const store = createStore(
     makeRootReducer(),
@@ -40,6 +41,14 @@ export default (initialState = {}) => {
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
   store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
 
+  // ======================================================
+  // Authentication Instantiation
+  // ======================================================
+  store.dispatch(fetchApiKeyifNeeded('asdfasfd'))
+
+  // ======================================================
+  // HMR Setup
+  // ======================================================
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       const reducers = require('./reducers').default

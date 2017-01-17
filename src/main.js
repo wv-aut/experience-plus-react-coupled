@@ -1,7 +1,9 @@
+import 'babel-polyfill'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
+// import fetchApiKeyifNeeded from './store/auth'
 
 // ========================================================
 // Store Instantiation
