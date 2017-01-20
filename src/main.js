@@ -8,7 +8,8 @@ import AppContainer from './containers/AppContainer'
 // ========================================================
 // Store Instantiation
 // ========================================================
-const initialState = window.___INITIAL_STATE__
+export const initialState = Object.assign(window.___INITIAL_STATE__, { location: 'profil-spendenbestaetigung' })
+
 const store = createStore(initialState)
 
 // ========================================================

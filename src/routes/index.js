@@ -1,7 +1,9 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
-import UserForm from './UserForm'
-// import UserProfile from './User'
+import User from './User'
+import Home from './Home'
+import { TAX_RECEIPT_PROFILE_ROUTE } from './config/routes.config'
+
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -9,8 +11,10 @@ import UserForm from './UserForm'
 export const createRoutes = (store) => ({
   path        : '/',
   component   : CoreLayout,
-  indexRoute  : UserForm,
-  childRoutes : []
+  indexRoute  : Home,
+  childRoutes : [
+    { path: TAX_RECEIPT_PROFILE_ROUTE, component: User }
+  ]
 })
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically

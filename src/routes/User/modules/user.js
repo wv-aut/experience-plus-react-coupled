@@ -1,16 +1,16 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const COUNTER_INCREMENT = 'COUNTER_INCREMENT'
-export const COUNTER_DOUBLE_ASYNC = 'COUNTER_DOUBLE_ASYNC'
 
 export const REQUEST_USER_PROFILE = 'REQUEST_USER_PROFILE'
 export const RECEIVE_USER_PROFILE = 'RECEIVE_USER_PROFILE'
+export const CHANGE_SALUTATION = 'CHANGE_SALUTATION'
+export const CHANGE_INPUT = 'CHANGE_INPUT'
 
 import { CHANGE_DATE } from '../formElements/BirthDateForm/modules/userForm'
 
 // ------------------------------------
-// Actions UserForm
+// Actions User
 // ------------------------------------
 
 export function requestUserProfile (tempKey = null) {
@@ -29,8 +29,6 @@ export function receiveUserProfile (tempKey, json) {
   }
 }
 
-
-
 export function fetchUserProfile (tempKey) {
   return dispatch => {
     dispatch(requestUserProfile(tempKey))
@@ -43,39 +41,52 @@ export function fetchUserProfile (tempKey) {
   }
 }
 
-
-
-
-
-export function increment (value = 1) {
+export function changeSalutation (event) {
   return {
-    type    : COUNTER_INCREMENT,
-    payload : value
+    type: CHANGE_SALUTATION,
+    data: event.target.value
   }
 }
+
+function validateEmail (email) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(email)
+}
+
+export function changeInput (event) {
+  console.log('asdfasdfafsd')
+  const form = event.target.dataset.form
+  let error = false
+  if (form === 'email' && !validateEmail(event.target.value)) {
+    error = true
+  }
+  return {
+    type: CHANGE_INPUT,
+    data: event.target.value,
+    form: event.target.dataset.form,
+    error
+  }
+}
+
 
 /*  This is a thunk, meaning it is a function that immediately
     returns a function for lazy evaluation. It is incredibly useful for
     creating async actions, especially when combined with redux-thunk! */
 
-export const doubleAsync = () => {
-  return (dispatch, getState) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        dispatch({
-          type    : COUNTER_DOUBLE_ASYNC,
-          payload : getState().user
-        })
-        resolve()
-      }, 200)
-    })
-  }
-}
+// export const doubleAsync = () => {
+//   return (dispatch, getState) => {
+//     return new Promise((resolve) => {
+//       setTimeout(() => {
+//         dispatch({
+//           type    : COUNTER_DOUBLE_ASYNC,
+//           payload : getState().user
+//         })
+//         resolve()
+//       }, 200)
+//     })
+//   }
+// }
 
-export const actions = {
-  increment,
-  doubleAsync
-}
 
 // ------------------------------------
 // Action Handlers
@@ -89,6 +100,17 @@ const ACTION_HANDLERS = {
     let date = Object.assign({}, state)
     date.data.birthDate = action.data
     return date
+  },
+  [CHANGE_SALUTATION]: (state, action) => {
+    let salutation = Object.assign({}, state)
+    salutation.data.salutationCode = action.data
+    return salutation
+  },
+  [CHANGE_INPUT]: (state, action) => {
+    let input = Object.assign({}, state)
+    state.error = true
+    input.data[action.form] = action.data
+    return input
   }
 }
 

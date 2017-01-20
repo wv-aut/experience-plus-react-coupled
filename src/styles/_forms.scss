@@ -3,12 +3,13 @@
     margin: 10px auto;
     padding: 16px;
     background: #F7F7F7;
-    lost-center: 500px;
+    lost-center: 550px;
 }
 
 .form-row {
     lost-utility: clearfix;
 }
+ 
 
 .form h1{
     background: #ccc;
@@ -28,8 +29,10 @@
 .form input[type="time"],
 .form input[type="url"],
 .form textarea,
-.form select 
+.form select,
+.form input
 {
+    font-size: 1.2rem;
     transition: all 0.30s ease-in-out;
     outline: none;
     box-sizing: border-box;
@@ -42,18 +45,24 @@
     color: #555;
     font: 95% Arial, Helvetica, sans-serif;
 
+    & ~span.error {
+        display: none;
+    }
+
     &.error  {
         background:#F7F7F7; 
         border-color: #ff6800;
         border-width: 0.1rem;
+
+        & ~ span.error {
+            display: block;
+            color: #ff6800;
+            padding: 0.5rem;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+            }
     }
-    & ~ span {
-       background:#ff6800; 
-       color: #fff;
-       padding: 0.5rem;
-       margin-top: -0.5rem;
-       margin-bottom: 0.5rem;
-    }
+    
 }
 
 .form input[type="text"]:focus,
@@ -78,23 +87,48 @@ button {
     box-sizing: border-box;
     width: 100%;
     padding: 1rem;
-    background: #ff6800;
-    border-bottom: 1px solid #ff6800;
+    background: #2B954C;
     border-top-style: none;
     border-right-style: none;
     border-left-style: none;    
     color: #fff;
+    text-transform: uppercase;
+
+    &[disabled] {
+        cursor: not-allowed;
+        background: #ccc;
+        border: 0;
+    }
+
+    img {
+        width: 2rem;
+        float: left;
+    }
 }
+
 .form input[type="submit"]:hover,
 .form input[type="button"]:hover,
-button:hover {
-    background: #ff6800;
+button:hover:not[disabled] {
+    background: #2B954C;
     cursor:pointer
 }
 
 label{
-    
+    padding: 0.5rem;
     margin: 0px 0px 15px 0px;
+    
+    .optional {
+        color:#999999;
+    }
+
+    p {
+        padding: 0;
+        margin: 0;
+    }
+}
+
+label.required {
+    background: #eaeaea;
 }
 
 label > span {
@@ -103,4 +137,102 @@ label > span {
 }
 
 
+.radio {
+    ul {
+        list-style:none;
+        padding-left:0;
+    }
+    ul li{
+        display: block;
+        position: relative;
+        float: left;
+        width: 100%;
+    }
 
+    ul li input[type=radio]{
+        position: absolute;
+        visibility: hidden;
+    }
+
+    ul li label{
+        display: block;
+        position: relative;
+        padding: 0px 25px 0px 50px;
+        margin: 10px auto;
+        z-index: 9;
+        cursor: pointer;
+        transition: all 0.25s linear;
+    }
+
+    ul li:hover label{
+        
+    }
+
+    ul li .check{
+        display: block;
+        position: absolute;
+        border: 5px solid #ccc;
+        border-radius: 100%;
+        height: 30px;
+        width: 30px;
+        top: 10px;
+        left: 5px;
+        z-index: 5;
+        transition: border .25s linear;
+    }
+
+    ul li:hover .check {
+        border: 5px solid #2B954C;
+    }
+
+    ul li .check::before {
+        display: block;
+        position: absolute;
+        content: '';
+        border-radius: 100%;
+        height: 16px;
+        width: 16px;
+        top: 2px;
+        left: 2px;
+        margin: auto;
+        transition: background 0.25s linear;
+    }
+
+    input[type=radio]:checked ~ .check {
+        border: 5px solid #2B954C;
+    }
+
+    input[type=radio]:checked ~ .check::before{
+        background: #2B954C;
+    }
+
+    input[type=radio]:hover ~ label{
+        color: #2B954C;
+    }
+}
+
+.error,
+.warning {
+  animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}

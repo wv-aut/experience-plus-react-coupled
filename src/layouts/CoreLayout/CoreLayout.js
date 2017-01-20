@@ -1,7 +1,8 @@
 import React from 'react'
 import Header from '../../components/Header'
+import '../../styles/index.scss'
 import './CoreLayout.scss'
-import '../../styles/core.scss'
+
 
 // export const CoreLayout = ({ children }) => (
 //   <div className='container text-center'>
@@ -15,11 +16,9 @@ import '../../styles/core.scss'
 class CoreLayout extends React.Component {
   render () {
     return (
-      <div className='container text-center'>
+      <div className='container'>
         <Header />
-        <div className='core-layout__viewport'>
-          {this.props.children}
-        </div>
+        {this.props.children}
       </div>
     )
   }
