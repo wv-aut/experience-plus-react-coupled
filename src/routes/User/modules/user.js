@@ -54,7 +54,6 @@ function validateEmail (email) {
 }
 
 export function changeInput (event) {
-  console.log('asdfasdfafsd')
   const form = event.target.dataset.form
   let error = false
   if (form === 'email' && !validateEmail(event.target.value)) {

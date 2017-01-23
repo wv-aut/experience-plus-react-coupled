@@ -90,7 +90,7 @@ export const BirthDateForm = (props, { store }) => {
             className={checkIfbirthDateFieldIsRequired && showErrorMessage(props.user.data.birthDate.split('-')[0], 1900, 2010)}
             onBlur={props.changeDate}
             maxLength='4'
-            type='text'
+            type='number'
             name='birth-year'
             defaultValue={props.user.data.birthDate.split('-')[0]} />
           <span className='error'>Bitte tragen Sie Ihr Geburtsjahr ein.</span>

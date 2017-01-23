@@ -58,9 +58,7 @@ class User extends Component {
             <h2>Um Ihre Spenden auch in Zukunft steuerlich abzusetzen,
             bitten wir Sie folgende Daten zu bestätigen, oder zu vervollständigen.</h2>
           </header>
-          <nav className='progress'>
-            <Progress location={this.props.location} />
-          </nav>
+          <Progress location={this.props.location} />
           <main>
             <form className='form'>
               <div className='form-row'>
@@ -119,14 +117,14 @@ class User extends Component {
                     data-form='email'
                     data-required='true'
                     className={showErrorMessage(this.props.user.data.email)}
-                    type='text'
+                    type='email'
                     name='email'
                     defaultValue={this.props.user.data.email} />
                   <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                 </label>
               </div>
               <SelectBirthDate />
-              <input type='submit' value='DATEN BESTÄTIGEN UND ZUR SPENDENBESCHEINIGUNG' />
+              <input type='submit' value='DATEN BESTÄTIGEN' />
               <p className='error'>Damit Sie Ihre Spendenbestätigung ausdrucken können, bitten wir Sie,
               Ihre persönlichen Daten zu vervollständigen bzw. zu bestätigen.</p>
               <button type='button' disabled><img src={printerImage} /><span>Spendenbestätigung 2016 ausdrucken</span></button>

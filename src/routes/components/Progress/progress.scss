@@ -1,45 +1,88 @@
-
-
 .progress {
+        
+    .column-2 {
+        lost-column: 1/2;
+
+        &:not(.last) {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAAAUCAMAAAF67SWOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACpQTFRF3N3f7u7v1NXX/Pz819fZ5ebn4uPk9vf32drc8/T0+fn66Ojp0dLU////eM9kPgAAAA50Uk5T/////////////////wBFwNzIAAAAvUlEQVR42mLghQIGHihggAkABBCUwYMhxcMLEEAwNVA+khIoYAIIIFQVIONQtXBhaOFGF0DXwssLEEAYhqK4AWQJIzcuADKRE8NSDIDXCh4WdH+gKmAFkQABhFsBKyN+eQYeNgLyPBxAEqcXWUABT9CLFMoz4nUfDzt+9zPj9x+IBAgwPAGMz2RW7AmNaP3AsGWmTD8w8NmRMxJZgJFC/YTjl5AD8OQhvCkPFgDkhx8kAsjVz0ZB/LPxMMLZAOIUO+sCg11VAAAAAElFTkSuQmCC');
+            background-repeat: no-repeat;
+            background-position: right;
+        }
+        
+    }
+
+    .check-container {
         display: block;
         position: relative;
+        margin: 1rem auto;
         height: 2rem;
-        lost-center: 550px;
+        width: 50px;
+        
+    }
 
     .check {
         display: block;
         position: absolute;
         border-radius: 100%;
-        height: 30px;
-        width: 30px;
+        height: 42px;
+        width: 42px;
         top: 10px;
         left: 5px;
         z-index: 5;
         transition: border .25s linear;
-        border: 5px solid #2b954c;
 
-        &.active {
+        &.completed {
             border: 5px solid #2b954c;
+            color: #2b954c;
+        }
+ 
+        &.current {
+            border: 5px solid #2b954c;
+            color: #2b954c;
         }
 
-        &.inactive {
+        &.coming {
             border: 5px solid #ccc;
+            color: #ccc;
         }
     }
 
     .check::before {
-                display: block;
-                position: absolute;
-                content: '';
-                border-radius: 100%;
-                height: 16px;
-                width: 16px;
-                top: 2px;
-                left: 2px;
-                margin: auto;
-                transition: background 0.25s linear;
-                background: #2B954C;
-            }
+        display: block;
+        position: absolute;
+        font-size: 30px;
+        font-weight: bolder;
+        
+        border-radius: 100%;
+        height: 26px;
+        width: 26px;
+        top: 0px;
+        left: 7px;
+        margin: auto;
+        transition: background 0.25s linear;
+        }
+    .first::before {
+        content: '1';
+    }
+    .second::before {
+        content: '2';
+    }
+    .third::before {
+        content: '3';
+    }
+
+    .link {
+        padding: 1rem;
+        lost-align: center;
+    }
+
+    span, a {
+        color: #999999;
+        font-weight: bold;
+        font-size: 1rem;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
 }
 
 

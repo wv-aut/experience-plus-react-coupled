@@ -15,7 +15,6 @@ export const changeDate = (event) => {
       birthDate = event.target.dataset.fulldate.replace(/-\d{2}-/, `-${event.target.value}-`)
       break
     case 'year':
-      console.log(event.target.value)
       let replace = event.target.value
       if (Number(event.target.value) > 2010 || Number(event.target.value) < 1900) {
         error = true
