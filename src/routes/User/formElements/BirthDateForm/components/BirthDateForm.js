@@ -4,7 +4,6 @@ import { DESCRIPTION, FORM_ERRORS_DEFAULT } from '../../../config/languageDeAt.c
 import { FORM_ELEMENTS, _locationToObjectKey } from '../../../config/requiredFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../../../components/User'
 
-
 export const BirthDateForm = (props, { store }) => {
   const checkIfbirthDateFieldIsRequired = checkIfFieldIsRequired(
     'birthDate',
@@ -21,38 +20,48 @@ export const BirthDateForm = (props, { store }) => {
     return option
   }
 
-  const _checkIfBoolean = (value) => {
+  const _checkIfBoolean = value => {
     if (typeof value === 'boolean') {
+      console.log(value.toString() === 'false')
       return value.toString()
     } else {
       return value
     }
   }
 
+  const checkIfBirthDateIsRequired = (classValue, ifNot = false) => {
+    if (!props.user.data.taxOptOut) {
+      return classValue
+    } else if (ifNot) {
+      return classValue
+    }
+  }
+
+
   return (
     <div>
       <div className='form-row radio'>
         <ul>
           <li>
-            <input
-              type='radio'
-              data-form='boolean'
-              defaultChecked={_checkIfBoolean(props.user.data.taxOptOut) === 'false'}
-              value='false'
-              onChange={props.changeInput}
-              name='selector'
-            />
-            <label htmlFor='false'>
-              <p>Ja, Ich stimme der automatischen Spendenansetzbarkeit zu.<br/>
-              Damit Sie auch für das Jahr 2016 Ihre Spende absetzen können, geben Sie bitte Ihre Geburtsdatum an</p>
+            <label>
+              <input
+                type='radio'
+                data-form='taxOptOut'
+                defaultChecked={_checkIfBoolean(props.user.data.taxOptOut) === 'false'}
+                value='false'
+                onChange={props.changeInput}
+                name='tax-opt-out'
+              />
+              <p>Ja, Ich stimme der automatischen Spendenansetzbarkeit zu.<br />
+              Bitte geben Sie Ihr <strong>Geburtsdatum</ strong> dafür an, um auch für das Jahr 2016 Ihre Spende absetzen zu können.</p>
+              <div className='check'>
+                <div className='inside' />
+              </div>
             </label>
-            <div className='check'>
-              <div className='inside' />
-            </div>
           </li>
         </ul>
       </div>
-      <div className='form-row'>
+      <div className={'form-row ' + checkIfBirthDateIsRequired('required')}>
         <label className='grid-3-all'>
           <span>Tag:</span>
           <select
@@ -63,12 +72,12 @@ export const BirthDateForm = (props, { store }) => {
             onChange={props.changeDate}
             value={props.user.data.birthDate.split('-')[2]}>
             <option value='00'>Tag</option>
-            {getOptions(12)}
+            {getOptions(31)}
           </select>
           <span className='error'>Bitte wählen Sie Ihren Geburtstag aus.</span>
         </label>
         <label className='grid-3-all'>
-          <span>Monat:</span>
+          <span className={checkIfBirthDateIsRequired('optional', true)}>Monat:</span>
           <select
             data-dateelement='month'
             data-fulldate={props.user.data.birthDate}
@@ -77,7 +86,7 @@ export const BirthDateForm = (props, { store }) => {
             onChange={props.changeDate}
             value={props.user.data.birthDate.split('-')[1]}>
             <option value='00'>Monat</option>
-            {getOptions(31)}
+            {getOptions(12)}
           </select>
           <span className='error'>Bitte wählen Sie Ihren Geburtsmonat aus.</span>
         </label>
@@ -96,22 +105,23 @@ export const BirthDateForm = (props, { store }) => {
           <span className='error'>Bitte tragen Sie Ihr Geburtsjahr ein.</span>
         </label>
       </div>
-
       <div className='form-row radio'>
         <ul>
           <li>
-            <input
-              type='radio'
-              data-form='boolean'
-              defaultChecked={_checkIfBoolean(props.user.data.taxOptOut) === 'true'}
-              value='true'
-              onChange={props.changeInput}
-              name='selector'
-            />
-            <label htmlFor='true'>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</label>
-            <div className='check'>
-              <div className='inside' />
-            </div>
+            <label>
+              <input
+                type='radio'
+                data-form='taxOptOut'
+                defaultChecked={_checkIfBoolean(props.user.data.taxOptOut) === 'true'}
+                value='true'
+                onChange={props.changeInput}
+                name='tax-opt-out'
+              />
+              <p>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</p>
+              <div className='check'>
+                <div className='inside' />
+              </div>
+            </label>
           </li>
         </ul>
       </div>

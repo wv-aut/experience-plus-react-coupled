@@ -65,7 +65,8 @@ class User extends Component {
                 <label className='grid-2-all required'>
                   <span>{DESCRIPTION.SALUTATION}</span>
                   <select
-                    onChange={this.props.changeSalutation}
+                    onChange={this.props.changeInput}
+                    data-form='salutationCode'
                     className={showErrorMessage(this.props.user.data.salutationCode)}
                     value={this.props.user.data.salutationCode}> >
                     {this.getSalutationOptions()}
@@ -139,7 +140,6 @@ User.propTypes = {
   user: React.PropTypes.object.isRequired,
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
-  changeSalutation: React.PropTypes.func.isRequired,
   changeInput: React.PropTypes.func.isRequired
 }
 

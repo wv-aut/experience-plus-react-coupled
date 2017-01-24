@@ -1,33 +1,33 @@
 import React from 'react'
 import { IndexLink, Link } from 'react-router'
 import { PROGRESS } from '../../config/routes.config'
-import arrow from './assets/arrow-right.png'
+import arrowImage from './assets/arrow-right.png'
 import './progress.scss'
 
-
 const ProgressItem = (props) => {
-  const count = props.index === 0 ? 'first' : props.index === 1 ? 'second' : 'third'
-  let position = 'coming'
+  const addCountCss = props.index === 0 ? 'first' : props.index === 1 ? 'second' : 'third'
+  const addLastCss = (props.columns === props.index + 1) && 'last' || ''
+  let addPositionCss = 'coming'
   switch (true) {
     case (props.path.replace(/\//,'') === PROGRESS[props.index].route):
-      position = 'current'
+      addPositionCss = 'current'
       break
     default:
-      position = 'coming'
+      addPositionCss = 'coming'
       break
   }
 
   let LinkOrText = null
-  if (position === 'current' || position === 'coming') {
+  if (addPositionCss === 'current' || addPositionCss === 'coming') {
     LinkOrText = <span>{PROGRESS[props.index].description}</span>
   } else {
     LinkOrText = <Link to={`/${PROGRESS[props.index].route}`}>{PROGRESS[props.index].description}</Link>
   }
 
   return (
-    <div className={`column-${props.columns}`}>
-      <div className={`check-container ${position}`}>
-        <div className={`check ${count} ${position}`}>
+    <div className={`column-${props.columns} ${addLastCss}`}>
+      <div className={`check-container ${addPositionCss}`}>
+        <div className={`check ${addCountCss} ${addPositionCss}`}>
           <div className='inside' />
         </div>
       </div>

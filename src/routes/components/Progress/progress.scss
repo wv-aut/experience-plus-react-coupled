@@ -1,14 +1,20 @@
 .progress {
+    @lost gutter 0px;
+    lost-center: 650px;
         
     .column-2 {
-        lost-column: 1/2;
+        lost-column: 2/4 0px;
 
         &:not(.last) {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD8AAAAUCAMAAAF67SWOAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACpQTFRF3N3f7u7v1NXX/Pz819fZ5ebn4uPk9vf32drc8/T0+fn66Ojp0dLU////eM9kPgAAAA50Uk5T/////////////////wBFwNzIAAAAvUlEQVR42mLghQIGHihggAkABBCUwYMhxcMLEEAwNVA+khIoYAIIIFQVIONQtXBhaOFGF0DXwssLEEAYhqK4AWQJIzcuADKRE8NSDIDXCh4WdH+gKmAFkQABhFsBKyN+eQYeNgLyPBxAEqcXWUABT9CLFMoz4nUfDzt+9zPj9x+IBAgwPAGMz2RW7AmNaP3AsGWmTD8w8NmRMxJZgJFC/YTjl5AD8OQhvCkPFgDkhx8kAsjVz0ZB/LPxMMLZAOIUO+sCg11VAAAAAElFTkSuQmCC');
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAAHztt4mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF+vr609LSzczM////HwlztgAAAAR0Uk5T////AEAqqfQAAABRSURBVHjaYmAmAJjwA4AAYqBMO0AAEdJOoesIAIAAotB2xqFsO0AAURryA+p4ygBAAA2o1xmYRr0+6nX6AoAAG9i8PqDhPqAFzWikj0Y6fQEA0L0YVy6/uS4AAAAASUVORK5CYII=');
             background-repeat: no-repeat;
-            background-position: right;
+            background-position: center top 45px;
         }
-        
+        &.last {
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAAHztt4mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF9vb2y8rKzczM////5lJUIAAAAAR0Uk5T////AEAqqfQAAABRSURBVHjaYmAiAJjxA4AAYqBMO0AAEdJOoesIAIAAotB2hqFsO0AAURryA+p4ygBAAA2o1xmZR70+6nX6AoAAG9i8PqDhPqAFzWikj0Y6fQEArPsYV3uHVeYAAAAASUVORK5CYII=');
+            background-repeat: no-repeat;
+            background-position: center top 45px;
+        }
     }
 
     .check-container {
@@ -17,7 +23,6 @@
         margin: 1rem auto;
         height: 2rem;
         width: 50px;
-        
     }
 
     .check {
@@ -52,12 +57,12 @@
         position: absolute;
         font-size: 30px;
         font-weight: bolder;
-        
+        background: #ffffff;
         border-radius: 100%;
-        height: 26px;
-        width: 26px;
+        height: 32px;
+        width: 32px;
         top: 0px;
-        left: 7px;
+        left: 0px;
         margin: auto;
         transition: background 0.25s linear;
         }

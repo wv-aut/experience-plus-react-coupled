@@ -13,6 +13,6 @@ export const PROGRESS = [
   },
   {
     route: TAX_RECEIPT_ROUTE_CONFIRMATION,
-    description: 'Ihre Spendenbestätigung'
+    description: 'Ihre Spenden-Bestätigung'
   }
 ]

@@ -55,18 +55,20 @@ function validateEmail (email) {
 
 export function changeInput (event) {
   const form = event.target.dataset.form
-  let error = false
-  if (form === 'email' && !validateEmail(event.target.value)) {
-    error = true
+  // Input fields output strings rather than boolean values
+  // const value = event.target.value === 'true' ? true : event.target.value === 'false' ? false : event.target.value
+  let errorOperation = 'deduct'
+  console.log(event.target.value)
+  if (form === 'email' && !validateEmail(event.target.value) || event.target.value === '' || event.target.value === '0') {
+    errorOperation = 'add'
   }
   return {
     type: CHANGE_INPUT,
     data: event.target.value,
     form: event.target.dataset.form,
-    error
+    errorOperation: errorOperation
   }
 }
-
 
 /*  This is a thunk, meaning it is a function that immediately
     returns a function for lazy evaluation. It is incredibly useful for
@@ -86,6 +88,20 @@ export function changeInput (event) {
 //   }
 // }
 
+function _addDeductError (errorOperation, form, errorItems) {
+  errorItems = errorItems || []
+  let newArray = errorItems
+  if (errorOperation === 'deduct') {
+    newArray = errorItems.filter(function (value) {
+      return value !== form
+    })
+  } else if (errorOperation === 'add') {
+    if (errorItems.indexOf(form) === -1) {
+      newArray.push(form)
+    }
+  }
+  return newArray
+}
 
 // ------------------------------------
 // Action Handlers
@@ -102,12 +118,14 @@ const ACTION_HANDLERS = {
   },
   [CHANGE_SALUTATION]: (state, action) => {
     let salutation = Object.assign({}, state)
+    console.log(salutation.errorItems)
+    salutation.errorItems = _addDeductError('salutationCode', action.form, salutation.errorItems)
     salutation.data.salutationCode = action.data
     return salutation
   },
   [CHANGE_INPUT]: (state, action) => {
     let input = Object.assign({}, state)
-    state.error = true
+    input.errorItems = _addDeductError(action.errorOperation, action.form, input.errorItems)
     input.data[action.form] = action.data
     return input
   }
