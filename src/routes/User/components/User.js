@@ -2,36 +2,12 @@ import React, { Component } from 'react'
 import './User.scss'
 import printerImage from '../assets/printer.svg'
 import Progress from '../../components/Progress/Progress'
-import SelectBirthDate from '../formElements/BirthDateForm'
+
+import BirthDateForm from '../formElements/BirthDateForm'
 import { SALUTATION_CODE } from 'config/obelix.config'
 import { DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/languageDeAt.config'
-import { FORM_ELEMENTS, _locationToObjectKey } from '../config/requiredFields.config'
-
-export function checkIfFieldIsRequired (field, fieldData, location) {
-  const key = _locationToObjectKey(location)
-  const fieldValue = FORM_ELEMENTS[key][field]
-  let isRequired = false
-  if (typeof fieldValue !== 'undefined') {
-    if (fieldValue === true) {
-      isRequired = true
-    } else {
-      for (let element in fieldValue) {
-        if (fieldValue[element]['value'] === fieldData[element]) isRequired = true
-      }
-    }
-  }
-  return isRequired
-}
-
-export function showErrorMessage (value, minValue = false, maxValue = false) {
-  let addClass = 'ok'
-  if (minValue) { addClass = (Number(value) <= minValue) ? 'error-less' : 'ok' }
-  if (maxValue) { addClass = (Number(value) >= maxValue) ? 'error-exceed' : 'ok' }
-  if (typeof value === 'undefined' || value === '' || value === '0' || value === '00') {
-    addClass = 'error'
-  }
-  return addClass
-}
+import { API } from '../config/formFields.config'
+import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
 
 class User extends Component {
 
@@ -45,6 +21,10 @@ class User extends Component {
       salutations.push(<option key={prop} value={prop}>{SALUTATION_CODE[prop]}</option>)
     }
     return salutations
+  }
+
+  _checkIfFieldisRequired (fieldname) {
+    return checkIfFieldIsRequired(fieldname, this.props.user.data, this.props.location.pathname)
   }
 
   render () {
@@ -61,8 +41,26 @@ class User extends Component {
           <Progress location={this.props.location} />
           <main>
             <form className='form'>
+              {this.props.user.data.registeredCompany &&
+                <div className='form-row'>
+                  <label className='grid-1-all'>
+                    <span>{DESCRIPTION.COMPANY}:</span>
+                    <input
+                      onBlur={this.props.changeInput}
+                      data-form='companyName'
+                      className={showErrorMessage(this.props.user.data.companyName)}
+                      type='text'
+                      name='company-name'
+                      defaultValue={this.props.user.data.companyName} />
+                    <span>Ihre Daten sind bei uns als Firma angelegt. Diese Spenden sind auch weiterhin als Betriebsausgaben
+                    zu berücksichtigen und sind nicht von der Übermittlungspflicht erfasst. Sie erhalten in Zukunft automatisch 
+                    eine Jahresspendenbestätigung<br /><br /><strong>Wenn Sie Ihre Spenden doch lieber privat als Sonderausgabe
+                    absetzen möchten, füllen Sie bitte die unten angeführten Felder aus. </strong></span>
+                  </label>
+                </div>
+                }
               <div className='form-row'>
-                <label className='grid-2-all required'>
+                <label className={'grid-2-all ' + (!this.props.user.data.registeredCompany && 'required')}>
                   <span>{DESCRIPTION.SALUTATION}</span>
                   <select
                     onChange={this.props.changeInput}
@@ -85,28 +83,28 @@ class User extends Component {
                 </label>
               </div>
               <div className='form-row'>
-                <label className='grid-1-all required'>
+                <label className={'grid-1-all ' + (this._checkIfFieldisRequired(API.FIRST_NAME) && 'required')}>
                   <span>{DESCRIPTION.FIRST_NAME}:</span>
                   <input
                     onBlur={this.props.changeInput}
-                    data-form='firstName'
-                    data-required='true'
-                    className={showErrorMessage(this.props.user.data.firstName)}
+                    data-form={API.FIRST_NAME}
+                    data-required={this._checkIfFieldisRequired(API.FIRST_NAME) && 'true'}
+                    className={this._checkIfFieldisRequired(API.FIRST_NAME) && showErrorMessage(this.props.user.data[API.FIRST_NAME])}
                     type='text'
                     name='first-name'
-                    defaultValue={this.props.user.data.firstName} />
+                    defaultValue={this.props.user.data[API.FIRST_NAME]} />
                   <span className='error'>{FORM_ERRORS_DEFAULT.FIRST_NAME}</span>
                 </label>
-                <label className='grid-1-all required'>
+                <label className={'grid-1-all ' + (this._checkIfFieldisRequired(API.LAST_NAME) && 'required')}>
                   <span>{DESCRIPTION.LAST_NAME}:</span>
                   <input
                     onBlur={this.props.changeInput}
-                    data-form='lastName'
-                    data-required='true'
-                    className={showErrorMessage(this.props.user.data.lastName)}
+                    data-form={API.LAST_NAME}
+                    data-required={this._checkIfFieldisRequired(API.LAST_NAME) && 'true'}
+                    className={this._checkIfFieldisRequired(API.LAST_NAME) && showErrorMessage(this.props.user.data[API.LAST_NAME])}
                     type='text'
                     name='last-name'
-                    defaultValue={this.props.user.data.lastName} />
+                    defaultValue={this.props.user.data[API.LAST_NAME]} />
                   <span className='error'>{FORM_ERRORS_DEFAULT.LAST_NAME}</span>
                 </label>
               </div>
@@ -115,16 +113,16 @@ class User extends Component {
                   <span>{DESCRIPTION.EMAIL}:</span>
                   <input
                     onBlur={this.props.changeInput}
-                    data-form='email'
+                    data-form={API.EMAIL}
                     data-required='true'
-                    className={showErrorMessage(this.props.user.data.email)}
+                    className={showErrorMessage(this.props.user.data[API.EMAIL])}
                     type='email'
                     name='email'
-                    defaultValue={this.props.user.data.email} />
+                    defaultValue={this.props.user.data[API.EMAIL]} />
                   <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                 </label>
               </div>
-              <SelectBirthDate />
+              <BirthDateForm location={this.props.location} />
               <input type='submit' value='DATEN BESTÄTIGEN' />
               <p className='error'>Damit Sie Ihre Spendenbestätigung ausdrucken können, bitten wir Sie,
               Ihre persönlichen Daten zu vervollständigen bzw. zu bestätigen.</p>
@@ -140,6 +138,7 @@ User.propTypes = {
   user: React.PropTypes.object.isRequired,
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
+  parseJSONData: React.PropTypes.func.isRequired,
   changeInput: React.PropTypes.func.isRequired
 }
 
