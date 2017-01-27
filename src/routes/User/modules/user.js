@@ -6,9 +6,12 @@ export const REQUEST_USER_PROFILE = 'REQUEST_USER_PROFILE'
 export const RECEIVE_USER_PROFILE = 'RECEIVE_USER_PROFILE'
 export const CHANGE_SALUTATION = 'CHANGE_SALUTATION'
 export const CHANGE_INPUT = 'CHANGE_INPUT'
+export const USER_DATA_VALIDATION = 'USER_DATA_VALIDATION'
 export const GET_TEMP_JSON_DATA = 'GET_TEMP_JSON_DATA'
 
 import { CHANGE_DATE } from '../formElements/BirthDateForm/modules/userForm'
+import { API } from '../config/formFields.config'
+import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
 
 // ------------------------------------
 // Actions User
@@ -29,7 +32,11 @@ export function requestUserProfile (tempKey = null) {
  */
 export function receiveUserProfile (json, dispatch) {
   // TEST
+  json.fields.registeredCompany = false
+  json.fields.salutation = 'Sehr geehrter Herr Schadauer'
+  json.fields.salutationCode = 0
   if (json.fields.salutationCode === 'COMPANY') {
+    json.fields.taxOptOut = true
     json.fields.registeredCompany = true
   }
   if (json.fields.JSON_serialised_temp) {
@@ -52,13 +59,11 @@ export function receiveUserProfile (json, dispatch) {
  * @param {string} location search string only string starting with ?firstName=john
  * @return {object} action
  */
-import { API } from '../config/formFields.config'
 export function parseJSONData (JSONData) {
   const strippedJSONData = JSONData.replace(/(\\)(?=")/g, '')
   const parsedData = JSON.parse(strippedJSONData)
   let userObject = {}
   for (let items in parsedData) {
-    console.log(parsedData[items])
     for (let APIItems in API) {
       if (API[APIItems] === items) {
         userObject[items] = parsedData[items]
@@ -88,30 +93,57 @@ export function fetchUserProfile (tempKey) {
   }
 }
 
-/**
- * Validate emails
- * @param {string} email
- * @return {boolean}
- */
-function validateEmail (email) {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(email)
-}
-
 export function changeInput (event) {
   const form = event.target.dataset.form
   // Input fields output strings rather than boolean values
   const value = event.target.value === 'true' ? true : event.target.value === 'false' ? false : event.target.value
   let errorOperation = 'deduct'
-  if (form === 'email' && !validateEmail(value) || value === '' || value === '0') {
+  if (form === 'email' && !_validateEmail(value) || value === '' || value === '0') {
     errorOperation = 'add'
   }
   return {
     type: CHANGE_INPUT,
     data: value,
     form: event.target.dataset.form,
-    errorOperation: errorOperation
+    errorOperation
   }
+}
+
+export function userDataValidation (props) {
+  const userData = props.user.data
+  let errorArray = props.user.errorArray || []
+  for (let item in userData) {
+    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item])) {
+      errorArray.push(item)
+    }
+  }
+  return {
+    type: USER_DATA_VALIDATION,
+    userErrorArray: errorArray
+  }
+}
+
+export function _isValue (value) {
+  if (value === 0 || value === '0' || value === '' || value === '00' || value === '0000') {
+    return false
+  } else {
+    return true
+  }
+}
+
+function _userErrorArray (errorOperation, form, errorItems) {
+  errorItems = errorItems || []
+  let newErrorArray = errorItems
+  if (errorOperation === 'deduct') {
+    newErrorArray = errorItems.filter(function (value) {
+      return value !== form
+    })
+  } else if (errorOperation === 'add') {
+    if (errorItems.indexOf(form) === -1) {
+      newErrorArray.push(form)
+    }
+  }
+  return newErrorArray
 }
 
 /*  This is a thunk, meaning it is a function that immediately
@@ -132,21 +164,6 @@ export function changeInput (event) {
 //   }
 // }
 
-function _addDeductError (errorOperation, form, errorItems) {
-  errorItems = errorItems || []
-  let newArray = errorItems
-  if (errorOperation === 'deduct') {
-    newArray = errorItems.filter(function (value) {
-      return value !== form
-    })
-  } else if (errorOperation === 'add') {
-    if (errorItems.indexOf(form) === -1) {
-      newArray.push(form)
-    }
-  }
-  return newArray
-}
-
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
@@ -157,12 +174,13 @@ const ACTION_HANDLERS = {
   },
   [CHANGE_DATE]: (state, action) => {
     let date = Object.assign({}, state)
+    date.errorArray = _userErrorArray(action.errorOperation, API.BIRTH_DATE, date.errorArray)
     date.data.birthDate = action.data
     return date
   },
   [CHANGE_INPUT]: (state, action) => {
     let input = Object.assign({}, state)
-    input.errorItems = _addDeductError(action.errorOperation, action.form, input.errorItems)
+    input.errorArray = _userErrorArray(action.errorOperation, action.form, input.errorArray)
     input.data[action.form] = action.data
     return input
   },
@@ -170,6 +188,11 @@ const ACTION_HANDLERS = {
     let dataTemp = Object.assign({}, state)
     dataTemp.dataTemp = action.dataTemp
     return dataTemp
+  },
+  [USER_DATA_VALIDATION]: (state, action) => {
+    let data = Object.assign({}, state)
+    data.errorArray = action.userErrorArray
+    return data
   }
 }
 

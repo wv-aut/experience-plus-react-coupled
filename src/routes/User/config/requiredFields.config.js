@@ -13,17 +13,17 @@ export function _locationToObjectKey (location) {
 export const FORM_ELEMENTS = {
   [_locationToObjectKey(TAX_RECEIPT_PROFILE_ROUTE)]: {
     [API.FIRST_NAME]: {
-      [API.REGISTERED_COMPANY]: {
+      [API.TAX_OPTOUT]: {
         value: false
       }
     },
     [API.LAST_NAME]: {
-      [API.REGISTERED_COMPANY]: {
+      [API.TAX_OPTOUT]: {
         value: false
       }
     },
     [API.SALUTATION_CODE]: {
-      [API.REGISTERED_COMPANY]: {
+      [API.TAX_OPTOUT]: {
         value: false
       }
     },
@@ -61,15 +61,30 @@ export function checkIfFieldIsRequired (fieldName, userData, pathname) {
       }
     }
   }
+  
   return isRequired
 }
 
-export function showErrorMessage (value, minValue = false, maxValue = false) {
+export function showErrorMessage (value, minValue = false, maxValue = false, email = false) {
   let addClass = 'ok'
   if (minValue) { addClass = (Number(value) <= minValue) ? 'error-less' : 'ok' }
   if (maxValue) { addClass = (Number(value) >= maxValue) ? 'error-exceed' : 'ok' }
-  if (typeof value === 'undefined' || value === '' || value === '0' || value === '00') {
+  if (typeof value === 'undefined' || value === '' || value === 0 || value === '0' || value === '00' || value === '0000') {
     addClass = 'error'
   }
+  if (email) {
+    addClass = _validateEmail(value) ? 'ok' : 'error'
+  }
   return addClass
+}
+
+
+/**
+ * Validate emails
+ * @param {string} email
+ * @return {boolean}
+ */
+export function _validateEmail (email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(email)
 }

@@ -30,9 +30,41 @@ class BirthDateForm extends Component {
     }
   }
 
+  renderTaxOptOutForCompany (isCompany = false) {
+    return (
+      <div className='form-row radio'>
+          <ul>
+            <li>
+              <label>
+                <input
+                  type='radio'
+                  data-form='taxOptOut'
+                  defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'true'}
+                  value='true'
+                  onChange={this.props.changeInput}
+                  name='tax-opt-out'
+                />
+                {isCompany &&
+                  <p>Ihre Daten sind bei uns als Firma angelegt. Diese Spenden sind auch weiterhin als Betriebsausgaben zu berücksichtigen und sind nicht von der Übermittlungspflicht erfasst. Sie erhalten in Zukunft automatisch eine Jahresspendenbestätigung</p>
+                }
+                {!isCompany &&
+                  <p>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</p>
+                }
+                <div className='check'>
+                  <div className='inside' />
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+    )
+  }
+
   render () {
     return (
       <div>
+        {this.props.user.data.registeredCompany &&
+          this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)}
         <div className='form-row radio'>
           <ul>
             <li>
@@ -45,8 +77,12 @@ class BirthDateForm extends Component {
                   onChange={this.props.changeInput}
                   name='tax-opt-out'
                 />
-                <p>Ja, Ich stimme der automatischen Spendenansetzbarkeit zu.<br />
-                Bitte geben Sie Ihr <strong>Geburtsdatum</ strong> dafür an, um auch für das Jahr 2016 Ihre Spende absetzen zu können.</p>
+                {this.props.user.data.registeredCompany &&
+                  <p>Ich möchte doch lieber meine Spenden privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder aus.</p>
+                }
+                {!this.props.user.data.registeredCompany &&
+                  <p>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</p>
+                }
                 <div className='check'>
                   <div className='inside' />
                 </div>
@@ -61,7 +97,9 @@ class BirthDateForm extends Component {
               data-dateelement='day'
               data-fulldate={this.props.user.data.birthDate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
-              className={this._checkIfFieldisRequired(API.BIRTH_DATE) && showErrorMessage(this.props.user.data.birthDate.split('-')[2])}
+              className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
+                showErrorMessage(this.props.user.data.birthDate.split('-')[2])
+              }
               onChange={this.props.changeDate}
               value={this.props.user.data.birthDate.split('-')[2]}>
               <option value='00'>Tag</option>
@@ -75,7 +113,9 @@ class BirthDateForm extends Component {
               data-dateelement='month'
               data-fulldate={this.props.user.data.birthDate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
-              className={this._checkIfFieldisRequired(API.BIRTH_DATE) && showErrorMessage(this.props.user.data.birthDate.split('-')[1])}
+              className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
+                showErrorMessage(this.props.user.data.birthDate.split('-')[1])
+              }
               onChange={this.props.changeDate}
               value={this.props.user.data.birthDate.split('-')[1]}>
               <option value='00'>Monat</option>
@@ -89,7 +129,9 @@ class BirthDateForm extends Component {
               data-dateelement='year'
               data-fulldate={this.props.user.data.birthDate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
-              className={this._checkIfFieldisRequired(API.BIRTH_DATE) && showErrorMessage(this.props.user.data.birthDate.split('-')[0], 1900, 2010)}
+              className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
+                showErrorMessage(this.props.user.data.birthDate.split('-')[0], 1900, 2010)
+              }
               onBlur={this.props.changeDate}
               maxLength='4'
               type='number'
@@ -98,26 +140,9 @@ class BirthDateForm extends Component {
             <span className='error'>Bitte tragen Sie Ihr Geburtsjahr ein.</span>
           </label>
         </div>
-        <div className='form-row radio'>
-          <ul>
-            <li>
-              <label>
-                <input
-                  type='radio'
-                  data-form='taxOptOut'
-                  defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'true'}
-                  value='true'
-                  onChange={this.props.changeInput}
-                  name='tax-opt-out'
-                />
-                <p>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</p>
-                <div className='check'>
-                  <div className='inside' />
-                </div>
-              </label>
-            </li>
-          </ul>
-        </div>
+        {!this.props.user.data.registeredCompany &&
+          this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)
+        }
       </div>
     )
   }

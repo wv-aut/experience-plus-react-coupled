@@ -9,10 +9,17 @@ import { DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/languageDeAt.config'
 import { API } from '../config/formFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
 
+
 class User extends Component {
 
   componentDidMount () {
     this.props.fetchUserProfile()
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (typeof this.props.user.data === 'undefined' && typeof nextProps.user.data === 'object') {
+      this.props.userDataValidation(nextProps)
+    }
   }
 
   getSalutationOptions () {
@@ -33,10 +40,9 @@ class User extends Component {
     } else {
       return (
         <div>
-          <header>
-            <h1 className='center'>Ihr Profil bei World Vision</h1>
-            <h2>Um Ihre Spenden auch in Zukunft steuerlich abzusetzen,
-            bitten wir Sie folgende Daten zu bestätigen, oder zu vervollständigen.</h2>
+          <header className='center'>
+            <h1>Ihre Spendenbestätigung{this.props.user.data.salutation && ', ' + this.props.user.data.salutation.replace(/Sehr geehrter||Sehr geehrte/, '')}</h1>
+            <h2>Bitte vervollständigen Sie Ihre Daten, damit Sie auch in Zukunft Ihre Spenden steuerlich ansetzen können. <a href="">Mehr Information</a></h2>
           </header>
           <Progress location={this.props.location} />
           <main>
@@ -52,20 +58,20 @@ class User extends Component {
                       type='text'
                       name='company-name'
                       defaultValue={this.props.user.data.companyName} />
-                    <span>Ihre Daten sind bei uns als Firma angelegt. Diese Spenden sind auch weiterhin als Betriebsausgaben
-                    zu berücksichtigen und sind nicht von der Übermittlungspflicht erfasst. Sie erhalten in Zukunft automatisch 
-                    eine Jahresspendenbestätigung<br /><br /><strong>Wenn Sie Ihre Spenden doch lieber privat als Sonderausgabe
-                    absetzen möchten, füllen Sie bitte die unten angeführten Felder aus. </strong></span>
                   </label>
                 </div>
                 }
+              {this.props.user.data.registeredCompany &&
+                <BirthDateForm location={this.props.location} />
+              }
               <div className='form-row'>
-                <label className={'grid-2-all ' + (!this.props.user.data.registeredCompany && 'required')}>
+                <label className={'grid-2-all ' + (this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'required')}>
                   <span>{DESCRIPTION.SALUTATION}</span>
                   <select
                     onChange={this.props.changeInput}
                     data-form='salutationCode'
-                    className={showErrorMessage(this.props.user.data.salutationCode)}
+                    data-required={this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'true'}
+                    className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode)}
                     value={this.props.user.data.salutationCode}> >
                     {this.getSalutationOptions()}
                   </select>
@@ -115,18 +121,17 @@ class User extends Component {
                     onBlur={this.props.changeInput}
                     data-form={API.EMAIL}
                     data-required='true'
-                    className={showErrorMessage(this.props.user.data[API.EMAIL])}
+                    className={showErrorMessage(this.props.user.data[API.EMAIL], false, false, true)}
                     type='email'
                     name='email'
                     defaultValue={this.props.user.data[API.EMAIL]} />
                   <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                 </label>
               </div>
-              <BirthDateForm location={this.props.location} />
-              <input type='submit' value='DATEN BESTÄTIGEN' />
-              <p className='error'>Damit Sie Ihre Spendenbestätigung ausdrucken können, bitten wir Sie,
-              Ihre persönlichen Daten zu vervollständigen bzw. zu bestätigen.</p>
-              <button type='button' disabled><img src={printerImage} /><span>Spendenbestätigung 2016 ausdrucken</span></button>
+              {!this.props.user.data.registeredCompany &&
+                <BirthDateForm location={this.props.location} />
+              }
+              <button type='button' disabled={typeof this.props.user.errorArray === 'undefined' || this.props.user.errorArray.length !== 0}><img src={printerImage} /><span>DATEN BESTÄTIGEN UND SPENDENBESCHEINIGUNG AUFRUFEN</span></button>
             </form>
           </main>
         </div>)
@@ -139,7 +144,9 @@ User.propTypes = {
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
   parseJSONData: React.PropTypes.func.isRequired,
-  changeInput: React.PropTypes.func.isRequired
+  changeInput: React.PropTypes.func.isRequired,
+  userDataValidation: React.PropTypes.func.isRequired,
+  _validateEmail: React.PropTypes.func
 }
 
 export default User

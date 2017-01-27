@@ -8,7 +8,7 @@ export const LOCATION_CHANGE = 'LOCATION_CHANGE'
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function locationChange (location = '/') {
+export function locationChange (initLocation = '/') {
   return {
     type    : LOCATION_CHANGE,
     payload : location
@@ -28,7 +28,7 @@ export const updateLocation = ({ dispatch }) => {
 // Reducer
 // ------------------------------------
 
-export default function locationReducer (state = initialState.location, action) {
+export default function locationReducer (state = initialState.initLocation, action) {
   return action.type === LOCATION_CHANGE
     ? action.payload
     : state

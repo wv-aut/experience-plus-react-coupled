@@ -5,7 +5,7 @@ import userReducer from '../routes/User/modules/user'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    location: locationReducer,
+    initLocation: locationReducer,
     user: userReducer,
     auth: authReducer,
     ...asyncReducers
