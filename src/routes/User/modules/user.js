@@ -6,6 +6,7 @@ export const REQUEST_USER_PROFILE = 'REQUEST_USER_PROFILE'
 export const RECEIVE_USER_PROFILE = 'RECEIVE_USER_PROFILE'
 export const CHANGE_SALUTATION = 'CHANGE_SALUTATION'
 export const CHANGE_INPUT = 'CHANGE_INPUT'
+export const GET_TEMP_JSON_DATA = 'GET_TEMP_JSON_DATA'
 
 import { CHANGE_DATE } from '../formElements/BirthDateForm/modules/userForm'
 
@@ -21,7 +22,24 @@ export function requestUserProfile (tempKey = null) {
   }
 }
 
-export function receiveUserProfile (tempKey, json) {
+/**
+ * Function is called when data is fetched
+ * @param {object} json
+ * @return {object} action
+ */
+export function receiveUserProfile (json, dispatch) {
+  // TEST
+  if (json.fields.salutationCode === 'COMPANY') {
+    json.fields.registeredCompany = true
+  }
+  if (json.fields.JSON_serialised_temp) {
+    dispatch(parseJSONData(json.fields.JSON_serialised_temp))
+  }
+  // TEST
+  json.fields.companyName = 'Red Bull GmbH'
+  json.fields.firstName = ''
+  json.fields.email = ''
+  json.fields.birthDate = ''
   return {
     type: RECEIVE_USER_PROFILE,
     isFetching: false,
@@ -29,6 +47,35 @@ export function receiveUserProfile (tempKey, json) {
   }
 }
 
+/**
+ * Adds Start fetching user data asynchronously with API key
+ * @param {string} location search string only string starting with ?firstName=john
+ * @return {object} action
+ */
+import { API } from '../config/formFields.config'
+export function parseJSONData (JSONData) {
+  const strippedJSONData = JSONData.replace(/(\\)(?=")/g, '')
+  const parsedData = JSON.parse(strippedJSONData)
+  let userObject = {}
+  for (let items in parsedData) {
+    console.log(parsedData[items])
+    for (let APIItems in API) {
+      if (API[APIItems] === items) {
+        userObject[items] = parsedData[items]
+      }
+    }
+  }
+  return {
+    type: GET_TEMP_JSON_DATA,
+    dataTemp: userObject
+  }
+}
+
+/**
+ * Adds Start fetching user data asynchronously with API key
+ * @param {string} apiKey
+ * @return {function} dispatch
+ */
 export function fetchUserProfile (tempKey) {
   return dispatch => {
     dispatch(requestUserProfile(tempKey))
@@ -36,35 +83,32 @@ export function fetchUserProfile (tempKey) {
         .then(response => {
           return response.json()
         })
-        .then(json => dispatch(receiveUserProfile(tempKey, json))
+        .then(json => dispatch(receiveUserProfile(json, dispatch))
             ).catch(err => console.log(err))
   }
 }
 
-export function changeSalutation (event) {
-  return {
-    type: CHANGE_SALUTATION,
-    data: event.target.value
-  }
-}
-
+/**
+ * Validate emails
+ * @param {string} email
+ * @return {boolean}
+ */
 function validateEmail (email) {
-  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
 }
 
 export function changeInput (event) {
   const form = event.target.dataset.form
   // Input fields output strings rather than boolean values
-  // const value = event.target.value === 'true' ? true : event.target.value === 'false' ? false : event.target.value
+  const value = event.target.value === 'true' ? true : event.target.value === 'false' ? false : event.target.value
   let errorOperation = 'deduct'
-  console.log(event.target.value)
-  if (form === 'email' && !validateEmail(event.target.value) || event.target.value === '' || event.target.value === '0') {
+  if (form === 'email' && !validateEmail(value) || value === '' || value === '0') {
     errorOperation = 'add'
   }
   return {
     type: CHANGE_INPUT,
-    data: event.target.value,
+    data: value,
     form: event.target.dataset.form,
     errorOperation: errorOperation
   }
@@ -116,18 +160,16 @@ const ACTION_HANDLERS = {
     date.data.birthDate = action.data
     return date
   },
-  [CHANGE_SALUTATION]: (state, action) => {
-    let salutation = Object.assign({}, state)
-    console.log(salutation.errorItems)
-    salutation.errorItems = _addDeductError('salutationCode', action.form, salutation.errorItems)
-    salutation.data.salutationCode = action.data
-    return salutation
-  },
   [CHANGE_INPUT]: (state, action) => {
     let input = Object.assign({}, state)
     input.errorItems = _addDeductError(action.errorOperation, action.form, input.errorItems)
     input.data[action.form] = action.data
     return input
+  },
+  [GET_TEMP_JSON_DATA]: (state, action) => {
+    let dataTemp = Object.assign({}, state)
+    dataTemp.dataTemp = action.dataTemp
+    return dataTemp
   }
 }
 

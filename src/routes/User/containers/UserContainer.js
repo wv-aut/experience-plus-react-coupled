@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { increment, fetchUserProfile, changeSalutation, changeInput } from '../modules/user'
+import { increment, fetchUserProfile, changeInput, parseJSONData } from '../modules/user'
 
 
 /*  This is a container component. Notice it does not contain any JSX,
@@ -18,7 +18,7 @@ import User from '../components/User'
 const mapDispatchToProps = {
   increment : () => increment(1),
   fetchUserProfile,
-  changeSalutation,
+  parseJSONData,
   changeInput
 }
 
