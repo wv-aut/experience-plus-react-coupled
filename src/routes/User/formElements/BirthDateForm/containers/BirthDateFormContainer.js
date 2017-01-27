@@ -4,12 +4,10 @@ import { changeInput } from '../../../modules/user'
 
 import BirthDateForm from '../components/BirthDateForm'
 
-
 const mapDispatchToProps = {
   changeDate,
   changeInput
 }
-
 
 const mapStateToProps = (state) => ({
   user: state.user

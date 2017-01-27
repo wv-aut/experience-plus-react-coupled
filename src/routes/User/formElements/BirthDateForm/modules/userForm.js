@@ -5,14 +5,15 @@ export const CHANGE_DATE = 'CHANGE_DATE'
 // ------------------------------------
 
 export const changeDate = (event) => {
-  let birthDate = ''
+  let birthDate = event.target.dataset.fulldate || '0000-00-00'
   let error = false
   switch (event.target.dataset.dateelement) {
     case 'day':
-      birthDate = event.target.dataset.fulldate.replace(/\d{2}$/, event.target.value)
+      birthDate = birthDate.replace(/\d{2}$/, event.target.value)
+      console.log(event.target.dataset.fulldate)
       break
     case 'month':
-      birthDate = event.target.dataset.fulldate.replace(/-\d{2}-/, `-${event.target.value}-`)
+      birthDate = birthDate.replace(/-\d{2}-/, `-${event.target.value}-`)
       break
     case 'year':
       let replace = event.target.value
@@ -20,7 +21,7 @@ export const changeDate = (event) => {
         error = true
         replace = '0000'
       }
-      birthDate = event.target.dataset.fulldate.replace(/^\d{4}/, replace)
+      birthDate = birthDate.replace(/^\d{4}/, replace)
       break
   }
 
