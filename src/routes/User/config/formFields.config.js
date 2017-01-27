@@ -6,6 +6,8 @@ export const API = {
   FIRST_NAME: 'firstName',
   LAST_NAME: 'lastName',
   SALUTATION_CODE: 'salutationCode',
+  COMPANY: 'companyName',
+  REGISTERED_COMPANY: 'registeredCompany',
   PARNTER_ID: 'partnerID',
   STREET: 'street',
   HOUSE_NO: 'houseNo',

@@ -3,6 +3,7 @@ export const DESCRIPTION = {
   LAST_NAME: 'Nachname',
   SALUTATION: 'Anrede',
   SALUTATION_CODE: 'salutationCode',
+  COMPANY: 'Ihr Firmenname',
   PARTNER_ID: 'partnerID',
   STREET: 'Straße',
   HOUSE_NO: 'Tür',
