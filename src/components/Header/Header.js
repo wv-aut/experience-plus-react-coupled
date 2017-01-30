@@ -4,7 +4,7 @@ import './Header.scss'
 import Logo from './assets/logo-worldvision.svg'
 
 export const Header = () => (
-  <header>
+  <header className='right'>
     <img
       alt='World Vision Logo'
       src={Logo} />
