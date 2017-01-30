@@ -3,8 +3,10 @@
 
 const PROCESS = 'schritt'
 
+export const PRINT = 'drucken'
+
 export const TAX_RECEIPT_PROFILE_ROUTE = `${PROCESS}/1/2/spendenbestaetigung`
-export const TAX_RECEIPT_ROUTE_CONFIRMATION = `${PROCESS}/2/2/spendenbestaetigung/danke`
+export const TAX_RECEIPT_PRINT_ROUTE = PRINT
 
 export const PROGRESS = [
   {
@@ -12,7 +14,7 @@ export const PROGRESS = [
     description: 'Aktualisierung Ihrer Daten'
   },
   {
-    route: TAX_RECEIPT_ROUTE_CONFIRMATION,
+    route: TAX_RECEIPT_PRINT_ROUTE,
     description: 'Ihre Spenden-Bestätigung'
   }
 ]
