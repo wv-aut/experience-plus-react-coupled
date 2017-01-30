@@ -1,5 +1,5 @@
 import { API } from './formFields.config'
-import { TAX_RECEIPT_PROFILE_ROUTE } from 'routes/config/routes.config'
+import { TAX_RECEIPT_PROFILE_ROUTE, PRINT } from 'routes/config/routes.config'
 
 // ------------------------------------
 // Required fields and fields that are conditionally required
@@ -45,8 +45,19 @@ export const FORM_ELEMENTS = {
  * @return {boolean}
  */
 export function checkIfFieldIsRequired (fieldName, userData, pathname) {
-  const key = _locationToObjectKey(pathname)
+
+  // Some pages are only accessible if the parent pages have all 
+  // necessary informaton. Example: [PRINT], [COMPLETED]
+  var re = new RegExp('/' + PRINT)
+  const strippedPathName = pathname.replace(re, '')
+  const key = _locationToObjectKey(strippedPathName)
+  // if (typeof FORM_ELEMENTS[key] === 'undefined') {
+  //   console.log('undefined yeah')
+  //   return false
+  // }
+
   const fieldValue = FORM_ELEMENTS[key][fieldName]
+  
   let isRequired = false
   if (typeof fieldValue !== 'undefined') {
     // If there are no dependencies
@@ -61,7 +72,6 @@ export function checkIfFieldIsRequired (fieldName, userData, pathname) {
       }
     }
   }
-  
   return isRequired
 }
 

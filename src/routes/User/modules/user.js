@@ -8,8 +8,9 @@ export const CHANGE_SALUTATION = 'CHANGE_SALUTATION'
 export const CHANGE_INPUT = 'CHANGE_INPUT'
 export const USER_DATA_VALIDATION = 'USER_DATA_VALIDATION'
 export const GET_TEMP_JSON_DATA = 'GET_TEMP_JSON_DATA'
+export const CONFIRM_USER_FORM = 'CONFIRM_USER_FORM'
 
-import { CHANGE_DATE } from '../formElements/BirthDateForm/modules/userForm'
+import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
 import { API } from '../config/formFields.config'
 import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
 
@@ -34,7 +35,7 @@ export function receiveUserProfile (json, dispatch) {
   // TEST
   json.fields.registeredCompany = false
   json.fields.salutation = 'Sehr geehrter Herr Schadauer'
-  json.fields.salutationCode = 0
+  json.fields.salutationCode = 13
   if (json.fields.salutationCode === 'COMPANY') {
     json.fields.taxOptOut = true
     json.fields.registeredCompany = true
@@ -44,9 +45,7 @@ export function receiveUserProfile (json, dispatch) {
   }
   // TEST
   json.fields.companyName = 'Red Bull GmbH'
-  json.fields.firstName = ''
-  json.fields.email = ''
-  json.fields.birthDate = ''
+
   return {
     type: RECEIVE_USER_PROFILE,
     isFetching: false,
@@ -106,6 +105,13 @@ export function changeInput (event) {
     data: value,
     form: event.target.dataset.form,
     errorOperation
+  }
+}
+
+export function confirmUserForm (event) {
+  return {
+    type: CONFIRM_USER_FORM,
+    confirmedForm: true
   }
 }
 
@@ -192,6 +198,11 @@ const ACTION_HANDLERS = {
   [USER_DATA_VALIDATION]: (state, action) => {
     let data = Object.assign({}, state)
     data.errorArray = action.userErrorArray
+    return data
+  },
+  [CONFIRM_USER_FORM]: (state, action) => {
+    let data = Object.assign({}, state)
+    data.confirmedForm = action.confirmedForm
     return data
   }
 }
