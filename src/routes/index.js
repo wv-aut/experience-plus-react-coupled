@@ -1,8 +1,10 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
+import NotFound from './NotFound/components/NotFound'
 import User from './User'
 import Home from './Home'
-import { TAX_RECEIPT_PROFILE_ROUTE } from './config/routes.config'
+import TaxReceipt from './User/userElements/TaxReceipt/components/TaxReceipt'
+import { TAX_RECEIPT_PROFILE_ROUTE, TAX_RECEIPT_PRINT_ROUTE } from './config/routes.config'
 
 
 /*  Note: Instead of using JSX, we recommend using react-router
@@ -13,7 +15,19 @@ export const createRoutes = (store) => ({
   component   : CoreLayout,
   indexRoute  : Home,
   childRoutes : [
-    { path: TAX_RECEIPT_PROFILE_ROUTE, component: User }
+    { path: TAX_RECEIPT_PROFILE_ROUTE,
+      component: User,
+      childRoutes : [
+        { path: TAX_RECEIPT_PRINT_ROUTE,
+          component: TaxReceipt,
+          store:store
+        }
+      ]
+    },
+    { path: '*',
+      component: NotFound
+
+    }
   ]
 })
 
