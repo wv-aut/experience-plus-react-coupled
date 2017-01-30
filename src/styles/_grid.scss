@@ -8,7 +8,10 @@ Grids
 .container {
     margin: 0 auto;
     width: 100%;
+}
 
+.bg-primary-grey {
+    background-color: #ebebe7;
 }
 
 .form-row {
@@ -27,8 +30,39 @@ main {
     lost-center: 980px;
 }
 
+section {
+    lost-column: 8/13;
+}
+
+aside {
+    lost-column: 5/13;
+    padding: 1rem;
+}
+
+@media screen and (max-width: 40em) {
+    section {
+        lost-column: 1/1;
+    }
+
+    aside {
+        lost-column: 1/1;
+        padding: 1rem;
+    }
+}
+
 .center {
     lost-align: center;
+    width: 100%
+}
+
+.left {
+    lost-align: left;
+    width: 100%
+}
+
+.right {
+    lost-align: right;
+    width: 100%
 }
 
 @media screen and (min-width: 40em) {
