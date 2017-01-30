@@ -39,11 +39,13 @@ const ProgressItem = (props) => {
 export const Progress = (props) => {
   const columns = PROGRESS.length
   return (
-    <nav className='progress'>
-      {PROGRESS.map((value, index) => (
-        <ProgressItem key={index} index={index} columns={columns} path={props.location.pathname} />
-      ))}
-    </nav>
+    <div className="container bg-primary-grey">
+      <nav className='progress'>
+        {PROGRESS.map((value, index) => (
+          <ProgressItem key={index} index={index} columns={columns} path={props.location.pathname} />
+        ))}
+      </nav>
+    </div>
   )
 }
 

@@ -67,13 +67,13 @@
         transition: background 0.25s linear;
         }
     .first::before {
-        content: '1';
+        content: '';
     }
     .second::before {
-        content: '2';
+        content: '';
     }
     .third::before {
-        content: '3';
+        content: '';
     }
 
     .link {
