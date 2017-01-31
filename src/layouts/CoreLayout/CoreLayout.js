@@ -1,8 +1,6 @@
 import React from 'react'
 import Header from '../../components/Header'
-import '../../styles/index.scss'
-import './CoreLayout.scss'
-
+import '../styles/index.scss'
 
 // export const CoreLayout = ({ children }) => (
 //   <div className='container text-center'>
