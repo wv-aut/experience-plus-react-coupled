@@ -157,7 +157,7 @@ webpackConfig.module.loaders.push({
 })
 
 webpackConfig.sassLoader = {
-  includePaths : project.paths.client('styles')
+  includePaths : project.paths.client('layouts/styles')
 }
 
 webpackConfig.postcss = [
