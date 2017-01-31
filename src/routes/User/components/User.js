@@ -12,10 +12,6 @@ import { TAX_RECEIPT_PROFILE_ROUTE, TAX_RECEIPT_PRINT_ROUTE, PRINT } from '../..
 
 class User extends Component {
 
-  componentDidMount () {
-    this.props.fetchUserProfile()
-  }
-
   componentWillReceiveProps (nextProps) {
     if (typeof this.props.user.data === 'undefined' && typeof nextProps.user.data === 'object') {
       this.props.userDataValidation(nextProps)
@@ -37,14 +33,6 @@ class User extends Component {
    */
   isFormCompleted () {
     return this.props.user.data.taxOptOut || !this.props.user.errorArray.length
-  }
-
-  /**
-   * Returns the current status of the form
-   * @return {string} 'open', completed', 'confirmed'
-   */
-  formStatus () {
-
   }
 
   _checkIfFieldisRequired (fieldname) {
@@ -151,18 +139,17 @@ class User extends Component {
               </form>
               {/* Only show tax receipt when no errors are dedected */}
             </section>
-            <aside> 
+            <aside>
               {this.isFormCompleted() ? <p>{this.props.user.data.salutation}, bitte bestätigen Sie Ihre Daten,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich ansetzen können.
-              
-              <Link 
+              <Link
                 className='button'
-                onClick={this.confirmUserForm}
+                onClick={this.sendUserProfileUpdate}
                 data-dispatch={this.props.dispatch}
                // to={'/schritt/1/2/spendenbestaetigung/drucken'}
                >
-              <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></Link>
-            </p>
+                <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></Link>
+              </p>
                 : <p>{this.props.user.data.salutation}, bitte <strong>vervollständigen das Formular</strong>,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich ansetzen können:
 
@@ -189,7 +176,6 @@ User.propTypes = {
   user: React.PropTypes.object.isRequired,
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
-  parseJSONData: React.PropTypes.func.isRequired,
   changeInput: React.PropTypes.func.isRequired,
   userDataValidation: React.PropTypes.func.isRequired,
   confirmUserForm: React.PropTypes.func.isRequired,

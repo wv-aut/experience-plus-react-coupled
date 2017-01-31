@@ -81,7 +81,7 @@ class BirthDateForm extends Component {
                   <p>Ich möchte doch lieber meine Spenden privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder aus.</p>
                 }
                 {!this.props.user.data.registeredCompany &&
-                  <p>Ja, ich stimme der automatischen Spendenabsetzbarkeit zu.</p>
+                  <p>Ja, ich stimme der automatischen Spendenabsetzbarkeit zu. Bitte geben Sie dafür Ihr Geburtsdatum bekannt:</p>
                 }
                 <div className='check'>
                   <div className='inside' />
@@ -90,7 +90,7 @@ class BirthDateForm extends Component {
             </li>
           </ul>
         </div>
-        <div className={'form-row ' + (this._checkIfFieldisRequired(API.BIRTH_DATE) && 'required')}>
+        <div className={'form-row ' + (this._checkIfFieldisRequired(API.BIRTH_DATE) && 'required label')}>
           <label className='grid-3-all'>
             <span>Tag:</span>
             <select
