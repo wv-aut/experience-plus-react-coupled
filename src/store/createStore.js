@@ -3,7 +3,7 @@ import thunk from 'redux-thunk'
 import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from './location'
-import { fetchApiKeyifNeeded } from './auth'
+import { fetchApiKey } from './auth'
 
 export default (initialState = {}) => {
   // ======================================================
@@ -44,7 +44,8 @@ export default (initialState = {}) => {
   // ======================================================
   // Authentication Instantiation
   // ======================================================
-  store.dispatch(fetchApiKeyifNeeded('asdfasfd'))
+  const tempKey = window.location.search.replace(/^\?/, '').split('=')[1]
+  store.dispatch(fetchApiKey(tempKey))
 
   // ======================================================
   // HMR Setup
