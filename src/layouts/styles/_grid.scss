@@ -1,0 +1,89 @@
+
+/*
+Grids
+*/
+
+@lost flexbox flex;
+
+.container {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.bg-primary-grey {
+    background-color: #ebebe7;
+}
+
+.form-row {
+    lost-center: 550px;
+}
+
+section,
+nav,
+header,
+main {  
+    lost-utility: clearfix;
+    lost-center: 980px;
+}
+
+main {
+    lost-center: 980px;
+}
+
+section {
+    lost-column: 8/13;
+}
+
+aside {
+    lost-column: 5/13;
+    padding: 1rem;
+}
+
+@media screen and (max-width: 40em) {
+    section {
+        lost-column: 1/1;
+    }
+
+    aside {
+        lost-column: 1/1;
+        padding: 1rem;
+    }
+}
+
+.center {
+    lost-align: center;
+    width: 100%
+}
+
+.left {
+    lost-align: left;
+    width: 100%
+}
+
+.right {
+    lost-align: right;
+    width: 100%
+}
+
+@media screen and (min-width: 40em) {
+
+    .grid-3 {
+        lost-column: 1/3;
+    }
+
+    .grid-2 {
+        lost-column: 1/2 2 0.5rem;
+    }
+}
+
+.grid-1-all {
+    lost-column: 1/1 flex;
+}
+
+.grid-2-all {
+        lost-column: 1/2 flex;
+    }
+
+.grid-3-all {
+        lost-column: 1/3 flex;
+    }
