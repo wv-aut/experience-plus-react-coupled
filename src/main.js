@@ -3,7 +3,7 @@ import 'whatwg-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
-import AppContainer from './containers/AppContainer'
+import AppContainer from './components/App/containers/AppContainer'
 // import fetchApiKeyifNeeded from './store/auth'
 
 // ========================================================
