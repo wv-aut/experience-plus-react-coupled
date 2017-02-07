@@ -11,10 +11,14 @@ export const TAX_RECEIPT_PRINT_ROUTE = PRINT
 export const PROGRESS = [
   {
     route: TAX_RECEIPT_PROFILE_ROUTE,
+    description: 'E-Mail Login'
+  },
+  {
+    route: TAX_RECEIPT_PROFILE_ROUTE,
     description: 'Aktualisierung Ihrer Daten'
   },
   {
     route: TAX_RECEIPT_PRINT_ROUTE,
-    description: 'Ihre Spenden-Bestätigung'
+    description: 'Ihre Spendenbestätigung'
   }
 ]
