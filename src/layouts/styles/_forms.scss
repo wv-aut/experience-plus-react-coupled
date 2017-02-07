@@ -1,7 +1,7 @@
 .form{
     font: Arial, Helvetica, sans-serif;
     margin: 10px auto;
-    padding: 16px;
+    padding: 0.5rem;
 }
 
 .form h1{
@@ -32,7 +32,7 @@
     background: #fff;
     margin-bottom: 0.5rem;
     border: 1px solid #ccc;
-    padding: 1rem;
+    padding: 0.5rem;
     color: #555;
     font: 95% Arial, Helvetica, sans-serif;
     border-radius: 2px;
@@ -54,7 +54,6 @@
             margin-bottom: 0.5rem;
             }
     }
-    
 }
 
 .form input[type="text"],
@@ -72,7 +71,7 @@
 
     &:focus {
         box-shadow: 0 0 5px #ccc;
-        padding: 1rem;
+        padding: 0.5rem;
         border: 1px solid #ccc;
     }
 }
@@ -81,13 +80,17 @@
 .form input[type="button"],
 button, .button {
     box-sizing: border-box;
+    border-radius: 6px;
     white-space: normal;
     width: 100%;
     max-width: 40rem;
-    padding: 1rem;
+    padding: 1.2rem;
+    margin-top: 1rem;
     background: #2B954C;
     border-style: none;   
     color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
     text-transform: uppercase;
     cursor: pointer;
 
@@ -137,7 +140,7 @@ a.button {
 
 label, .label{
     border-radius: 5px;
-    padding: 0.5rem;
+    padding: 0.5rem 0.5rem 0 0.5rem;
     margin: 0px 0px 5px 0px;
     
     .optional {
@@ -162,7 +165,6 @@ label > span {
 
 .radio {
     
-    margin-bottom: 1rem;
 
     ul {
         list-style:none;
@@ -245,26 +247,3 @@ label > span {
   perspective: 1000px;
 }
 
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-@keyframes activate {
-    50% {
-        transform: tra
-    }
-}

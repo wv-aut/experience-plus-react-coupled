@@ -10,6 +10,12 @@ Grids
     width: 100%;
 }
 
+@media screen and (max-width: 40em) {
+    .container {
+        padding: 0.5rem;
+    }
+}
+
 .bg-primary-grey {
     background-color: #ebebe7;
 }
@@ -50,20 +56,26 @@ aside {
     }
 }
 
+
+div {
 .center {
     lost-align: center;
-    width: 100%
+    width: 100%;
 }
 
 .left {
     lost-align: left;
-    width: 100%
+    width: 100%;
 }
 
 .right {
     lost-align: right;
-    width: 100%
+    width: 100%;
 }
+
+}
+
+
 
 @media screen and (min-width: 40em) {
 
