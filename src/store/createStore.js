@@ -44,8 +44,9 @@ export default (initialState = {}) => {
   // ======================================================
   // Authentication Instantiation
   // ======================================================
-  const tempKey = window.location.search.replace(/^\?/, '').split('=')[1]
-  store.dispatch(fetchApiKey(tempKey))
+  const tempKey = window.location.search.replace(/^\?/, '').split('=')
+  const param = tempKey[0] === 'einmalCode' ? tempKey[1] : null
+  store.dispatch(fetchApiKey(param))
 
   // ======================================================
   // HMR Setup
