@@ -4,3 +4,5 @@ export const SALUTATION_CODE = {
   13: 'Herr',
   14: 'Frau'
 }
+
+export const API_URL = 'https://api.worldvision.at/api/'
