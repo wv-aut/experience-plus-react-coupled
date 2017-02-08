@@ -1,95 +1,74 @@
 .progress {
-    @lost gutter 0px;
-    lost-center: 650px;
-        
-    .column-2 {
-        lost-column: 2/4 0px;
+    font-family: 'Clear Sans', sans-serif;
+    width: 100%;
+    padding: 0.5rem 0;
+    
+    .progressbar {
+        width: 100%;
+        counter-reset: step;
+        padding: 0.5rem 0;
 
-        &:not(.last) {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAAHztt4mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF+vr609LSzczM////HwlztgAAAAR0Uk5T////AEAqqfQAAABRSURBVHjaYmAmAJjwA4AAYqBMO0AAEdJOoesIAIAAotB2xqFsO0AAURryA+p4ygBAAA2o1xmYRr0+6nX6AoAAG9i8PqDhPqAFzWikj0Y6fQEA0L0YVy6/uS4AAAAASUVORK5CYII=');
-            background-repeat: no-repeat;
-            background-position: center top 45px;
-        }
-        &.last {
-            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAAFCAMAAAHztt4mAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAxQTFRF9vb2y8rKzczM////5lJUIAAAAAR0Uk5T////AEAqqfQAAABRSURBVHjaYmAiAJjxA4AAYqBMO0AAEdJOoesIAIAAotB2hqFsO0AAURryA+p4ygBAAA2o1xmZR70+6nX6AoAAG9i8PqDhPqAFzWikj0Y6fQEArPsYV3uHVeYAAAAASUVORK5CYII=');
-            background-repeat: no-repeat;
-            background-position: center top 45px;
-        }
-    }
-
-    .check-container {
-        display: block;
+        li {
+        list-style-type: none;
+        width: 33%;
+        float: left;
         position: relative;
-        margin: 1rem auto;
-        height: 2rem;
-        width: 50px;
-    }
-
-    .check {
-        display: block;
-        position: absolute;
-        border-radius: 100%;
-        height: 42px;
-        width: 42px;
-        top: 10px;
-        left: 5px;
-        z-index: 5;
-        transition: border .25s linear;
-
-        &.completed {
-            border: 5px solid #2b954c;
-            color: #2b954c;
-        }
- 
-        &.current {
-            border: 5px solid #2b954c;
-            color: #2b954c;
-        }
-
-        &.coming {
-            border: 5px solid #ccc;
-            color: #ccc;
-        }
-    }
-
-    .check::before {
-        display: block;
-        position: absolute;
-        font-size: 30px;
-        font-weight: bolder;
-        background: #ffffff;
-        border-radius: 100%;
-        height: 32px;
-        width: 32px;
-        top: 0px;
-        left: 0px;
-        margin: auto;
-        transition: background 0.25s linear;
-        }
-    .first::before {
-        content: '';
-    }
-    .second::before {
-        content: '';
-    }
-    .third::before {
-        content: '';
-    }
-
-    .link {
-        padding: 1rem;
-        lost-align: center;
-    }
-
-    span, a {
-        color: #999999;
-        font-weight: bold;
-        font-size: 1rem;
-        text-decoration: none;
+        text-align: center;
         text-transform: uppercase;
+        color: #7d7d7d;
+
+            a {
+                text-decoration: none;
+                color: #2B954C;
+            }
+
+        }
+
+        li {
+
+            &:before {
+            width: 35px;
+            height: 35px;
+            content: counter(step);
+            counter-increment: step;
+            line-height: 30px;
+            border: 3px solid #7d7d7d;
+            display: block;
+            text-align: center;
+            margin: 0 auto 10px auto;
+            border-radius: 50%;
+            background-color: white;
+            }
+            &.completed:before {
+                background-color: #2B954C;
+                color: white;
+            }
+        }
+         
+        li:after {
+            width: 100%;
+            height: 3px;
+            content: '';
+            position: absolute;
+            background-color: #7d7d7d;
+            top: 15px;
+            left: -50%;
+            z-index: -1;
+        }
+        li:first-child:after {
+            content: none;
+        }
+        li.active {
+            color: green;
+            &.no-link {
+                color: #7d7d7d
+            }
+        }
+        li.active:before {
+            border-color: #2B954C;
+        }
+        li.active + li:after {
+            background-color: #2B954C;
+        }
     }
 }
-
-
-
-

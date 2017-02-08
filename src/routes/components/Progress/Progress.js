@@ -1,62 +1,48 @@
 import React from 'react'
-import { IndexLink, Link } from 'react-router'
+import { Link } from 'react-router'
 import { PROGRESS } from '../../config/routes.config'
-import arrowImage from './assets/arrow-right.png'
 import './progress.scss'
 
-const ProgressItem = (props) => {
-  const addCountCss = props.index === 0 ? 'first' : props.index === 1 ? 'second' : 'third'
-  const addLastCss = (props.columns === props.index + 1) && 'last' || ''
-  let addPositionCss = 'coming'
-  switch (true) {
-    case (props.path.replace(/\//,'') === PROGRESS[props.index].route):
-      addPositionCss = 'current'
-      break
-    default:
-      addPositionCss = 'coming'
-      break
+const ProgressItems = (props) => {
+  let currentIndex = 0
+  for (let i = 0; i < PROGRESS.length; i++) {
+    if (props.path.replace(/\//, '') === PROGRESS[i].route) {
+      currentIndex = i
+    }
   }
 
-  let LinkOrText = null
-  if (addPositionCss === 'current' || addPositionCss === 'coming') {
-    LinkOrText = <span>{PROGRESS[props.index].description}</span>
-  } else {
-    LinkOrText = <Link to={`/${PROGRESS[props.index].route}`}>{PROGRESS[props.index].description}</Link>
-  }
+  let items = PROGRESS.map((value, index) => {
+    if (PROGRESS[index].route === null) {
+      return <li className='active completed no-link'><span>{PROGRESS[index].description}</span></li>
+    } else if (index < currentIndex) {
+      return <li className='active completed link'><span>{PROGRESS[index].description}sdf</span></li>
+    } else if (index === currentIndex) {
+      return <li className='active no-link'><span>{PROGRESS[index].description}</span></li>
+    } else {
+      return <li><span>{PROGRESS[index].description}</span></li>
+    }
+  })
 
-  return (
-    <div className={`column-${props.columns} ${addLastCss}`}>
-      <div className={`check-container ${addPositionCss}`}>
-        <div className={`check ${addCountCss} ${addPositionCss}`}>
-          <div className='inside' />
-        </div>
-      </div>
-      <div className='link'>{LinkOrText}</div>
-    </div>
-  )
+  return <ul className='progressbar'>{items}</ul>
+}
+
+ProgressItems.propTypes = {
+  path: React.PropTypes.string.isRequired
 }
 
 export const Progress = (props) => {
   const columns = PROGRESS.length
   return (
-    <div className="container bg-primary-grey">
+    <div className='container bg-primary-grey no-print'>
       <nav className='progress'>
-        {PROGRESS.map((value, index) => (
-          <ProgressItem key={index} index={index} columns={columns} path={props.location.pathname} />
-        ))}
+        <ProgressItems path={props.location.pathname} />
       </nav>
     </div>
   )
 }
 
-Progress.PropTypes = {
+Progress.propTypes = {
   location: React.PropTypes.object.isRequired
-}
-
-ProgressItem.PropTypes = {
-  columns: React.PropTypes.number.isRequired,
-  index: React.PropTypes.number.isRequired,
-  path: React.PropTypes.string.isRequired
 }
 
 export default Progress
