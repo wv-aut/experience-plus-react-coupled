@@ -9,12 +9,14 @@ export const CHANGE_INPUT = 'CHANGE_INPUT'
 export const USER_DATA_VALIDATION = 'USER_DATA_VALIDATION'
 export const GET_TEMP_JSON_DATA = 'GET_TEMP_JSON_DATA'
 export const CONFIRM_USER_FORM = 'CONFIRM_USER_FORM'
-export const REQUEST_USER_DATA_UPDATE = 'REQUEST_USER_DATA_UPDATE'
+export const REQUEST_USER_PROFILE_UPDATE = 'REQUEST_USER_PROFILE_UPDATE'
 export const CONFIRM_USER_PROFILE_UPDATE = 'CONFIRM_USER_PROFILE_UPDATE'
 
 import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
 import { API } from '../config/formFields.config'
 import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
+
+import { API_URL,  TITLES } from 'config/obelix.config'
 
 // ------------------------------------
 // Actions User
@@ -27,22 +29,33 @@ import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields
  * @param {string} apiKey
  * @return {function} dispatch
  */
-export function fetchUserProfile (tempKey = false) {
+export function fetchUserProfile (apiKey, partnerID) {
   return dispatch => {
-    dispatch(requestUserProfile(tempKey))
-    return fetch(`https://cdn.contentful.com/spaces/14uazph6lhos/entries/4S5Dlg7OEUMYcqokwykGUa?access_token=7eaba33955b19b4ce94d996c7f0124411eca6c16590ec25aa923ba0e73ea7850`)
+    dispatch(requestUserProfile(apiKey))
+    const header = new Headers({
+      'apikey': apiKey
+    })
+    const init = {
+      method: 'GET',
+      headers: header,
+      mode: 'cors',
+      cache: 'default'
+    }
+    const request = new Request(`${API_URL}donors/${partnerID}`, init)
+    return fetch(request)
         .then(response => {
           return response.json()
         })
-        .then(json => dispatch(receiveUserProfile(json, dispatch))
-            ).catch(err => console.log(err.message))
+        .then(json => {
+          return dispatch(receiveUserProfile(json.data.attributes, dispatch))
+        }
+            ).catch(err => console.log(err))
   }
 }
 
 function requestUserProfile (tempKey = null) {
   return {
-    type: REQUEST_USER_PROFILE,
-    tempKey
+    type: REQUEST_USER_PROFILE
   }
 }
 
@@ -51,63 +64,46 @@ function requestUserProfile (tempKey = null) {
  * @param {object} json
  * @return {object} action
  */
-function receiveUserProfile (json, dispatch) {
-  // TEST
-  json.fields.registeredCompany = false
-  json.fields.salutation = 'Sehr geehrter Herr Schadauer'
-  json.fields.salutationCode = 13
-  if (json.fields.salutationCode === 'COMPANY') {
-    json.fields.taxOptOut = true
-    json.fields.registeredCompany = true
-  }
-  if (json.fields.JSON_serialised_temp) {
-    dispatch(parseJSONData(json.fields.JSON_serialised_temp))
-  }
-  // TEST
-  json.fields.companyName = 'Red Bull GmbH'
+function receiveUserProfile (userData, dispatch) {
+  // // TEST
+  const dataTemp = userData.tempUserData[0]
+  userData.birthdate = userData.birthdate || ''
 
   return {
     type: RECEIVE_USER_PROFILE,
-    data: json.fields
-  }
-}
-
-/**
- * Adds Start fetching user data asynchronously with API key
- * @param {string} location search string only string starting with ?firstName=john
- * @return {object} action
- */
-function parseJSONData (JSONData) {
-  const strippedJSONData = JSONData.replace(/(\\)(?=")/g, '')
-  const parsedData = JSON.parse(strippedJSONData)
-  let userObject = {}
-  for (let items in parsedData) {
-    // Only allow items that are set in API config
-    for (let APIItems in API) {
-      if (API[APIItems] === items) {
-        userObject[items] = parsedData[items]
-      }
-    }
-  }
-  return {
-    type: GET_TEMP_JSON_DATA,
-    dataTemp: userObject
+    userData,
+    dataTemp
   }
 }
 
 // Sending user data back
-
 /**
  * Start sending updated or confirmed user data to the server
  * @param {object} userData
  * @param {string} apiKey
  * @return {function} dispatch
  */
-export function sendUserProfileUpdate (userData, apiKey) {
+export function sendUserProfileUpdate (e, apiKey, userData, router) {
   return dispatch => {
+    console.log('adfadsf')
     dispatch(requestUserProfileUpdate())
-    return fetch(`https://cdn.contentful.com/spaces/14uazph6lhos/entries/4S5Dlg7OEUMYcqokwykGUa?access_token=7eaba33955b19b4ce94d996c7f0124411eca6c16590ec25aa923ba0e73ea7850`)
+    const header = new Headers({
+      'apikey': apiKey,
+      'Accept': 'application/json'
+    })
+    const init = {
+      method: 'PUT',
+      headers: header,
+      body: JSON.stringify(userData),
+      mode: 'cors',
+      cache: 'default'
+    }
+    console.log(init.body)
+    const request = new Request(`${API_URL}donors/${userData.partnerID}`, init)
+    return fetch(request)
     .then(response => {
+      console.log(response)
+      router.push('/spender/spendenbestaetigung/drucken')
       return response.json()
     })
     .then(json => dispatch(confirmUserProfileUpdate())
@@ -117,7 +113,7 @@ export function sendUserProfileUpdate (userData, apiKey) {
 
 function requestUserProfileUpdate () {
   return {
-    type: REQUEST_USER_DATA_UPDATE
+    type: REQUEST_USER_PROFILE_UPDATE
   }
 }
 
@@ -129,8 +125,15 @@ function confirmUserProfileUpdate () {
 
 export function changeInput (event) {
   const form = event.target.dataset.form
+  let value = event.target.value
+
+  // Assign textTitle to titleCode
+  if (form === 'titleText') {
+    // ToDo
+  }
+
   // Input fields output strings rather than boolean values
-  const value = event.target.value === 'true' ? true : event.target.value === 'false' ? false : event.target.value
+  value = value === 'true' ? true : value === 'false' ? false : value
   let errorOperation = 'deduct'
   if (form === 'email' && !_validateEmail(value) || value === '' || value === '0') {
     errorOperation = 'add'
@@ -154,7 +157,8 @@ export function userDataValidation (props) {
   const userData = props.user.data
   let errorArray = props.user.errorArray || []
   for (let item in userData) {
-    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item])) {
+    // SalutationCode for family is treated like 0 as family donations are deprecated
+    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item], item)) {
       errorArray.push(item)
     }
   }
@@ -164,8 +168,11 @@ export function userDataValidation (props) {
   }
 }
 
-export function _isValue (value) {
-  if (value === 0 || value === '0' || value === '' || value === '00' || value === '0000') {
+export function _isValue (value, field = '') {
+  if (field === 'salutationCode' && (value === '4' || value === 'COMPANY')) {
+    return false
+  }
+  if (value === 0 || value === '0' || value === '' || value === null || value === '00' || value === '0000') {
     return false
   } else {
     return true
@@ -211,12 +218,12 @@ function _userErrorArray (errorOperation, form, errorItems) {
 const ACTION_HANDLERS = {
   [REQUEST_USER_PROFILE]: (state, action) => Object.assign({}, state, { isFetching: true }),
   [RECEIVE_USER_PROFILE]: (state, action) => {
-    return Object.assign({}, state, { data: action.data, isFetching: false })
+    return Object.assign({}, state, { data: action.userData, dataTemp: action.dataTemp, isFetching: false })
   },
   [CHANGE_DATE]: (state, action) => {
     let date = Object.assign({}, state)
     date.errorArray = _userErrorArray(action.errorOperation, API.BIRTH_DATE, date.errorArray)
-    date.data.birthDate = action.data
+    date.data.birthdate = action.data
     return date
   },
   [CHANGE_INPUT]: (state, action) => {
@@ -240,9 +247,13 @@ const ACTION_HANDLERS = {
     data.confirmedForm = action.confirmedForm
     return data
   },
-  [REQUEST_USER_DATA_UPDATE]: (state, action) => Object.assign({}, state, { isFetching: true }),
+  [REQUEST_USER_PROFILE_UPDATE]: (state, action) => {
+    let user = Object.assign({}, state)
+    user.isFetching = true
+    return user
+  },
   [CONFIRM_USER_PROFILE_UPDATE]: (state, action) => {
-    return Object.assign({}, state, { data: action.data, isFetching: false })
+    return Object.assign({}, state, { isFetching: false })
   }
 }
 

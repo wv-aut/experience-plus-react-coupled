@@ -3,12 +3,14 @@ import { Link } from 'react-router'
 import './User.scss'
 import printerImage from '../assets/printer.svg'
 import Progress from '../../components/Progress/Progress'
+import Overlay from 'components/Overlay/components/Overlay'
 
 import BirthDateForm from '../userElements/BirthDateForm'
 import { SALUTATION_CODE } from 'config/obelix.config'
 import { API, DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/formFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
 import { TAX_RECEIPT_PROFILE_ROUTE, TAX_RECEIPT_PRINT_ROUTE, PRINT } from '../../config/routes.config'
+
 
 class User extends Component {
 
@@ -22,6 +24,9 @@ class User extends Component {
     let salutations = []
     for (var prop in SALUTATION_CODE) {
       salutations.push(<option key={prop} value={prop}>{SALUTATION_CODE[prop]}</option>)
+    }
+    if (this.props.user.data.taxOptOut === true) {
+      salutations.push(<option key='4' value='4'>Familie</option>)
     }
     return salutations
   }
@@ -40,19 +45,28 @@ class User extends Component {
   }
 
   render () {
+    if (this.props.auth.networkError) {
+      return null
+    }
+    if (!this.props.user.data) {
+      return null
+    }
     if (typeof this.props.user.errorArray === 'undefined') {
-      return <main>Wir laden ihre Daten</main>
+      return <Overlay 
+        header='Ihre Daten werden geladen.'
+        subheader='Subheader'
+        icon='loading'
+        mode='run' />
     } else {
       return (
         <div>
-          <header className='center'>
-          </header>
+          <header className='center' />
           <Progress location={this.props.location} />
           {this.props.location.pathname === '/' + TAX_RECEIPT_PROFILE_ROUTE &&
           <main className='main'>
             <section>
               <form className='form'>
-                {this.props.user.data.registeredCompany &&
+                {this.props.user.dataTemp.companyName !== null &&
                   <div className='form-row'>
                     <label className='grid-1-all'>
                       <span>{DESCRIPTION.COMPANY}:</span>
@@ -62,39 +76,39 @@ class User extends Component {
                         className={showErrorMessage(this.props.user.data.companyName)}
                         type='text'
                         name='company-name'
-                        defaultValue={this.props.user.data.companyName} />
+                        defaultValue={this.props.user.dataTemp.companyName} />
                     </label>
-          </div>
+                  </div>
                   }
-                {this.props.user.data.registeredCompany &&
+                {this.props.user.dataTemp.companyName !== null &&
                   <BirthDateForm location={this.props.location} />
                 }
                 <div className='form-row'>
-                  <label className={'grid-2-all ' + (this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'required')}>
+                  <label className={'grid-12-8 ' + (this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'required')}>
                     <span>{DESCRIPTION.SALUTATION}</span>
                     <select
                       onChange={this.props.changeInput}
                       data-form='salutationCode'
                       data-required={this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'true'}
-                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode)}
+                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode, 5)}
                       value={this.props.user.data.salutationCode}> >
                       {this.getSalutationOptions()}
                     </select>
                     <span className='error'>{FORM_ERRORS_DEFAULT.SALUTATION}</span>
                   </label>
-                  <label className='grid-2-all'>
+                  <label className='grid-12-4'>
                     <span className='optional'>{DESCRIPTION.JOB_TITLE}</span>
                     <input
                       onBlur={this.props.changeInput}
-                      data-form='jobTitle'
-                      defaultValue={this.props.user.data.jobTitle}
+                      data-form='titleText'
+                      defaultValue={this.props.user.data.titleText}
                       placeholder='optional'
                       type='text'
                       name='title' />
                   </label>
                 </div>
                 <div className='form-row'>
-                  <label className={'grid-1-all ' + (this._checkIfFieldisRequired(API.FIRST_NAME) && 'required')}>
+                  <label className={'grid-12-6 ' + (this._checkIfFieldisRequired(API.FIRST_NAME) && 'required')}>
                     <span>{DESCRIPTION.FIRST_NAME}:</span>
                     <input
                       onChange={this.props.changeInput}
@@ -106,7 +120,7 @@ class User extends Component {
                       defaultValue={this.props.user.data[API.FIRST_NAME]} />
                     <span className='error'>{FORM_ERRORS_DEFAULT.FIRST_NAME}</span>
                   </label>
-                  <label className={'grid-1-all ' + (this._checkIfFieldisRequired(API.LAST_NAME) && 'required')}>
+                  <label className={'grid-12-6 ' + (this._checkIfFieldisRequired(API.LAST_NAME) && 'required')}>
                     <span>{DESCRIPTION.LAST_NAME}:</span>
                     <input
                       onChange={this.props.changeInput}
@@ -133,31 +147,32 @@ class User extends Component {
                     <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                   </label>
                 </div>
-                {!this.props.user.data.registeredCompany &&
+                {this.props.user.dataTemp.companyName === null &&
                   <BirthDateForm location={this.props.location} />
                 }
               </form>
               {/* Only show tax receipt when no errors are dedected */}
             </section>
             <aside>
-              {this.isFormCompleted() ? <p>{this.props.user.data.salutation}, bitte bestätigen Sie Ihre Daten,
-                damit Sie auch in Zukunft Ihre Spenden steuerlich ansetzen können.
-              <Link
-                className='button'
-                onClick={this.sendUserProfileUpdate}
-                data-dispatch={this.props.dispatch}
-               // to={'/schritt/1/2/spendenbestaetigung/drucken'}
+              {this.props.user.data.salutationCode === '4' &&
+                <p className='warning-bg'>{this.props.user.data.salutation}, Sie sind bei uns als Familie registriert. Da die Spenden in Zukunft immer einer Person zugeordnet sein muss,
+                  bitten wir Sie zu entscheiden, wer von Ihnen beiden die Spenden absetzen möchte. Dies gilt für alle Spenden die
+                  Sie ab 1.1.2017 tätigen.</p>
+                }
+              {this.isFormCompleted() ? <p>Bitte bestätigen Sie Ihre Daten,
+                damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können.
+              <button
+                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data,  this.props.router)}
                >
-                <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></Link>
+                <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
               </p>
-                : <p>{this.props.user.data.salutation}, bitte <strong>vervollständigen das Formular</strong>,
-                damit Sie auch in Zukunft Ihre Spenden steuerlich ansetzen können:
+                : <p>Bitte <strong>vervollständigen das Formular</strong>,
+                damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können:
 
-              <Link
+              <button
                 className='button disabled'>
                 <span>DATEN BESTÄTIGEN UND SPENDENBESCHEINIGUNG AUFRUFEN</span>
-              </Link>
-
+              </button>
                 </p>
               }
         
@@ -179,7 +194,8 @@ User.propTypes = {
   changeInput: React.PropTypes.func.isRequired,
   userDataValidation: React.PropTypes.func.isRequired,
   confirmUserForm: React.PropTypes.func.isRequired,
-  _validateEmail: React.PropTypes.func
+  _validateEmail: React.PropTypes.func,
+  sendUserProfileUpdate: React.PropTypes.func
 }
 
 export default User
