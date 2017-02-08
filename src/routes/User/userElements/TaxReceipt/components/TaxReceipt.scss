@@ -1,0 +1,26 @@
+
+
+
+.paper {
+  box-shadow: 3px 3px 5px 3px #BBBBB9;
+  margin: 1rem;
+  padding: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+
+  .sender {
+      color: #8B8B8B;
+      font-size: 12px;
+  }
+
+}
+
+@media print {
+    section {
+        lost-column: 1/1;
+    }
+    .paper {
+        width: 100%;
+        box-shadow: none;
+    }
+}
