@@ -4,6 +4,30 @@
     padding: 0.5rem;
 }
 
+.form-row {
+    .grid-12-3 {
+        lost-column: 3/12 3 2px flex;
+    }
+    .grid-12-5 {
+        lost-column: 5/12 3 2px flex;
+    }
+    .grid-12-4 {
+        lost-column: 4/12 3 2px flex;
+    }
+    .grid-12-7 {
+        lost-column: 7/12 3 2px flex;
+    }
+    .grid-12-6 {
+        lost-column: 6/12 3 2px flex;
+    }
+    .grid-12-8 {
+        lost-column: 8/12 3 2px flex;
+    }
+    .grid-12-4 {
+        lost-column: 4/12 3 2px flex;
+    }
+}
+
 .form h1{
     padding: 20px 0;
     font-size: 140%;
@@ -54,7 +78,28 @@
             margin-bottom: 0.5rem;
             }
     }
+
 }
+
+label, div.required {
+    span {
+        color: #999999;
+
+    }
+    input {
+        border: 1px solid #ccc !important;
+    }
+    &.required {
+        span {
+            color: #333;
+        }
+
+        input, select {
+            border: 5px solid #ccc !important;
+        }
+    }
+}
+
 
 .form input[type="text"],
 .form input[type="date"],
@@ -80,7 +125,7 @@
 .form input[type="button"],
 button, .button {
     box-sizing: border-box;
-    border-radius: 6px;
+    border-radius: 0px;
     white-space: normal;
     width: 100%;
     max-width: 40rem;
@@ -153,13 +198,11 @@ label, .label{
     }
 }
 
-.required {
-    background: #ebebe7;
-}
-
 label > span {
+    font-family: 'Clear Sans', sans-serif;
+    text-transform: uppercase;
     margin-bottom: 0.5rem;
-    width: 100%
+    width: 100%;
 }
 
 
@@ -190,10 +233,6 @@ label > span {
         z-index: 9;
         cursor: pointer;
         transition: all 0.25s linear;
-    }
-
-    ul li:hover label{
-        
     }
 
     ul li .check{
@@ -246,4 +285,5 @@ label > span {
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
 
