@@ -45,19 +45,13 @@ export const FORM_ELEMENTS = {
  * @return {boolean}
  */
 export function checkIfFieldIsRequired (fieldName, userData, pathname) {
-
-  // Some pages are only accessible if the parent pages have all 
+  // Some pages are only accessible if the parent pages have all
   // necessary informaton. Example: [PRINT], [COMPLETED]
   var re = new RegExp('/' + PRINT)
   const strippedPathName = pathname.replace(re, '')
   const key = _locationToObjectKey(strippedPathName)
-  // if (typeof FORM_ELEMENTS[key] === 'undefined') {
-  //   console.log('undefined yeah')
-  //   return false
-  // }
-
   const fieldValue = FORM_ELEMENTS[key][fieldName]
-  
+
   let isRequired = false
   if (typeof fieldValue !== 'undefined') {
     // If there are no dependencies
@@ -77,9 +71,9 @@ export function checkIfFieldIsRequired (fieldName, userData, pathname) {
 
 export function showErrorMessage (value, minValue = false, maxValue = false, email = false) {
   let addClass = 'ok'
-  if (minValue) { addClass = (Number(value) <= minValue) ? 'error-less' : 'ok' }
-  if (maxValue) { addClass = (Number(value) >= maxValue) ? 'error-exceed' : 'ok' }
-  if (typeof value === 'undefined' || value === '' || value === 0 || value === '0' || value === '00' || value === '0000') {
+  if (minValue) { addClass = (Number(value) <= minValue) ? 'error' : 'ok' }
+  if (maxValue) { addClass = (Number(value) >= maxValue) ? 'error' : 'ok' }
+  if (typeof value === 'undefined' || value === '' || value === 0 || value === '0' || value === '00' || value === '0000' || value === '0000-00-00') {
     addClass = 'error'
   }
   if (email) {

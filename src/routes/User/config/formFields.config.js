@@ -14,12 +14,12 @@ export const API = {
   HOUSE_NO: 'houseNo',
   POST_CODE: 'postCode',
   CITY: 'city',
-  EMAIL: 'email',
+  EMAIL: 'mail',
   PHONE_NO: 'phoneNo',
   MOBILE_PHONE: 'mobilePhone',
   TAX_OPTOUT: 'taxOptOut',
-  BIRTH_DATE: 'birthDate',
-  JOB_TITLE: 'jobTitle'
+  BIRTH_DATE: 'birthdate',
+  JOB_TITLE: 'titleText'
 }
 
 export const SALUTATION_CODE = {
@@ -60,7 +60,7 @@ export const FORM_ERRORS_DEFAULT = {
   EMAIL: 'Bitte tragen Sie eine gültige E-Mailadresse ein.',
   PHONE_NO: 'phoneNo',
   MOBILE_PHONE: 'mobilePhone',
-  BIRTH_DATE: 'birthDate',
+  BIRTH_DATE: 'birthdate',
   SALUTATION_CODE: 'salutationCode',
   JOB_TITLE: 'jobTitle'
 }
