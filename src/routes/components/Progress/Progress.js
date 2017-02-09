@@ -13,13 +13,13 @@ const ProgressItems = (props) => {
 
   let items = PROGRESS.map((value, index) => {
     if (PROGRESS[index].route === null) {
-      return <li className='active completed no-link'><span>{PROGRESS[index].description}</span></li>
+      return <li key={index} className='active completed no-link'><span>{PROGRESS[index].description}</span></li>
     } else if (index < currentIndex) {
-      return <li className='active completed link'><span>{PROGRESS[index].description}sdf</span></li>
+      return <li key={index} className='active completed link'><span>{PROGRESS[index].description}</span></li>
     } else if (index === currentIndex) {
-      return <li className='active no-link'><span>{PROGRESS[index].description}</span></li>
+      return <li key={index} className='active no-link'><span>{PROGRESS[index].description}</span></li>
     } else {
-      return <li><span>{PROGRESS[index].description}</span></li>
+      return <li key={index}><span>{PROGRESS[index].description}</span></li>
     }
   })
 
