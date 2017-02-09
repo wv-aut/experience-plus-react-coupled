@@ -84,7 +84,6 @@
 label, div.required {
     span {
         color: #999999;
-
     }
     input {
         border: 1px solid #ccc !important;
@@ -100,7 +99,6 @@ label, div.required {
     }
 }
 
-
 .form input[type="text"],
 .form input[type="date"],
 .form input[type="datetime"],
@@ -113,6 +111,7 @@ label, div.required {
 .form select
 {
     font-size: 1.1rem;
+    border-radius: 0px;
 
     &:focus {
         box-shadow: 0 0 5px #ccc;
@@ -125,7 +124,7 @@ label, div.required {
 .form input[type="button"],
 button, .button {
     box-sizing: border-box;
-    border-radius: 0px;
+    border-radius: 5px;
     white-space: normal;
     width: 100%;
     max-width: 40rem;
@@ -159,19 +158,10 @@ button:hover:not[disabled] {
 }
 
 a.button {
-    display: block;
-    margin: 1rem 0 1.25rem;
-    position: relative;
-    text-decoration: none;
-    text-align: center;
     background-color: #2b954c;
     border: 0 solid #278644;
     color: #fff;
-    transition: background-color .3s ease-out;
-    text-transform: uppercase;
-    padding: 1.125rem 2.25rem 1.1875rem;
-    font-size: 1.1rem;
-    border-radius: 5px;
+    transform: perspective(1px) translateZ(0);
 
     &:hover {
        background-color: #2b954c; 
@@ -208,7 +198,6 @@ label > span {
 
 .radio {
     
-
     ul {
         list-style:none;
         padding-left:0;
