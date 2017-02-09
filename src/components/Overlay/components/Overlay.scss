@@ -1,5 +1,8 @@
 
 .overlay {
+  position: relative;
+  width: 100%;
+  height: 100%;
 
   h1 {
       color: #cc0000;
@@ -24,6 +27,7 @@
 
   .content {
     lost-center: 550px;
+    lost-flex-container: column;
 
     h1, h2, h3, p {
         color: #FFFFFF;
