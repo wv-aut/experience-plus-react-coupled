@@ -52,7 +52,7 @@ export const DESCRIPTION = {
 export const FORM_ERRORS_DEFAULT = {
   FIRST_NAME: 'Bitte geben Sie den Vornamen an, der auf Ihren Meldezettel stehen,damit Sie Ihre Spende absetzen können.',
   LAST_NAME: 'Bitte geben Sie den Nachnamen an, der auf Ihren Meldezettel stehen, damit Sie Ihre Spende absetzen können.',
-  SALUTATION: 'Bitte wählen Sie Ihre Anrede aus.',
+  SALUTATION: 'Bitte wählen Sie Ihre Anrede.',
   STREET: 'Bitte tragen Sie Ihre Straße ein.',
   HOUSE_NO: 'Bitte tragen Sie Ihre Straße ein.',
   POST_CODE: 'Bitte tragen Sie Ihre PLZ ein.',
