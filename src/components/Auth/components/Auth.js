@@ -30,6 +30,13 @@ class Auth extends Component {
           buttonText='Zugangslink per E-Mail anfordern'
           icon='lock'
        />
+      } else if (this.props.auth.isFetching) {
+        message = <Overlay
+        header='Einen Moment bitte...'
+        text=''
+        icon='loading'
+        mode='run' />
+
       } else if (this.props.auth.tempKey === null) {
         message = message = <Overlay
           header='Sie haben keinen Berechtigung für diese Seite'
