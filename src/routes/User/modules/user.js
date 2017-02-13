@@ -66,7 +66,7 @@ function requestUserProfile (tempKey = null) {
  */
 function receiveUserProfile (userData, dispatch) {
   // // TEST
-  const dataTemp = userData.tempUserData[0]
+  const dataTemp = userData.tempUserData[0] || []
   userData.birthdate = userData.birthdate || ''
 
   return {
@@ -89,7 +89,7 @@ export function sendUserProfileUpdate (e, apiKey, userData, router) {
     dispatch(requestUserProfileUpdate())
     const header = new Headers({
       'apikey': apiKey,
-      'Accept': 'application/json'
+      'Content-Type': 'application/json'
     })
     const init = {
       method: 'PUT',

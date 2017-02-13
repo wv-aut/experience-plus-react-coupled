@@ -18,9 +18,9 @@ class AppContainer extends Component {
     const { routes, store } = this.props
     return (
       <Provider store={store}>
-        <div style={{ height: '100%' }}>
-          <Router history={browserHistory} children={routes} />
+        <div style={{ height: '100%' }} id='css-root'>
           <Auth />
+          <Router history={browserHistory} children={routes} />
         </div>
       </Provider>
     )

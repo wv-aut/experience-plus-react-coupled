@@ -25,7 +25,7 @@ class Auth extends Component {
         message = <Overlay
           header='Ihr Zugangslink ist nicht mehr gültig.'
           subheader='Kein Problem, Sie können hier einfach einen neuen anfordern.'
-          text='Für die Sicherheit Ihrer Daten, können Sie Zugangslinks immer nur einmal verwenden.' 
+          text='Für die Sicherheit Ihrer Daten, können Sie Zugangslinks immer nur einmal verwenden.'
           button={() => this.props.sendNewTempKeyRequest(this.props.auth.tempKey)}
           buttonText='Zugangslink per E-Mail anfordern'
           icon='lock'

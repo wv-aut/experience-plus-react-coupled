@@ -5,7 +5,7 @@ const Overlay = (props) => {
   return (
     <div className='overlay'>
       <div className='container'>
-        <div className='content center'>
+        <div className='content'>
           {props.icon === 'loading' &&
             <div className='loading'>
               <div className={props.mode} />
@@ -22,7 +22,7 @@ const Overlay = (props) => {
               }
           </div>
           <div className='message'>
-            <h1>{props.header}</h1>
+            <h2>{props.header}</h2>
             <h3>{props.subheader}</h3>
             {props.button &&
             <button onClick={props.button}>{props.buttonText}</button>

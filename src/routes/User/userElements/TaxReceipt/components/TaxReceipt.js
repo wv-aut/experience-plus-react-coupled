@@ -19,7 +19,8 @@ export const TaxReceipt = (props) => {
   return (
     <main className='print'>
       <section className='paper'>
-        <div className='right'>
+        <div className='right'><img style={{ width:'120px' }} alt='World Vision Logo' src='https://secure.worldvision.at/sites/worldvision.at/themes/worldvision_new/images/icons/svg/worldvision-logo.svg' /></div>
+        <div>
           <p className='sender right'><br />1150 Wien, Graumanngasse 7/C-2<br />
                                 Tel. +43 1 522 14 22-0<br />
                                 Fax +43 1 522 14 22-80<br />
@@ -29,30 +30,30 @@ export const TaxReceipt = (props) => {
                                 <br />
           </p>
         </div>
-        <div className='left'>
+        <div>
           <p>{renderSalutation(props.dataTemp)}</p>
           <p>{props.dataTemp.address} {props.dataTemp.houseNo}<br />{props.dataTemp.postCode} {props.dataTemp.city}</p>
         </div>
         <p className='right'>Wien, am 15. Februar 2017</p>
-        <div className='center'>
+        <div>
           <h3><br />Zur Vorlage bei Ihrem Finanzamt<br /><br />
           Ihre Spendenbestätigung für das Jahr 2016<br /><br /></h3>
         </div>
-        <div className='center'>
+        <div>
           <p>Wir bestätigen, dass {renderSalutation(props.dataTemp, false)} im Kalenderjahr 2016 den folgenden Betrag zugunsten
           der Arbeit von World Vision Österreich (Registrierungsnummer SO-1158) gespendet hat:</p>
         </div>
-        <div className='center'>
+        <div>
           <h1>144,00 Euro</h1>
         </div>
-        <div className='left'>
+        <div>
           <p>Wir haben diesen Betrag dankend erhalten und ihn bestimmungsgemäß für unsere Projektarbeit
           eingesetzt.<br /><br />Mit herzlichen Grüßen</p>
         </div>
-        <div className='left'>
+        <div>
           {<img src={monikaNnamdi} />}
         </div>
-        <div className='left'>
+        <div>
           <p>Monika Nnamdi<br />World Vision Österreich</p>
         </div>
       </section>

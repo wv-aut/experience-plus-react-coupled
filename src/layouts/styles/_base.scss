@@ -1,98 +1,93 @@
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
 
-.app-container {
-  position: relative;
-}
-
-html {
+#css-root {
   box-sizing: border-box;
-}
-
-html,
-body {
   min-height: 100%;
   font-size: 1rem;
   margin: 0;
   padding: 0;
   height: 100%;
-}
 
-ul {
-  margin: 0;
-  padding: 0;
-}
+  .app-container {
+  position: relative;
+  }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
+  ul {
+    margin: 0;
+    padding: 0;
+  }
 
-.center {
-  text-align: center;
-}
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
 
-.warning-bg {
-  background-color:	#D3D3D0;
-  padding: 1rem;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-p {
   .center {
     text-align: center;
-    width: 100%;
   }
 
-.left {
-    text-align: left;
-    width: 100%;
+  .warning-bg {
+    background-color:	#D3D3D0;
+    padding: 1rem;
+    border-radius: 5px;
+    font-weight: bold;
   }
 
-.right {
-    text-align: right;
-    width: 100%;
+  p {
+    .center {
+      text-align: center;
+      width: 100%;
+    }
+
+  .left {
+      text-align: left;
+      width: 100%;
+    }
+
+  .right {
+      text-align: right;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 40em) {
+    h1, h2, h3, h4, button {
+      font-family: 'Clear Sans', sans-serif;
+      font-style: bold;
+    }
+    h1 {
+      font-size: 1.4rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media print {
+    .no-print, aside {
+      visibility: hidden;
+      display: none;
+    }
+  }
+
+  @keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+
+    30%, 50%, 70% {
+      transform: translate3d(-4px, 0, 0);
+    }
+
+    40%, 60% {
+      transform: translate3d(4px, 0, 0);
+    }
   }
 }
-
-@media screen and (max-width: 40em) {
-  h1, h2, h3, h4, button {
-    font-family: 'Clear Sans', sans-serif;
-    font-style: bold;
-  }
-  h1 {
-    font-size: 1.4rem;
-  }
-  h2 {
-    font-size: 1.2rem;
-  }
-}
-
-@media print {
-  .no-print, aside {
-    visibility: hidden;
-    display: none;
-  }
-}
-
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
 

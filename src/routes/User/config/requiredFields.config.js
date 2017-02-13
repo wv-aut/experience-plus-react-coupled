@@ -12,21 +12,9 @@ export function _locationToObjectKey (location) {
 
 export const FORM_ELEMENTS = {
   [_locationToObjectKey(TAX_RECEIPT_PROFILE_ROUTE)]: {
-    [API.FIRST_NAME]: {
-      [API.TAX_OPTOUT]: {
-        value: false
-      }
-    },
-    [API.LAST_NAME]: {
-      [API.TAX_OPTOUT]: {
-        value: false
-      }
-    },
-    [API.SALUTATION_CODE]: {
-      [API.TAX_OPTOUT]: {
-        value: false
-      }
-    },
+    [API.FIRST_NAME]: true,
+    [API.LAST_NAME]: true,
+    [API.SALUTATION_CODE]: true,
     [API.EMAIL]: true,
     [API.TAX_OPTOUT]: true,
     [API.BIRTH_DATE]: {

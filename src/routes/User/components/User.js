@@ -31,6 +31,25 @@ class User extends Component {
     return salutations
   }
 
+  createSalutationString (salutationMode = true) {
+    let salutationString = 'Sehr geehrter Spender'
+    const { lastName, salutationCode, titleText } = this.props.user.data
+    if (lastName) {
+      switch (salutationCode) {
+        case '4':
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Familie ${lastName}`
+          break
+        case '14':
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${' ' + titleText} ${lastName}`
+          break
+        case '13':
+          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${' ' + titleText} ${lastName}`
+          break
+      }
+    }
+    return salutationString
+  }
+
   /**
    * Checks if user can go to the next item
    * @param {object} json
@@ -155,26 +174,35 @@ class User extends Component {
             </section>
             <aside>
               {this.props.user.data.salutationCode === '4' &&
-                <p className='warning-bg'>{this.props.user.data.salutation}, Sie sind bei uns als Familie registriert. Da die Spenden in Zukunft immer einer Person zugeordnet sein muss,
+                <p className='warning-bg'>Sie sind bei uns als Familie registriert. Da die Spenden in Zukunft immer einer Person zugeordnet sein muss,
                   bitten wir Sie zu entscheiden, wer von Ihnen beiden die Spenden absetzen möchte. Dies gilt für alle Spenden die
                   Sie ab 1.1.2017 tätigen.</p>
                 }
-              {this.isFormCompleted() ? <p>Bitte bestätigen Sie Ihre Daten,
+               {this.props.user.data.taxOptOut &&
+                <p className='warning-bg'>Ich, {this.createSalutationString(false)}, bestätige hiermit,
+                  dass ich von meinem Widerrufsrecht Gebrauch mache und dadurch meine Spenden bei World Vision nicht mehr steuerlich absetzen kann.</p>
+                } 
+              {this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>bestätigen Sie Ihre Daten</strong>,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können.
               <button
                 onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data,  this.props.router)}
                >
                 <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
-              </p>
-                : <p>Bitte <strong>vervollständigen das Formular</strong>,
+              </p>}
+              {!this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>vervollständigen das Formular</strong>,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können:
-
               <button
                 className='button disabled'>
                 <span>DATEN BESTÄTIGEN UND SPENDENBESCHEINIGUNG AUFRUFEN</span>
               </button>
                 </p>
               }
+              {this.isFormCompleted() && this.props.user.data.taxOptOut && <p>
+              <button
+                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data,  this.props.router)}
+               >
+                <span>WIDERRUF BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
+              </p>}
         
             </aside>
           </main>

@@ -1,6 +1,6 @@
-
-.overlay {
-  position: relative;
+#css-root {
+  
+  .overlay {
   width: 100%;
   height: 100%;
 
@@ -12,148 +12,148 @@
       color: #ebebe7;
   }
 
-  .container {
-    lost-align: middle-center;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: 10;
-    left: 0;
-    top: 0px;
-    background-color: #565658;
-    background: radial-gradient(ellipse at center,#747476, #565658); 
-    transition: 0.5s;
-  }
-
-  .content {
-    lost-center: 550px;
-    lost-flex-container: column;
-
-    h1, h2, h3, p {
-        color: #FFFFFF;
+    .container {
+      lost-align: middle-center;
+      min-height: 500px;
+      height: 100%;
+      width: 100%;
+      z-index: 10;
+      left: 0;
+      top: 0px;
+      background-color: #565658;
+      background: radial-gradient(ellipse at center,#747476, #565658); 
+      transition: 0.5s;
     }
-  }
 
-  @keyframes loading {
-    0% {
-    transform: rotate(0deg);
+    .content {
+      lost-center: 550px;
+
+
+      h1, h2, h3, p {
+          color: #FFFFFF;
+      }
     }
-    50% {
-      transform: rotate(180deg);
+
+    @keyframes loading {
+      0% {
+      transform: rotate(0deg);
+      }
+      50% {
+        transform: rotate(180deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
     }
-    100% {
-      transform: rotate(360deg);
+
+    .loading {
+      margin: auto;
+      display: block;
+      -webkit-transform:scale(0.71)
     }
-  }
 
-  .loading {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    -webkit-transform:scale(0.71)
-  }
+    .loading > div {
+      animation: loading 2s linear infinite;
+      display: block;
+      margin: auto;
+      top: 20px;
+      left: 20px;
+      width: 160px;
+      height: 160px;
+      border-radius: 100px;
+      border: 20px solid #ebebe7;
+      border-top: 20px solid rgba(0,0,0,0);
+      border-right: 20px solid #ebebe7;
+      border-bottom: 20px solid #ebebe7;
 
-  .loading > div {
-    animation: loading 2s linear infinite;
-    display: block;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 160px;
-    height: 160px;
-    border-radius: 100px;
-    border: 20px solid #ebebe7;
-    border-top: 20px solid rgba(0,0,0,0);
-    border-right: 20px solid #ebebe7;
-    border-bottom: 20px solid #ebebe7;
-
-    &.stop {
-      animation: none;
+      &.stop {
+        animation: none;
+      }
     }
+
+    .loading > div:after {
+      content: " ";
+      width: 0px;
+      height: 0px;
+      border-style: solid;
+      border-width: 0 30px 30px 30px;
+      border-color: transparent transparent #ebebe7 transparent;
+      display: block;
+      transform: translate(-15px, 0) rotate(45deg);
+    }
+
+    .icon {
+      margin: auto;
+    }
+
+    .icon-lock {
+      display: block;
+      margin: auto;
+      width: 160px;
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    .icon-lock .lock-top-1 {
+      background-color: #E5E9EA;
+      width: 40%;
+      height: 40%;
+      position: absolute;
+      left: 50%;
+      margin-left: -20%;
+      top: 14%;
+      border-radius: 40%;
+    }
+
+    .icon-lock .lock-top-2 {
+      width: 24%;
+      height: 40%;
+      position: absolute;
+      left: 50%;
+      margin-left: -12%;
+      top: 22%;
+      background-color: #565658;
+      border-radius: 25%;
+    }
+
+    .icon-lock .lock-body {
+      width: 60%;
+      height: 48%;
+      position: absolute;
+      left: 50%;
+      margin-left: -30%;
+      bottom: 11%;
+      background-color: #E5E9EA;
+      border-radius: 15%;
+    }
+
+    .icon-lock .lock-hole {
+      width: 16%;
+      height: 16%;
+      position: absolute;
+      left: 50%;
+      margin-left: -8%;
+      top: 51%;
+      border-radius: 100%;
+      background-color: #565658;
+    }
+
+    .icon-lock .lock-hole:after {
+      content: "";
+      width: 43%;
+      height: 78%;
+      position: absolute;
+      left: 50%;
+      margin-left: -20%;
+      top: 100%;
+      background-color: inherit;
+    }
+
+    .message {
+      text-align: center;
+    }
+
   }
-
-  .loading > div:after {
-    content: " ";
-    width: 0px;
-    height: 0px;
-    border-style: solid;
-    border-width: 0 30px 30px 30px;
-    border-color: transparent transparent #ebebe7 transparent;
-    display: block;
-    transform: translate(-15px, 0) rotate(45deg);
-  }
-
-
-  .icon-lock {
-    float: left;
-    width: 160px;
-    height: 160px;
-    position: relative;
-    overflow: hidden;
-    margin-left: 25px;
-    margin-bottom: 25px;
-    animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
-  }
-
-  .icon-lock .lock-top-1 {
-    background-color: #E5E9EA;
-    width: 40%;
-    height: 40%;
-    position: absolute;
-    left: 50%;
-    margin-left: -20%;
-    top: 14%;
-    border-radius: 40%;
-  }
-
-  .icon-lock .lock-top-2 {
-    width: 24%;
-    height: 40%;
-    position: absolute;
-    left: 50%;
-    margin-left: -12%;
-    top: 22%;
-    background-color: #565658;
-    border-radius: 25%;
-  }
-
-  .icon-lock .lock-body {
-    width: 60%;
-    height: 48%;
-    position: absolute;
-    left: 50%;
-    margin-left: -30%;
-    bottom: 11%;
-    background-color: #E5E9EA;
-    border-radius: 15%;
-  }
-
-
-  .icon-lock .lock-hole {
-    width: 16%;
-    height: 16%;
-    position: absolute;
-    left: 50%;
-    margin-left: -8%;
-    top: 51%;
-    border-radius: 100%;
-    background-color: #565658;
-  }
-
-  .icon-lock .lock-hole:after {
-    content: "";
-    width: 43%;
-    height: 78%;
-    position: absolute;
-    left: 50%;
-    margin-left: -20%;
-    top: 100%;
-    background-color: inherit;
-  }
-
-
-
-
-
 }
-
