@@ -18,7 +18,7 @@ import { API_URL } from 'config/obelix.config'
 
 // API Request
 export function fetchApiKey (tempKey) {
-  // Testing
+  
   return dispatch => {
     dispatch(requestApiKey(tempKey))
     const header = new Headers({
@@ -86,7 +86,6 @@ export function receiveApiKey (apiKey, partnerID) {
 }
 
 export function fetchApiKeyifNeeded (tempKey) {
-  console.log(tempKey)
   return (dispatch, getState, tempKey) => {
     return dispatch(fetchApiKey(tempKey))
   }

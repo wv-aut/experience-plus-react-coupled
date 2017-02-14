@@ -11,12 +11,13 @@ export const GET_TEMP_JSON_DATA = 'GET_TEMP_JSON_DATA'
 export const CONFIRM_USER_FORM = 'CONFIRM_USER_FORM'
 export const REQUEST_USER_PROFILE_UPDATE = 'REQUEST_USER_PROFILE_UPDATE'
 export const CONFIRM_USER_PROFILE_UPDATE = 'CONFIRM_USER_PROFILE_UPDATE'
+export const TITLE_TEXT_TO_TITLE_CODE = 'TITLE_TEXT_TO_TITLE_CODE'
 
 import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
 import { API } from '../config/formFields.config'
 import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
 
-import { API_URL,  TITLES } from 'config/obelix.config'
+import { API_URL, TITLES } from 'config/obelix.config'
 
 // ------------------------------------
 // Actions User
@@ -41,13 +42,16 @@ export function fetchUserProfile (apiKey, partnerID) {
       mode: 'cors',
       cache: 'default'
     }
+    partnerID = partnerID || 0
     const request = new Request(`${API_URL}donors/${partnerID}`, init)
     return fetch(request)
         .then(response => {
           return response.json()
         })
         .then(json => {
-          return dispatch(receiveUserProfile(json.data.attributes, dispatch))
+          if (json.status !== 401) {
+            return dispatch(receiveUserProfile(json.data.attributes, dispatch))
+          }
         }
             ).catch(err => console.log(err))
   }
@@ -65,8 +69,8 @@ function requestUserProfile (tempKey = null) {
  * @return {object} action
  */
 function receiveUserProfile (userData, dispatch) {
-  // // TEST
   const dataTemp = userData.tempUserData[0] || []
+  dataTemp.donationSum = userData.donationSum || null
   userData.birthdate = userData.birthdate || ''
 
   return {
@@ -85,7 +89,6 @@ function receiveUserProfile (userData, dispatch) {
  */
 export function sendUserProfileUpdate (e, apiKey, userData, router) {
   return dispatch => {
-    console.log('adfadsf')
     dispatch(requestUserProfileUpdate())
     const header = new Headers({
       'apikey': apiKey,
@@ -98,11 +101,9 @@ export function sendUserProfileUpdate (e, apiKey, userData, router) {
       mode: 'cors',
       cache: 'default'
     }
-    console.log(init.body)
     const request = new Request(`${API_URL}donors/${userData.partnerID}`, init)
     return fetch(request)
     .then(response => {
-      console.log(response)
       router.push('/spender/spendenbestaetigung/drucken')
       return response.json()
     })
@@ -123,14 +124,29 @@ function confirmUserProfileUpdate () {
   }
 }
 
+export function changeTitleInput (event) {
+  return dispatch => {
+    dispatch(titleTextToTitleCode(event.target.value))
+  }
+}
+
+function titleTextToTitleCode (titleText) {
+  let titleCode = ''
+  for (let i = 0; i < TITLES.length; i++) {
+    if (TITLES[i]['description'] === titleText) {
+      titleCode = TITLES[i]['code']
+    }
+  }
+  return {
+    type: TITLE_TEXT_TO_TITLE_CODE,
+    titleText,
+    titleCode
+  }
+}
+
 export function changeInput (event) {
   const form = event.target.dataset.form
   let value = event.target.value
-
-  // Assign textTitle to titleCode
-  if (form === 'titleText') {
-    // ToDo
-  }
 
   // Input fields output strings rather than boolean values
   value = value === 'true' ? true : value === 'false' ? false : value
@@ -254,6 +270,12 @@ const ACTION_HANDLERS = {
   },
   [CONFIRM_USER_PROFILE_UPDATE]: (state, action) => {
     return Object.assign({}, state, { isFetching: false })
+  },
+  [TITLE_TEXT_TO_TITLE_CODE]: (state, action) => {
+    let user = Object.assign({}, state)
+    user.data.titleCode = action.titleCode
+    user.data.titleText = action.titleText
+    return user
   }
 }
 

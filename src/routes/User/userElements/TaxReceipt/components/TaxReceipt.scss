@@ -2,17 +2,22 @@
 
 
 .paper {
+  position: relative;
   box-shadow: 3px 3px 5px 3px #BBBBB9;
   margin: 1rem;
   padding: 1rem;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
 
-  p.right {
-      text-align: right;
+  > div {
+      clear: both;
+      width: 100%;
+      &.right {
+          text-align: right;
+      }
   }
 
-  img.right {
+  p.right {
       text-align: right;
   }
 

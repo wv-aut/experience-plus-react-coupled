@@ -40,10 +40,10 @@ class User extends Component {
           salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Familie ${lastName}`
           break
         case '14':
-          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${' ' + titleText} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${'' + titleText ? ' ' + titleText : ''} ${lastName}`
           break
         case '13':
-          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${' ' + titleText} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${'' + titleText ? ' ' + titleText : ''} ${lastName}`
           break
       }
     }
@@ -70,10 +70,9 @@ class User extends Component {
     if (!this.props.user.data) {
       return null
     }
-    if (typeof this.props.user.errorArray === 'undefined') {
+    if (typeof this.props.user.errorArray === 'undefined' || this.props.user.isFetching) {
       return <Overlay 
-        header='Ihre Daten werden geladen.'
-        subheader='Subheader'
+        header='Ihre Daten werden gespeichert.'
         icon='loading'
         mode='run' />
     } else {
@@ -85,7 +84,7 @@ class User extends Component {
           <main className='main'>
             <section>
               <form className='form'>
-                {this.props.user.dataTemp.companyName !== null &&
+                {this.props.user.dataTemp.companyName &&
                   <div className='form-row'>
                     <label className='grid-1-all'>
                       <span>{DESCRIPTION.COMPANY}:</span>
@@ -99,7 +98,7 @@ class User extends Component {
                     </label>
                   </div>
                   }
-                {this.props.user.dataTemp.companyName !== null &&
+                {this.props.user.dataTemp.companyName &&
                   <BirthDateForm location={this.props.location} />
                 }
                 <div className='form-row'>
@@ -118,7 +117,7 @@ class User extends Component {
                   <label className='grid-12-4'>
                     <span className='optional'>{DESCRIPTION.JOB_TITLE}</span>
                     <input
-                      onBlur={this.props.changeInput}
+                      onBlur={this.props.changeTitleInput}
                       data-form='titleText'
                       defaultValue={this.props.user.data.titleText}
                       placeholder='optional'
@@ -166,7 +165,7 @@ class User extends Component {
                     <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                   </label>
                 </div>
-                {this.props.user.dataTemp.companyName === null &&
+                {!this.props.user.dataTemp.companyName &&
                   <BirthDateForm location={this.props.location} />
                 }
               </form>
@@ -223,7 +222,8 @@ User.propTypes = {
   userDataValidation: React.PropTypes.func.isRequired,
   confirmUserForm: React.PropTypes.func.isRequired,
   _validateEmail: React.PropTypes.func,
-  sendUserProfileUpdate: React.PropTypes.func
+  sendUserProfileUpdate: React.PropTypes.func,
+  changeTitleInput: React.PropTypes.func
 }
 
 export default User

@@ -8,10 +8,6 @@
       color: #cc0000;
   }
 
-  h2, h3, p {
-      color: #ebebe7;
-  }
-
     .container {
       lost-align: middle-center;
       min-height: 500px;
@@ -29,9 +25,17 @@
       lost-center: 550px;
 
 
-      h1, h2, h3, p {
-          color: #FFFFFF;
+      h1, h2, h3, h4, p {
+          color: #E5E9EA;
       }
+    }
+
+    @media screen and (max-width: 40em) {
+      .content {
+        width: 100%;
+        padding: 1rem;
+      }
+
     }
 
     @keyframes loading {
@@ -153,6 +157,36 @@
 
     .message {
       text-align: center;
+    }
+
+    .letter {
+      margin-bottom: -30px;
+      margin: 30px auto;
+      background-color: #E5E9EA;
+      position: relative;
+      height: 70px;
+      width: 100px;
+      overflow: hidden;
+      &:before, &:after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        height: 60px;
+        width: 60px;
+        transform: rotate(45deg) skew(-5deg,-5deg);
+        margin-left: -50px;
+        height: 100px;
+        width: 100px;
+        background-color: #E5E9EA;
+      }
+      &:before {
+        bottom: -100%;
+        box-shadow: -5px -5px 0 0 #565658;
+      }
+      &:after {
+        top: -95%;
+        box-shadow: 5px 5px 0 0 #565658;
+      }
     }
 
   }

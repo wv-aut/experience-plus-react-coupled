@@ -46,10 +46,10 @@ class Auth extends Component {
        />
       } else {
         message = <Overlay
-        header={`Wir haben Ihnen einen neuen Link an ${this.props.auth.tempKeySentToEmail} gesendet.`}
+        header={`Wir haben Ihnen einen neuen Zugangslink an ${this.props.auth.tempKeySentToEmail} gesendet.`}
         subheader='Sollten Sie diese E-Mail nicht erhalten, oder wenn Sie generelle Probleme mit dieser Seite haben, kontaktieren Sie bitte unsere Spender- und Patenbetreuung.'
         text=''
-        icon='loading'
+        icon='email'
         mode='stop' />
       }
     }

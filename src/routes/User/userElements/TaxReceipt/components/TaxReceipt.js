@@ -15,6 +15,21 @@ function renderSalutation (dataTemp, inAddress = true) {
   }
 }
 
+function formatDonation (amount) {
+  const donation = amount || '0'
+  const size = donation.length;
+  const position = donation.indexOf(',');
+  let donationFormatted = '0,00'
+  if (position === -1) {
+    donationFormatted = `${donation},00`
+  } else if (size - position === 2) {
+    donationFormatted = `${donation}0`
+  } else if (donation) {
+    donationFormatted = donation
+  }
+  return donationFormatted
+}
+
 export const TaxReceipt = (props) => {
   return (
     <main className='print'>
@@ -32,19 +47,19 @@ export const TaxReceipt = (props) => {
         </div>
         <div>
           <p>{renderSalutation(props.dataTemp)}</p>
-          <p>{props.dataTemp.address} {props.dataTemp.houseNo}<br />{props.dataTemp.postCode} {props.dataTemp.city}</p>
+          <p>{props.dataTemp.street} {props.dataTemp.houseNo}<br />{props.dataTemp.postCode} {props.dataTemp.city}</p>
         </div>
         <p className='right'>Wien, am 15. Februar 2017</p>
         <div>
-          <h3><br />Zur Vorlage bei Ihrem Finanzamt<br /><br />
-          Ihre Spendenbestätigung für das Jahr 2016<br /><br /></h3>
+          <p><br />Zur Vorlage bei Ihrem Finanzamt</p><br />
+          <h3 className='center'>Ihre Spendenbestätigung für das Jahr 2016<br /><br /></h3>
         </div>
         <div>
           <p>Wir bestätigen, dass {renderSalutation(props.dataTemp, false)} im Kalenderjahr 2016 den folgenden Betrag zugunsten
           der Arbeit von World Vision Österreich (Registrierungsnummer SO-1158) gespendet hat:</p>
         </div>
         <div>
-          <h1>144,00 Euro</h1>
+          <h1 className='center'>{formatDonation(props.dataTemp.donationSum)} EURO</h1>
         </div>
         <div>
           <p>Wir haben diesen Betrag dankend erhalten und ihn bestimmungsgemäß für unsere Projektarbeit
@@ -54,7 +69,7 @@ export const TaxReceipt = (props) => {
           {<img src={monikaNnamdi} />}
         </div>
         <div>
-          <p>Monika Nnamdi<br />World Vision Österreich</p>
+          <p>Monika Nnamdi<br />World Vision Österreich</p><br /><br />
         </div>
       </section>
       <aside>

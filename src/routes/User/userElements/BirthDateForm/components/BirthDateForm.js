@@ -63,7 +63,7 @@ class BirthDateForm extends Component {
   render () {
     return (
       <div>
-        {this.props.user.dataTemp.companyName !== null &&
+        {this.props.user.dataTemp.companyName &&
           this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)}
         <div className='form-row radio'>
           <ul>
@@ -77,10 +77,10 @@ class BirthDateForm extends Component {
                   onChange={this.props.changeInput}
                   name='tax-opt-out'
                 />
-                {this.props.user.dataTemp.companyName !== null &&
+                {this.props.user.dataTemp.companyName &&
                   <p>Ich möchte doch lieber meine Spenden privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder aus.</p>
                 }
-                {this.props.user.dataTemp.companyName === null &&
+                {!this.props.user.dataTemp.companyName &&
                   <p>Ja, ich stimme der automatischen Spendenabsetzbarkeit zu. Bitte geben Sie dafür Ihr Geburtsdatum bekannt:</p>
                 }
                 <div className='check'>
@@ -140,7 +140,7 @@ class BirthDateForm extends Component {
             <span className='error'>Bitte tragen Sie Ihr Geburtsjahr ein.</span>
           </label>
         </div>
-        {this.props.user.dataTemp.companyName === null &&
+        {!this.props.user.dataTemp.companyName &&
           this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)
         }
       </div>
