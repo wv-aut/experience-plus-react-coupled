@@ -1,6 +1,7 @@
 #css-root {
     .progress {
     font-family: 'Clear Sans', sans-serif;
+    font-size: 0.8rem;
     width: 100%;
     padding: 0.5rem 0;
     
@@ -71,6 +72,12 @@
         li.active + li:after {
             background-color: #2B954C;
         }
+    }
+}
+
+@media screen and (max-width: 40em) {
+    .progress {
+        font-size: 0.7rem;
     }
 }
 
