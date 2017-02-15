@@ -40,10 +40,10 @@ class User extends Component {
           salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Familie ${lastName}`
           break
         case '14':
-          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${'' + titleText ? ' ' + titleText : ''} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${'' + !titleText ? ' ' + titleText : ''} ${lastName}`
           break
         case '13':
-          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${'' + titleText ? ' ' + titleText : ''} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${'' + !titleText ? ' ' + titleText : ''} ${lastName}`
           break
       }
     }
