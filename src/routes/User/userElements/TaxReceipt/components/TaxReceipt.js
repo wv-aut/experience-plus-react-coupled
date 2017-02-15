@@ -11,14 +11,14 @@ function renderSalutation (dataTemp, inAddress = true) {
     case '4':
       return <span>Familie {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
     default:
-      return <span>{dataTemp.salutationCode === '13' ? 'Frau' : inAddress ? 'Herrn' : 'Herr'} {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
+      return <span>{dataTemp.salutationCode === '14' ? 'Frau' : inAddress ? 'Herrn' : 'Herr'} {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
   }
 }
 
 function formatDonation (amount) {
   const donation = amount || '0'
-  const size = donation.length;
-  const position = donation.indexOf(',');
+  const size = donation.length
+  const position = donation.indexOf(',')
   let donationFormatted = '0,00'
   if (position === -1) {
     donationFormatted = `${donation},00`
@@ -47,7 +47,7 @@ export const TaxReceipt = (props) => {
         </div>
         <div>
           <p>{renderSalutation(props.dataTemp)}</p>
-          <p>{props.dataTemp.street} {props.dataTemp.houseNo}<br />{props.dataTemp.postCode} {props.dataTemp.city}</p>
+          <p>{props.dataTemp.address} {props.dataTemp.houseNo}<br />{props.dataTemp.postCode} {props.dataTemp.city}</p>
         </div>
         <p className='right'>Wien, am 15. Februar 2017</p>
         <div>
