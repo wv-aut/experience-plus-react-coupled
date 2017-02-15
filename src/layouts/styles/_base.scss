@@ -1,6 +1,10 @@
 // Some best-practice CSS that's useful for most apps
 // Just remove them if they're not what you want
 
+#root {
+  display: block;
+}
+
 #css-root {
   box-sizing: border-box;
   min-height: 100%;
