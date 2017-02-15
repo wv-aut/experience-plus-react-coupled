@@ -19,6 +19,6 @@ export const PROGRESS = [
   },
   {
     route: `${APP_NAMESPACE}/spendenbestaetigung/drucken`,
-    description: 'Ihre Spendenbestätigung'
+    description: 'Ihre Spenden-Bestätigung'
   }
 ]
