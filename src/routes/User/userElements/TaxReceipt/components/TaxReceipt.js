@@ -11,7 +11,7 @@ function renderSalutation (dataTemp, inAddress = true) {
     case '4':
       return <span>Familie {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
     default:
-      return <span>{dataTemp.salutationCode === '14' ? 'Frau' : inAddress ? 'Herrn' : 'Herr'} {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
+      return <span>{dataTemp.salutationCode === '14' ? 'Frau' : inAddress ? 'Herrn' : 'Herr'}{dataTemp.titleText ? ' ' + dataTemp.titleText : '' } {inAddress && <br />}{dataTemp.firstName} {dataTemp.lastName}</span>
   }
 }
 
