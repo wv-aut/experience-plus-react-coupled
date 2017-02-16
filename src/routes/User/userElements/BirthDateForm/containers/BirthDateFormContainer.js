@@ -1,12 +1,13 @@
 import { connect } from 'react-redux'
 import { changeDate } from '../modules/userForm'
-import { changeInput } from '../../../modules/user'
+import { changeInput, changeTaxOptOutInput } from '../../../modules/user'
 
 import BirthDateForm from '../components/BirthDateForm'
 
 const mapDispatchToProps = {
   changeDate,
-  changeInput
+  changeInput,
+  changeTaxOptOutInput
 }
 
 const mapStateToProps = (state) => ({

@@ -41,7 +41,7 @@ class BirthDateForm extends Component {
                 data-form='taxOptOut'
                 defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'true'}
                 value='true'
-                onChange={this.props.changeInput}
+                onChange={(e) => this.props.changeTaxOptOutInput(e, this.props)}
                 name='tax-opt-out'
               />
               {isCompany &&
@@ -74,7 +74,7 @@ class BirthDateForm extends Component {
                   data-form='taxOptOut'
                   defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'false'}
                   value='false'
-                  onChange={this.props.changeInput}
+                  onChange={(e) => this.props.changeTaxOptOutInput(e, this.props)}
                   name='tax-opt-out'
                 />
                 {this.props.user.dataTemp.companyName &&
@@ -105,7 +105,7 @@ class BirthDateForm extends Component {
               <option value='00'>Tag</option>
               {this._getOptions(31)}
             </select>
-            <span className='error'>Bitte wählen Sie Ihren Geburtstag aus.</span>
+            <span className='error'>Bitte wählen Sie Ihren Geburts-Tag aus.</span>
           </label>
           <label className='grid-12-5'>
             <span className={this._checkIfFieldisRequired(API.BIRTH_DATE)}>Monat:</span>
@@ -121,7 +121,7 @@ class BirthDateForm extends Component {
               <option value='00'>Monat</option>
               {this._getOptions(12)}
             </select>
-            <span className='error'>Bitte wählen Sie Ihren Geburtsmonat aus.</span>
+            <span className='error'>Bitte wählen Sie Ihr Geburts-Monat aus.</span>
           </label>
           <label className='grid-12-4'>
             <span>Jahr:</span>
@@ -137,7 +137,7 @@ class BirthDateForm extends Component {
               type='number'
               name='birth-year'
               defaultValue={this.props.user.data.birthdate.split('-')[0]} />
-            <span className='error'>Bitte tragen Sie Ihr Geburtsjahr ein.</span>
+            <span className='error'>Bitte tragen Sie Ihr Geburts-Jahr ein.</span>
           </label>
         </div>
         {!this.props.user.dataTemp.companyName &&
@@ -151,6 +151,7 @@ class BirthDateForm extends Component {
 BirthDateForm.propTypes = {
   changeDate: React.PropTypes.func,
   changeInput: React.PropTypes.func,
+  changeTaxOptOutInput: React.PropTypes.func,
   user: React.PropTypes.object,
   location: React.PropTypes.object
 }

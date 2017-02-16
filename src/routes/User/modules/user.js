@@ -144,6 +144,13 @@ function titleTextToTitleCode (titleText) {
   }
 }
 
+export function changeTaxOptOutInput (event, props) {
+  return dispatch => {
+    dispatch(changeInput(event))
+    dispatch(userDataValidation(props))
+  }
+}
+
 export function changeInput (event) {
   const form = event.target.dataset.form
   let value = event.target.value
@@ -171,10 +178,11 @@ export function confirmUserForm (event) {
 
 export function userDataValidation (props) {
   const userData = props.user.data
-  let errorArray = props.user.errorArray || []
+  // let errorArray = props.user.errorArray || []
+  let errorArray = []
   for (let item in userData) {
     // SalutationCode for family is treated like 0 as family donations are deprecated
-    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item], item)) {
+    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item], item, props.user.data.taxOptOut)) {
       errorArray.push(item)
     }
   }
@@ -184,9 +192,13 @@ export function userDataValidation (props) {
   }
 }
 
-export function _isValue (value, field = '') {
-  if (field === 'salutationCode' && (value === '4' || value === 'COMPANY')) {
-    return false
+export function _isValue (value, field = '', taxOptOut = false) {
+  if (field === 'salutationCode') {
+    if (!taxOptOut) {
+      if (value === '4' || value === 'COMPANY') {
+        return false
+      }
+    }
   }
   if (value === 0 || value === '0' || value === '' || value === null || value === '00' || value === '0000') {
     return false

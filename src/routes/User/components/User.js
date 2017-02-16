@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 import './User.scss'
-import printerImage from '../assets/printer.svg'
 import Progress from '../../components/Progress/Progress'
 import Overlay from 'components/Overlay/components/Overlay'
 
 import BirthDateForm from '../userElements/BirthDateForm'
-import { SALUTATION_CODE } from 'config/obelix.config'
+import { SALUTATION_CODE, TITLES } from 'config/obelix.config'
 import { API, DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/formFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
-import { TAX_RECEIPT_PROFILE_ROUTE, TAX_RECEIPT_PRINT_ROUTE, PRINT } from '../../config/routes.config'
+import { TAX_RECEIPT_PROFILE_ROUTE } from '../../config/routes.config'
 
 
 class User extends Component {
@@ -25,25 +23,46 @@ class User extends Component {
     for (var prop in SALUTATION_CODE) {
       salutations.push(<option key={prop} value={prop}>{SALUTATION_CODE[prop]}</option>)
     }
-    if (this.props.user.data.taxOptOut === true) {
+    if (this.props.user.data.taxOptOut === true && this.props.user.dataTemp.salutationCode === '4') {
       salutations.push(<option key='4' value='4'>Familie</option>)
     }
     return salutations
   }
 
+  getTitleText () {
+    let title = ''
+    if (this.props.user.data.titleText) {
+      title = this.props.user.data.titleText
+    } else {
+      for (let i = 0; i < TITLES.length; i++) {
+        if (TITLES[i]['code'] === this.props.user.data.titleCode) {
+          title = TITLES[i]['description']
+        }
+      }
+    }
+    return title
+  }
+
+  /**
+   * Renders salutation string with title
+   * @param {boolean} salutationMode:
+   *  true is for beginning of a sentence (ie. Sehr geehrter Herr Müller), 
+   *  false is if it is as addition within a sentence (ie. Herr Müller)
+   * @return {string}
+   */
   createSalutationString (salutationMode = true) {
     let salutationString = 'Sehr geehrter Spender'
-    const { lastName, salutationCode, titleText } = this.props.user.data
+    const { lastName, salutationCode } = this.props.user.data
     if (lastName) {
       switch (salutationCode) {
         case '4':
           salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Familie ${lastName}`
           break
         case '14':
-          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${'' + !titleText ? ' ' + titleText : ''} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${' ' + this.getTitleText()} ${lastName}`
           break
-        case '13':
-          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${'' + !titleText ? ' ' + titleText : ''} ${lastName}`
+        case '61':
+          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${' ' + this.getTitleText()} ${lastName}`
           break
       }
     }
@@ -56,7 +75,7 @@ class User extends Component {
    * @return {boolean} true if active false if not active
    */
   isFormCompleted () {
-    return this.props.user.data.taxOptOut || !this.props.user.errorArray.length
+    return !this.props.user.errorArray.length
   }
 
   _checkIfFieldisRequired (fieldname) {
@@ -71,7 +90,7 @@ class User extends Component {
       return null
     }
     if (typeof this.props.user.errorArray === 'undefined' || this.props.user.isFetching) {
-      return <Overlay 
+      return <Overlay
         header='Ihre Daten werden gespeichert.'
         icon='loading'
         mode='run' />
@@ -108,7 +127,7 @@ class User extends Component {
                       onChange={this.props.changeInput}
                       data-form='salutationCode'
                       data-required={this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'true'}
-                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode, 5)}
+                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode, this.props.user.dataTemp.salutationCode === '4' && this.props.user.data.taxOptOut ? '1' : '5')}
                       value={this.props.user.data.salutationCode}> >
                       {this.getSalutationOptions()}
                     </select>
@@ -119,7 +138,7 @@ class User extends Component {
                     <input
                       onBlur={this.props.changeTitleInput}
                       data-form='titleText'
-                      defaultValue={this.props.user.data.titleText}
+                      defaultValue={this.getTitleText()}
                       placeholder='optional'
                       type='text'
                       name='title' />
@@ -177,28 +196,33 @@ class User extends Component {
                   bitten wir Sie zu entscheiden, wer von Ihnen beiden die Spenden absetzen möchte. Dies gilt für alle Spenden die
                   Sie ab 1.1.2017 tätigen.</p>
                 }
-               {this.props.user.data.taxOptOut &&
-                <p className='warning-bg'>Ich, {this.createSalutationString(false)}, bestätige hiermit,
-                  dass ich von meinem Widerrufsrecht Gebrauch mache und dadurch meine Spenden bei World Vision nicht mehr steuerlich absetzen kann.</p>
+               {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode !== '4' &&
+                 <p className='warning-bg'>Ich, {this.createSalutationString(false)}, bestätige hiermit,
+                  dass ich von meinem Widerrufsrecht Gebrauch mache und dadurch meine Spenden bei World Vision nicht mehr steuerlich absetzen kann.</p> 
+                } 
+                {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode === '4' &&
+                 <p className='warning-bg'>Wir, {this.createSalutationString(false)}, bestätigen hiermit,
+                  dass wir von unserem Widerrufsrecht Gebrauch machen und dadurch unsere Spenden bei World Vision nicht mehr steuerlich absetzen können.</p> 
                 } 
               {this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>bestätigen Sie Ihre Daten</strong>,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können.
               <button
-                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data,  this.props.router)}
+                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
                >
-                <span>DATEN BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
+                <span>DATEN BESTÄTIGEN UND SPENDEN-BESTÄTIGUNG AUFRUFEN</span></button>
               </p>}
               {!this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>vervollständigen das Formular</strong>,
                 damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können:
               <button
                 className='button disabled'>
-                <span>DATEN BESTÄTIGEN UND SPENDENBESCHEINIGUNG AUFRUFEN</span>
+                <span>DATEN BESTÄTIGEN UND SPENDEN-BESCHEINIGUNG AUFRUFEN</span>
               </button>
                 </p>
               }
-              {this.isFormCompleted() && this.props.user.data.taxOptOut && <p>
+              {this.props.user.data.taxOptOut && <p>
               <button
-                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data,  this.props.router)}
+                className={!this.isFormCompleted() && 'button disabled'}
+                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
                >
                 <span>WIDERRUF BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
               </p>}
@@ -216,6 +240,7 @@ class User extends Component {
 User.propTypes = {
   children : React.PropTypes.element,
   user: React.PropTypes.object.isRequired,
+  router: React.PropTypes.object.isRequired,
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
   changeInput: React.PropTypes.func.isRequired,
@@ -223,7 +248,8 @@ User.propTypes = {
   confirmUserForm: React.PropTypes.func.isRequired,
   _validateEmail: React.PropTypes.func,
   sendUserProfileUpdate: React.PropTypes.func,
-  changeTitleInput: React.PropTypes.func
+  changeTitleInput: React.PropTypes.func,
+  auth: React.PropTypes.object
 }
 
 export default User
