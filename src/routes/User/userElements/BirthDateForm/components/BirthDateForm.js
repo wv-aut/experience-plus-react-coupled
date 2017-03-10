@@ -6,7 +6,21 @@ class BirthDateForm extends Component {
 
   _getOptions (count = null) {
     let option = []
-    let months = [ '', 'Jänner', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember' ]
+    let months = [
+      '',
+      'Jänner',
+      'Februar',
+      'März',
+      'April',
+      'Mai',
+      'Juni',
+      'Juli',
+      'August',
+      'September',
+      'Oktober',
+      'November',
+      'Dezember'
+    ]
     for (let i = 1; i <= count; i++) {
       option.push(<option key={i} value={i < 10 ? '0' + i : i}>{count === 12 ? months[i] : i}</option>)
     }
@@ -30,7 +44,7 @@ class BirthDateForm extends Component {
     }
   }
 
-  renderTaxOptOutForCompany (isCompany = false) {
+  renderTaxOptOutForCompany (companyName = false) {
     return (
       <div className='form-row radio'>
         <ul>
@@ -41,13 +55,15 @@ class BirthDateForm extends Component {
                 data-form='taxOptOut'
                 defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'true'}
                 value='true'
-                onChange={(e) => this.props.changeTaxOptOutInput(e, this.props)}
+                onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                 name='tax-opt-out'
               />
-              {isCompany &&
-                <p>Ihre Daten sind bei uns als Firma angelegt. Diese Spenden sind auch weiterhin als Betriebsausgaben zu berücksichtigen und sind nicht von der Übermittlungspflicht erfasst. Sie erhalten in Zukunft automatisch eine Jahresspendenbestätigung</p>
+              {companyName &&
+                <p>Ich möchte meine Spenden auch weiterhin als Betriebsausgaben berücksichtigen.
+                  Sie sind daher nicht von der Übermittlungspflicht erfasst.
+                  Sie erhalten in Zukunft automatisch eine Jahresspendenbestätigung.</p>
               }
-              {!isCompany &&
+              {!companyName &&
                 <p>Nein, ich möchte meine Spenden nicht absetzen und mache von meinem Widerrufsrecht Gebrauch.</p>
               }
               <div className='check'>
@@ -64,7 +80,7 @@ class BirthDateForm extends Component {
     return (
       <div>
         {this.props.user.dataTemp.companyName &&
-          this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)}
+          this.renderTaxOptOutForCompany(this.props.user.data.companyName)}
         <div className='form-row radio'>
           <ul>
             <li>
@@ -74,11 +90,11 @@ class BirthDateForm extends Component {
                   data-form='taxOptOut'
                   defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'false'}
                   value='false'
-                  onChange={(e) => this.props.changeTaxOptOutInput(e, this.props)}
+                  onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                   name='tax-opt-out'
                 />
                 {this.props.user.dataTemp.companyName &&
-                  <p>Ich möchte doch lieber meine Spenden privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder aus.</p>
+                  <p>Ich möchte doch meine Spenden in Zukunft privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder zusammen mit Ihrem Geburtsdatum aus:</p>
                 }
                 {!this.props.user.dataTemp.companyName &&
                   <p>Ja, ich stimme der automatischen Spendenabsetzbarkeit zu. Bitte geben Sie dafür Ihr Geburtsdatum bekannt:</p>
@@ -151,7 +167,7 @@ class BirthDateForm extends Component {
 BirthDateForm.propTypes = {
   changeDate: React.PropTypes.func,
   changeInput: React.PropTypes.func,
-  changeTaxOptOutInput: React.PropTypes.func,
+  changeInputWithValidation: React.PropTypes.func,
   user: React.PropTypes.object,
   location: React.PropTypes.object
 }
