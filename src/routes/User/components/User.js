@@ -51,18 +51,24 @@ class User extends Component {
    * @return {string}
    */
   createSalutationString (salutationMode = true) {
-    let salutationString = 'Sehr geehrter Spender'
-    const { lastName, salutationCode } = this.props.user.data
-    if (lastName) {
+    let salutationString = ''
+    const { lastName, firstName, salutationCode } = this.props.user.data
+    if (lastName && firstName) {
       switch (salutationCode) {
+        case '0':
+          salutationString = ''
+          break
+        case 'COMPANY':
+          salutationString = ''
+          break
         case '4':
-          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Familie ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrte ' : ', '}Familie ${lastName},`
           break
         case '14':
-          salutationString = `${salutationMode ? 'Sehr geehrte ' : ''}Frau${' ' + this.getTitleText()} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrte Frau ' + this.getTitleText() + lastName : ', ' + firstName + ' ' + lastName},`
           break
         case '61':
-          salutationString = `${salutationMode ? 'Sehr geehrter ' : ''}Herr${' ' + this.getTitleText()} ${lastName}`
+          salutationString = `${salutationMode ? 'Sehr geehrter Herr ' + this.getTitleText() + lastName : ', ' + firstName + ' ' + lastName},`
           break
       }
     }
@@ -124,7 +130,7 @@ class User extends Component {
                   <label className={'grid-12-8 ' + (this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'required')}>
                     <span>{DESCRIPTION.SALUTATION}</span>
                     <select
-                      onChange={this.props.changeInput}
+                      onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form='salutationCode'
                       data-required={this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'true'}
                       className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode, this.props.user.dataTemp.salutationCode === '4' && this.props.user.data.taxOptOut ? '1' : '5')}
@@ -148,7 +154,7 @@ class User extends Component {
                   <label className={'grid-12-6 ' + (this._checkIfFieldisRequired(API.FIRST_NAME) && 'required')}>
                     <span>{DESCRIPTION.FIRST_NAME}:</span>
                     <input
-                      onChange={this.props.changeInput}
+                      onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form={API.FIRST_NAME}
                       data-required={this._checkIfFieldisRequired(API.FIRST_NAME) && 'true'}
                       className={this._checkIfFieldisRequired(API.FIRST_NAME) && showErrorMessage(this.props.user.data[API.FIRST_NAME])}
@@ -160,7 +166,7 @@ class User extends Component {
                   <label className={'grid-12-6 ' + (this._checkIfFieldisRequired(API.LAST_NAME) && 'required')}>
                     <span>{DESCRIPTION.LAST_NAME}:</span>
                     <input
-                      onChange={this.props.changeInput}
+                      onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form={API.LAST_NAME}
                       data-required={this._checkIfFieldisRequired(API.LAST_NAME) && 'true'}
                       className={this._checkIfFieldisRequired(API.LAST_NAME) && showErrorMessage(this.props.user.data[API.LAST_NAME])}
@@ -196,23 +202,24 @@ class User extends Component {
                   bitten wir Sie zu entscheiden, wer von Ihnen beiden die Spenden absetzen möchte. Dies gilt für alle Spenden die
                   Sie ab 1.1.2017 tätigen.</p>
                 }
-               {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode !== '4' &&
-                 <p className='warning-bg'>Ich, {this.createSalutationString(false)}, bestätige hiermit,
+               {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode !== '4' && !this.props.user.data.companyName &&
+                 <p className='warning-bg'>Ich{this.createSalutationString(false)} bestätige hiermit,
                   dass ich von meinem Widerrufsrecht Gebrauch mache und dadurch meine Spenden bei World Vision nicht mehr steuerlich absetzen kann.</p> 
                 } 
                 {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode === '4' &&
-                 <p className='warning-bg'>Wir, {this.createSalutationString(false)}, bestätigen hiermit,
+                 <p className='warning-bg'>Wir{this.createSalutationString(false)} bestätigen hiermit,
                   dass wir von unserem Widerrufsrecht Gebrauch machen und dadurch unsere Spenden bei World Vision nicht mehr steuerlich absetzen können.</p> 
                 } 
-              {this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>bestätigen Sie Ihre Daten</strong>,
-                damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können.
+
+              {this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>bestätigen Sie Ihre Daten</strong>,
+                damit Sie in Zukunft Ihre Spenden steuerlich absetzen können.
               <button
                 onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
                >
                 <span>DATEN BESTÄTIGEN UND SPENDEN-BESTÄTIGUNG AUFRUFEN</span></button>
               </p>}
-              {!this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()}, bitte <strong>vervollständigen das Formular</strong>,
-                damit Sie auch in Zukunft Ihre Spenden steuerlich absetzen können:
+              {!this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>vervollständigen das Formular</strong>,
+                damit Sie in Zukunft Ihre Spenden steuerlich absetzen können:
               <button
                 className='button disabled'>
                 <span>DATEN BESTÄTIGEN UND SPENDEN-BESCHEINIGUNG AUFRUFEN</span>
@@ -224,7 +231,12 @@ class User extends Component {
                 className={!this.isFormCompleted() && 'button disabled'}
                 onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
                >
-                <span>WIDERRUF BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span></button>
+                {!this.props.user.data.companyName
+                ? <span>WIDERRUF BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span>
+                : <span>SPENDENBESTÄTIGUNG AUFRUFEN</span>
+                  
+                }
+                </button>
               </p>}
         
             </aside>
@@ -244,6 +256,7 @@ User.propTypes = {
   location: React.PropTypes.object.isRequired,
   fetchUserProfile: React.PropTypes.func.isRequired,
   changeInput: React.PropTypes.func.isRequired,
+  changeInputWithValidation: React.PropTypes.func.isRequired,
   userDataValidation: React.PropTypes.func.isRequired,
   confirmUserForm: React.PropTypes.func.isRequired,
   _validateEmail: React.PropTypes.func,
