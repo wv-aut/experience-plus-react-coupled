@@ -1,35 +1,39 @@
 #css-root {
 
     .paper {
-    position: relative;
-    box-shadow: 3px 3px 5px 3px #BBBBB9;
-    padding: 2rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
+        position: relative !important;
+        box-shadow: 3px 3px 5px 3px #BBBBB9;
+        padding: 2rem !important;
 
-    > div {
-        clear: both;
-        width: 100%;
-        &.right {
-            text-align: right;
-        }
-    }
-
-    h1 {
-            line-height: 3rem;
+        p {
+            font-family: Arial, Helvetica, sans-serif !important;
+            font-size: 14px !important;
+            line-height: 18px !important;
+            margin: 0;
         }
 
-    p.right {
-        text-align: right;
-    }
+        h1, h2, h3, h4 {
+                font-size: 20px !important;
+                line-height: 20px !important;
+                margin: 24px 0;
+            }
 
+        > div {
+            clear: both !important;
+            width: 100% !important;
+            &.right {
+                text-align: right !important;
+            }
+        }
 
+        p.right {
+            text-align: right !important;
+        }
 
-    .sender {
-        color: #8B8B8B;
-        font-size: 12px;
-    }
-
+        .sender {
+            color: #8B8B8B !important;
+            font-size: 12px !important;
+        }
     }
 
     @media screen and (max-width: 40em) {
@@ -45,31 +49,34 @@
             padding: 0 !important;
             margin: 0 !important
         }
-        #toolbar, #header-container, #footer-container, #top-bar-line {
-            display: none;
+        #toolbar, #header-container, .footer-container, .white-container, #top-bar-line {
+            display: none !important;
         }
 
         section {
             width: 100% !important;
-            padding: 0;
+            padding: 0 !important;
         }
         .paper {
             width: 100%;
             box-shadow: none !important;
-            display: block !important;
+            display: block;
 
             p {
-                font-size: 14px;
-                line-height: 1rem;
+                font-size: 14px !important;
+                line-height: 18px !important;
+                margin: 0;
 
                 &.sender {
-                    font-size: 12px;
+                    font-size: 12px !important;
                 }
             }
 
             h1, h2, h3, h4 {
-                font-weight: bold;
-            }
-        
+                font-weight: bold !important;
+                font-size: 20px;
+                line-height: 20px;
+                margin: 6px 0;
+            }        
         }
 }
