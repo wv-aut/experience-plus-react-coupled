@@ -18,7 +18,6 @@ import { API_URL } from 'config/obelix.config'
 
 // API Request
 export function fetchApiKey (tempKey) {
-  
   return dispatch => {
     dispatch(requestApiKey(tempKey))
     const header = new Headers({
@@ -45,16 +44,14 @@ export function fetchApiKey (tempKey) {
           } else {
             return dispatch(tempKeyIsExpired())
           }
-        }
-            )
-            .then(auth => {
-              dispatch(fetchUserProfile(auth.apiKey, auth.partnerID))
-            })
-            .catch(err => {
-              console.log(err)
-              return dispatch(networkError())
-            }
-          )
+        })
+        .then(auth => {
+          dispatch(fetchUserProfile(auth.apiKey, auth.partnerID))
+        })
+        .catch(err => {
+          console.log(err.message)
+          return dispatch(networkError())
+        })
   }
 }
 
