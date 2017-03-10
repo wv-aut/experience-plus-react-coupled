@@ -50,6 +50,9 @@ export function fetchUserProfile (apiKey, partnerID) {
         })
         .then(json => {
           if (json.status !== 401) {
+            if (json.data.attributes.companyName) {
+              json.data.attributes.taxOptOut = true
+            }
             return dispatch(receiveUserProfile(json.data.attributes, dispatch))
           }
         }
@@ -144,7 +147,7 @@ function titleTextToTitleCode (titleText) {
   }
 }
 
-export function changeTaxOptOutInput (event, props) {
+export function changeInputWithValidation (event, props) {
   return dispatch => {
     dispatch(changeInput(event))
     dispatch(userDataValidation(props))
@@ -200,7 +203,7 @@ export function _isValue (value, field = '', taxOptOut = false) {
       }
     }
   }
-  if (value === 0 || value === '0' || value === '' || value === null || value === '00' || value === '0000') {
+  if (value === 0 || value === '0' || value === '' || value === null || value === '00' || value === '0000' || value === '0000-00-00') {
     return false
   } else {
     return true
