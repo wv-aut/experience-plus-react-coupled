@@ -6,7 +6,7 @@ import { fetchUserProfile,
   sendUserProfileUpdate,
   titleTextToTitleCode,
   changeTitleInput,
-  changeTaxOptOutInput } from '../modules/user'
+  changeInputWithValidation } from '../modules/user'
 
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
@@ -27,7 +27,7 @@ const mapDispatchToProps = {
   sendUserProfileUpdate,
   titleTextToTitleCode,
   changeTitleInput,
-  changeTaxOptOutInput
+  changeInputWithValidation
 }
 
 const mapStateToProps = (state) => ({
