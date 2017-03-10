@@ -9,7 +9,7 @@
   }
 
     .container {
-      lost-align: middle-center;
+      position: relative;
       min-height: 500px;
       height: 100%;
       width: 100%;
@@ -22,7 +22,15 @@
     }
 
     .content {
-      lost-center: 550px;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%);
+      max-width: 550px;
+      margin-left: auto;
+      margin-right: auto;
 
 
       h1, h2, h3, h4, p {
@@ -35,7 +43,6 @@
         width: 100%;
         padding: 1rem;
       }
-
     }
 
     @keyframes loading {
@@ -53,7 +60,7 @@
     .loading {
       margin: auto;
       display: block;
-      -webkit-transform:scale(0.71)
+      -webkit-transform:scale(0.71);
     }
 
     .loading > div {
