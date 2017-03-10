@@ -12,9 +12,21 @@ export function _locationToObjectKey (location) {
 
 export const FORM_ELEMENTS = {
   [_locationToObjectKey(TAX_RECEIPT_PROFILE_ROUTE)]: {
-    [API.FIRST_NAME]: true,
-    [API.LAST_NAME]: true,
-    [API.SALUTATION_CODE]: true,
+    [API.FIRST_NAME]: {
+      [API.TAX_OPTOUT]: {
+        value: false
+      }
+    },
+    [API.LAST_NAME]: {
+      [API.TAX_OPTOUT]: {
+        value: false
+      }
+    },
+    [API.SALUTATION_CODE]: {
+      [API.TAX_OPTOUT]: {
+        value: false
+      }
+    },
     [API.EMAIL]: true,
     [API.TAX_OPTOUT]: true,
     [API.BIRTH_DATE]: {
@@ -61,7 +73,7 @@ export function showErrorMessage (value, minValue = false, maxValue = false, ema
   let addClass = 'ok'
   if (minValue) { addClass = (Number(value) <= minValue) ? 'error' : 'ok' }
   if (maxValue) { addClass = (Number(value) >= maxValue) ? 'error' : 'ok' }
-  if (typeof value === 'undefined' || value === '' || value === 0 || value === '0' || value === '00' || value === '0000' || value === '0000-00-00') {
+  if (typeof value === 'undefined' || value === '' || value === 0 || value === '0' || value === '00' || value === '0000' || value === '0000-00-00' || value === 'COMPANY') {
     addClass = 'error'
   }
   if (email) {
