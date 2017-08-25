@@ -2,6 +2,11 @@
 // Constants
 // ------------------------------------
 
+import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
+import { API } from '../config/formFields.config'
+import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
+import { API_URL, TITLES } from 'config/obelix.config'
+
 export const REQUEST_USER_PROFILE = 'REQUEST_USER_PROFILE'
 export const RECEIVE_USER_PROFILE = 'RECEIVE_USER_PROFILE'
 export const CHANGE_SALUTATION = 'CHANGE_SALUTATION'
@@ -12,12 +17,6 @@ export const CONFIRM_USER_FORM = 'CONFIRM_USER_FORM'
 export const REQUEST_USER_PROFILE_UPDATE = 'REQUEST_USER_PROFILE_UPDATE'
 export const CONFIRM_USER_PROFILE_UPDATE = 'CONFIRM_USER_PROFILE_UPDATE'
 export const TITLE_TEXT_TO_TITLE_CODE = 'TITLE_TEXT_TO_TITLE_CODE'
-
-import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
-import { API } from '../config/formFields.config'
-import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
-
-import { API_URL, TITLES } from 'config/obelix.config'
 
 // ------------------------------------
 // Actions User
