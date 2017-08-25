@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import { PROGRESS } from '../../config/routes.config'
 import './progress.scss'
@@ -27,7 +28,7 @@ const ProgressItems = (props) => {
 }
 
 ProgressItems.propTypes = {
-  path: React.PropTypes.string.isRequired
+  path: PropTypes.string.isRequired
 }
 
 export const Progress = (props) => {
@@ -42,7 +43,7 @@ export const Progress = (props) => {
 }
 
 Progress.propTypes = {
-  location: React.PropTypes.object.isRequired
+  location: PropTypes.object.isRequired
 }
 
 export default Progress

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import './User.scss'
 import Progress from '../../components/Progress/Progress'
 import Overlay from 'components/Overlay/components/Overlay'
@@ -250,19 +251,19 @@ class User extends Component {
 }
 
 User.propTypes = {
-  children : React.PropTypes.element,
-  user: React.PropTypes.object.isRequired,
-  router: React.PropTypes.object.isRequired,
-  location: React.PropTypes.object.isRequired,
-  fetchUserProfile: React.PropTypes.func.isRequired,
-  changeInput: React.PropTypes.func.isRequired,
-  changeInputWithValidation: React.PropTypes.func.isRequired,
-  userDataValidation: React.PropTypes.func.isRequired,
-  confirmUserForm: React.PropTypes.func.isRequired,
-  _validateEmail: React.PropTypes.func,
-  sendUserProfileUpdate: React.PropTypes.func,
-  changeTitleInput: React.PropTypes.func,
-  auth: React.PropTypes.object
+  children : PropTypes.element,
+  user: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  fetchUserProfile: PropTypes.func.isRequired,
+  changeInput: PropTypes.func.isRequired,
+  changeInputWithValidation: PropTypes.func.isRequired,
+  userDataValidation: PropTypes.func.isRequired,
+  confirmUserForm: PropTypes.func.isRequired,
+  _validateEmail: PropTypes.func,
+  sendUserProfileUpdate: PropTypes.func,
+  changeTitleInput: PropTypes.func,
+  auth: PropTypes.object
 }
 
 export default User

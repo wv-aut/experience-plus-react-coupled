@@ -1,4 +1,5 @@
 import { fetchUserProfile } from '../routes/User/modules/user'
+import { API_URL } from 'config/obelix.config'
 
 // ------------------------------------
 // Constants
@@ -9,8 +10,7 @@ const REQUEST_NEW_TEMP_KEY = 'REQUEST_NEW_TEMP_KEY'
 const NEW_TEMP_KEY_SENT = 'NEW_TEMP_KEY_SENT'
 const TEMP_KEY_IS_EXPIRED = 'TEMP_KEY_IS_EXPIRED'
 const NETWORK_ERROR = 'NETWORK_ERROR'
-
-import { API_URL } from 'config/obelix.config'
+const UNKNOW_TEMP_KEY = 'UNKNOW_TEMP_KEY'
 
 // ------------------------------------
 // Actions
@@ -32,6 +32,7 @@ export function fetchApiKey (tempKey) {
     const request = new Request(`${API_URL}auth/apiKey`, init)
     return fetch(request)
         .then(response => {
+          console.log(response)
           if (response.status === 200) {
             return response.json()
           } else if (response.status === 401) {
@@ -39,9 +40,11 @@ export function fetchApiKey (tempKey) {
           }
         })
         .then(json => {
+          console.log(json)
           if (json.apiKey) {
             return dispatch(receiveApiKey(json.apiKey, json.partner_id))
           } else {
+            console.log(json)
             return dispatch(tempKeyIsExpired())
           }
         })
@@ -58,6 +61,12 @@ export function fetchApiKey (tempKey) {
 function networkError () {
   return {
     type: NETWORK_ERROR
+  }
+}
+
+function unknownTempKey () {
+  return {
+    type: UNKNOW_TEMP_KEY
   }
 }
 
@@ -109,7 +118,10 @@ export function sendNewTempKeyRequest (tempKey) {
     .then(json => {
       dispatch(requestNewTempKeySent(json))
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      dispatch(unknownTempKey())
+      console.log(err)
+    })
   }
 }
 
@@ -142,10 +154,9 @@ const ACTION_HANDLERS_AUTH = {
   [TEMP_KEY_IS_EXPIRED]: (state, action) => {
     return Object.assign({}, state, { tempKeyIsExpired: true, isFetching: false, apiKey: '' })
   },
-  [NETWORK_ERROR]: (state, action) => Object.assign({}, state, { networkError: true })
+  [NETWORK_ERROR]: (state, action) => Object.assign({}, state, { networkError: true }),
+  [UNKNOW_TEMP_KEY]: (state, action) => Object.assign({}, state, { unknownTempKey: true })
 }
-
-
 // ------------------------------------
 // Reducer
 // ------------------------------------

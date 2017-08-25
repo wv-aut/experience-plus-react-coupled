@@ -1,5 +1,6 @@
 import React from 'react'
 import './Overlay.scss'
+import PropTypes from 'prop-types'
 
 const Overlay = (props) => {
   return (
@@ -36,6 +37,10 @@ const Overlay = (props) => {
     </div>
   )
 }
+
+Overlay.propTypes = {
+  header: PropTypes.string.isRequired,
+  subheader: PropTypes.string.isRequired
+}
+
 export default Overlay
-
-

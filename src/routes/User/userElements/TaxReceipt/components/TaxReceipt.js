@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
+import PropTypes from 'prop-types'
 import './TaxReceipt.scss'
 
 function renderSalutation (dataTemp, inAddress = true) {
@@ -19,7 +20,6 @@ function renderSalutation (dataTemp, inAddress = true) {
       </span>
   }
 }
-
 function formatDonation (amount) {
   let donation = amount || '0'
   const size = donation.length
@@ -98,7 +98,7 @@ export const TaxReceipt = (props) => {
 }
 
 TaxReceipt.propTypes = {
-  dataTemp: React.PropTypes.object.isRequired
+  dataTemp: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state) => ({

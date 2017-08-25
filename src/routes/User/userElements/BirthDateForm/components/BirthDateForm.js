@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { API } from '../../../config/formFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../../../config/requiredFields.config'
 
@@ -165,11 +166,11 @@ class BirthDateForm extends Component {
 }
 
 BirthDateForm.propTypes = {
-  changeDate: React.PropTypes.func,
-  changeInput: React.PropTypes.func,
-  changeInputWithValidation: React.PropTypes.func,
-  user: React.PropTypes.object,
-  location: React.PropTypes.object
+  changeDate: PropTypes.func,
+  changeInput: PropTypes.func,
+  changeInputWithValidation: PropTypes.func,
+  user: PropTypes.object,
+  location: PropTypes.object
 }
 
 export default BirthDateForm

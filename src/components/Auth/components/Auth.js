@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import Overlay from '../../Overlay/components/Overlay'
 import '../Auth.scss'
 
 class Auth extends Component {
-
   static propTypes = {
-    auth: React.PropTypes.object.isRequired,
-    tempKeyIsExpired: React.PropTypes.bool,
-    sendNewTempKeyRequest: React.PropTypes.func,
-    newTempKeyBy: React.PropTypes.string
+    auth: PropTypes.object.isRequired,
+    tempKeyIsExpired: PropTypes.bool,
+    sendNewTempKeyRequest: PropTypes.func,
+    newTempKeyBy: PropTypes.string,
+    unknownTempKey: PropTypes.string
   }
 
   render () {
@@ -17,6 +18,13 @@ class Auth extends Component {
       message = <Overlay
         header='Leider konnten wir Ihre Daten nicht aufrufen.'
         subheader='Es besteht derzeit ein Netzwerkproblem. Bitte versuchen Sie es später noch einmal.'
+        text='Sollte dieses Problem länger bestehen, bitten wir Sie, mit uns in Verbindung zu treten.'
+        icon='loading'
+        mode='stop' />
+    } else if (this.props.auth.unknownTempKey) {
+      message = <Overlay
+        header='Leider ist Ihr Link nicht mehr gültig.'
+        subheader='Wenn Sie Ihre persönlichen Daten aktualisieren möchten, oder Ihre Spendenbescheinigung für das Jahr 2016 benötigen, senden Sie uns bitte eine E-Mail an <a href="mailto:info@worldvision.at">info@worldvision.at</a> oder rufen Sie uns an unter 01 522 14 22'
         text='Sollte dieses Problem länger bestehen, bitten wir Sie, mit uns in Verbindung zu treten.'
         icon='loading'
         mode='stop' />
@@ -32,11 +40,11 @@ class Auth extends Component {
        />
       } else if (this.props.auth.isFetching) {
         message = <Overlay
-        header='Einen Moment bitte...'
-        text=''
-        icon='loading'
-        mode='run' />
-
+          header='Einen Moment bitte...'
+          subheader=''
+          text=''
+          icon='loading'
+          mode='run' />
       } else if (this.props.auth.tempKey === null) {
         message = message = <Overlay
           header='Sie haben keinen Berechtigung für diese Seite'
@@ -46,11 +54,11 @@ class Auth extends Component {
        />
       } else {
         message = <Overlay
-        header={`Wir haben Ihnen einen neuen Zugangslink an ${this.props.auth.tempKeySentToEmail} gesendet.`}
-        subheader='Sollten Sie diese E-Mail nicht erhalten, oder wenn Sie generelle Probleme mit dieser Seite haben, kontaktieren Sie bitte unsere Spender- und Patenbetreuung.'
-        text=''
-        icon='email'
-        mode='stop' />
+          header={`Wir haben Ihnen einen neuen Zugangslink an ${this.props.auth.tempKeySentToEmail} gesendet.`}
+          subheader='Sollten Sie diese E-Mail nicht erhalten, oder wenn Sie generelle Probleme mit dieser Seite haben, kontaktieren Sie bitte unsere Spender- und Patenbetreuung.'
+          text=''
+          icon='email'
+          mode='stop' />
       }
     }
 
