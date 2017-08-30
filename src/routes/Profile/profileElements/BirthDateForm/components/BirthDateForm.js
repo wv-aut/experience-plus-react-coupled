@@ -29,7 +29,7 @@ class BirthDateForm extends Component {
   }
 
   _checkIfFieldisRequired (fieldname) {
-    return checkIfFieldIsRequired(fieldname, this.props.user.data, this.props.location.pathname)
+    return checkIfFieldIsRequired(fieldname, this.props.profile.data, this.props.location.pathname)
   }
 
   /**
@@ -54,7 +54,7 @@ class BirthDateForm extends Component {
               <input
                 type='radio'
                 data-form='taxOptOut'
-                defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'true'}
+                defaultChecked={this._checkIfBoolean(this.props.profile.data.taxOptOut) === 'true'}
                 value='true'
                 onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                 name='tax-opt-out'
@@ -80,8 +80,8 @@ class BirthDateForm extends Component {
   render () {
     return (
       <div>
-        {this.props.user.dataTemp.companyName &&
-          this.renderTaxOptOutForCompany(this.props.user.data.companyName)}
+        {this.props.profile.dataTemp.companyName &&
+          this.renderTaxOptOutForCompany(this.props.profile.data.companyName)}
         <div className='form-row radio'>
           <ul>
             <li>
@@ -89,15 +89,15 @@ class BirthDateForm extends Component {
                 <input
                   type='radio'
                   data-form='taxOptOut'
-                  defaultChecked={this._checkIfBoolean(this.props.user.data.taxOptOut) === 'false'}
+                  defaultChecked={this._checkIfBoolean(this.props.profile.data.taxOptOut) === 'false'}
                   value='false'
                   onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                   name='tax-opt-out'
                 />
-                {this.props.user.dataTemp.companyName &&
+                {this.props.profile.dataTemp.companyName &&
                   <p>Ich möchte doch meine Spenden in Zukunft privat als Sonderausgabe absetzen. Bitte füllen Sie die unten angeführten Felder zusammen mit Ihrem Geburtsdatum aus:</p>
                 }
-                {!this.props.user.dataTemp.companyName &&
+                {!this.props.profile.dataTemp.companyName &&
                   <p>Ja, ich stimme der automatischen Spendenabsetzbarkeit zu. Bitte geben Sie dafür Ihr Geburtsdatum bekannt:</p>
                 }
                 <div className='check'>
@@ -112,13 +112,13 @@ class BirthDateForm extends Component {
             <span>Tag:</span>
             <select
               data-dateelement='day'
-              data-fulldate={this.props.user.data.birthdate}
+              data-fulldate={this.props.profile.data.birthdate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
               className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
-                showErrorMessage(this.props.user.data.birthdate.split('-')[2])
+                showErrorMessage(this.props.profile.data.birthdate.split('-')[2])
               }
               onChange={this.props.changeDate}
-              value={this.props.user.data.birthdate.split('-')[2]}>
+              value={this.props.profile.data.birthdate.split('-')[2]}>
               <option value='00'>Tag</option>
               {this._getOptions(31)}
             </select>
@@ -128,13 +128,13 @@ class BirthDateForm extends Component {
             <span className={this._checkIfFieldisRequired(API.BIRTH_DATE)}>Monat:</span>
             <select
               data-dateelement='month'
-              data-fulldate={this.props.user.data.birthdate}
+              data-fulldate={this.props.profile.data.birthdate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
               className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
-                showErrorMessage(this.props.user.data.birthdate.split('-')[1])
+                showErrorMessage(this.props.profile.data.birthdate.split('-')[1])
               }
               onChange={this.props.changeDate}
-              value={this.props.user.data.birthdate.split('-')[1]}>
+              value={this.props.profile.data.birthdate.split('-')[1]}>
               <option value='00'>Monat</option>
               {this._getOptions(12)}
             </select>
@@ -144,21 +144,21 @@ class BirthDateForm extends Component {
             <span>Jahr:</span>
             <input
               data-dateelement='year'
-              data-fulldate={this.props.user.data.birthdate}
+              data-fulldate={this.props.profile.data.birthdate}
               data-required={this._checkIfFieldisRequired(API.BIRTH_DATE)}
               className={this._checkIfFieldisRequired(API.BIRTH_DATE) &&
-                showErrorMessage(this.props.user.data.birthdate.split('-')[0], 1900, 2010)
+                showErrorMessage(this.props.profile.data.birthdate.split('-')[0], 1900, 2010)
               }
               onChange={this.props.changeDate}
               maxLength='4'
               type='number'
               name='birth-year'
-              defaultValue={this.props.user.data.birthdate.split('-')[0]} />
+              defaultValue={this.props.profile.data.birthdate.split('-')[0]} />
             <span className='error'>Bitte tragen Sie Ihr Geburts-Jahr ein.</span>
           </label>
         </div>
-        {!this.props.user.dataTemp.companyName &&
-          this.renderTaxOptOutForCompany(this.props.user.data.registeredCompany)
+        {!this.props.profile.dataTemp.companyName &&
+          this.renderTaxOptOutForCompany(this.props.profile.data.registeredCompany)
         }
       </div>
     )
@@ -169,7 +169,7 @@ BirthDateForm.propTypes = {
   changeDate: PropTypes.func,
   changeInput: PropTypes.func,
   changeInputWithValidation: PropTypes.func,
-  user: PropTypes.object,
+  profile: PropTypes.object,
   location: PropTypes.object
 }
 

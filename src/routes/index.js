@@ -1,9 +1,9 @@
 // We only need to import the modules necessary for initial render
 import CoreLayout from '../layouts/CoreLayout/CoreLayout'
 import NotFound from './NotFound/components/NotFound'
-import User from './User'
+import Profile from './Profile'
 import Home from './Home'
-import TaxReceipt from './User/userElements/TaxReceipt/components/TaxReceipt'
+import TaxReceipt from './Profile/profileElements/TaxReceipt/components/TaxReceipt'
 import { TAX_RECEIPT_PROFILE_ROUTE, TAX_RECEIPT_PRINT_ROUTE } from './config/routes.config'
 
 
@@ -16,7 +16,7 @@ export const createRoutes = (store) => ({
   indexRoute  : Home,
   childRoutes : [
     { path: TAX_RECEIPT_PROFILE_ROUTE,
-      component: User,
+      component: Profile,
       childRoutes : [
         { path: TAX_RECEIPT_PRINT_ROUTE,
           component: TaxReceipt,
@@ -38,7 +38,7 @@ export const createRoutes = (store) => ({
       require.ensure([], (require) => {
         cb(null, [
           // Remove imports!
-          require('./User').default(store)
+          require('./Profile').default(store)
         ])
       })
     }

@@ -1,4 +1,4 @@
-import { fetchUserProfile } from '../routes/User/modules/user'
+import { fetchProfileProfile } from '../routes/Profile/modules/profile'
 import { API_URL } from 'config/obelix.config'
 
 // ------------------------------------
@@ -49,7 +49,7 @@ export function fetchApiKey (tempKey) {
           }
         })
         .then(auth => {
-          dispatch(fetchUserProfile(auth.apiKey, auth.partnerID))
+          dispatch(fetchProfileProfile(auth.apiKey, auth.partnerID))
         })
         .catch(err => {
           console.log(err.message)

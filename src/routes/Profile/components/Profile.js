@@ -1,21 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import './User.scss'
+import './Profile.scss'
 import Progress from '../../components/Progress/Progress'
 import Overlay from 'components/Overlay/components/Overlay'
 
-import BirthDateForm from '../userElements/BirthDateForm'
+import BirthDateForm from '../profileElements/BirthDateForm'
 import { SALUTATION_CODE, TITLES } from 'config/obelix.config'
 import { API, DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/formFields.config'
 import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
 import { TAX_RECEIPT_PROFILE_ROUTE } from '../../config/routes.config'
 
 
-class User extends Component {
+class Profile extends Component {
 
   componentWillReceiveProps (nextProps) {
-    if (typeof this.props.user.data === 'undefined' && typeof nextProps.user.data === 'object') {
-      this.props.userDataValidation(nextProps)
+    if (typeof this.props.profile.data === 'undefined' && typeof nextProps.profile.data === 'object') {
+      this.props.profileDataValidation(nextProps)
     }
   }
 
@@ -24,7 +24,7 @@ class User extends Component {
     for (var prop in SALUTATION_CODE) {
       salutations.push(<option key={prop} value={prop}>{SALUTATION_CODE[prop]}</option>)
     }
-    if (this.props.user.data.taxOptOut === true && this.props.user.dataTemp.salutationCode === '4') {
+    if (this.props.profile.data.taxOptOut === true && this.props.profile.dataTemp.salutationCode === '4') {
       salutations.push(<option key='4' value='4'>Familie</option>)
     }
     return salutations
@@ -32,11 +32,11 @@ class User extends Component {
 
   getTitleText () {
     let title = ''
-    if (this.props.user.data.titleText) {
-      title = this.props.user.data.titleText
+    if (this.props.profile.data.titleText) {
+      title = this.props.profile.data.titleText
     } else {
       for (let i = 0; i < TITLES.length; i++) {
-        if (TITLES[i]['code'] === this.props.user.data.titleCode) {
+        if (TITLES[i]['code'] === this.props.profile.data.titleCode) {
           title = TITLES[i]['description']
         }
       }
@@ -53,7 +53,7 @@ class User extends Component {
    */
   createSalutationString (salutationMode = true) {
     let salutationString = ''
-    const { lastName, firstName, salutationCode } = this.props.user.data
+    const { lastName, firstName, salutationCode } = this.props.profile.data
     if (lastName && firstName) {
       switch (salutationCode) {
         case '0':
@@ -77,26 +77,26 @@ class User extends Component {
   }
 
   /**
-   * Checks if user can go to the next item
+   * Checks if profile can go to the next item
    * @param {object} json
    * @return {boolean} true if active false if not active
    */
   isFormCompleted () {
-    return !this.props.user.errorArray.length
+    return !this.props.profile.errorArray.length
   }
 
   _checkIfFieldisRequired (fieldname) {
-    return checkIfFieldIsRequired(fieldname, this.props.user.data, this.props.location.pathname)
+    return checkIfFieldIsRequired(fieldname, this.props.profile.data, this.props.location.pathname)
   }
 
   render () {
     if (this.props.auth.networkError) {
       return null
     }
-    if (!this.props.user.data) {
+    if (!this.props.profile.data) {
       return null
     }
-    if (typeof this.props.user.errorArray === 'undefined' || this.props.user.isFetching) {
+    if (typeof this.props.profile.errorArray === 'undefined' || this.props.profile.isFetching) {
       return <Overlay
         header='Ihre Daten werden gespeichert.'
         icon='loading'
@@ -110,21 +110,21 @@ class User extends Component {
           <main className='main'>
             <section>
               <form className='form'>
-                {this.props.user.dataTemp.companyName &&
+                {this.props.profile.dataTemp.companyName &&
                   <div className='form-row'>
                     <label className='grid-1-all'>
                       <span>{DESCRIPTION.COMPANY}:</span>
                       <input
                         onBlur={this.props.changeInput}
                         data-form='companyName'
-                        className={showErrorMessage(this.props.user.data.companyName)}
+                        className={showErrorMessage(this.props.profile.data.companyName)}
                         type='text'
                         name='company-name'
-                        defaultValue={this.props.user.dataTemp.companyName} />
+                        defaultValue={this.props.profile.dataTemp.companyName} />
                     </label>
                   </div>
                   }
-                {this.props.user.dataTemp.companyName &&
+                {this.props.profile.dataTemp.companyName &&
                   <BirthDateForm location={this.props.location} />
                 }
                 <div className='form-row'>
@@ -134,8 +134,8 @@ class User extends Component {
                       onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form='salutationCode'
                       data-required={this._checkIfFieldisRequired(API.SALUTATION_CODE) && 'true'}
-                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.user.data.salutationCode, this.props.user.dataTemp.salutationCode === '4' && this.props.user.data.taxOptOut ? '1' : '5')}
-                      value={this.props.user.data.salutationCode}> >
+                      className={this._checkIfFieldisRequired(API.SALUTATION_CODE) && showErrorMessage(this.props.profile.data.salutationCode, this.props.profile.dataTemp.salutationCode === '4' && this.props.profile.data.taxOptOut ? '1' : '5')}
+                      value={this.props.profile.data.salutationCode}> >
                       {this.getSalutationOptions()}
                     </select>
                     <span className='error'>{FORM_ERRORS_DEFAULT.SALUTATION}</span>
@@ -158,10 +158,10 @@ class User extends Component {
                       onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form={API.FIRST_NAME}
                       data-required={this._checkIfFieldisRequired(API.FIRST_NAME) && 'true'}
-                      className={this._checkIfFieldisRequired(API.FIRST_NAME) && showErrorMessage(this.props.user.data[API.FIRST_NAME])}
+                      className={this._checkIfFieldisRequired(API.FIRST_NAME) && showErrorMessage(this.props.profile.data[API.FIRST_NAME])}
                       type='text'
                       name='first-name'
-                      defaultValue={this.props.user.data[API.FIRST_NAME]} />
+                      defaultValue={this.props.profile.data[API.FIRST_NAME]} />
                     <span className='error'>{FORM_ERRORS_DEFAULT.FIRST_NAME}</span>
                   </label>
                   <label className={'grid-12-6 ' + (this._checkIfFieldisRequired(API.LAST_NAME) && 'required')}>
@@ -170,10 +170,10 @@ class User extends Component {
                       onChange={(e) => this.props.changeInputWithValidation(e, this.props)}
                       data-form={API.LAST_NAME}
                       data-required={this._checkIfFieldisRequired(API.LAST_NAME) && 'true'}
-                      className={this._checkIfFieldisRequired(API.LAST_NAME) && showErrorMessage(this.props.user.data[API.LAST_NAME])}
+                      className={this._checkIfFieldisRequired(API.LAST_NAME) && showErrorMessage(this.props.profile.data[API.LAST_NAME])}
                       type='text'
                       name='last-name'
-                      defaultValue={this.props.user.data[API.LAST_NAME]} />
+                      defaultValue={this.props.profile.data[API.LAST_NAME]} />
                     <span className='error'>{FORM_ERRORS_DEFAULT.LAST_NAME}</span>
                   </label>
                 </div>
@@ -184,42 +184,42 @@ class User extends Component {
                       onChange={this.props.changeInput}
                       data-form={API.EMAIL}
                       data-required='true'
-                      className={showErrorMessage(this.props.user.data[API.EMAIL], false, false, true)}
+                      className={showErrorMessage(this.props.profile.data[API.EMAIL], false, false, true)}
                       type='email'
                       name='email'
-                      defaultValue={this.props.user.data[API.EMAIL]} />
+                      defaultValue={this.props.profile.data[API.EMAIL]} />
                     <span className='error'>{FORM_ERRORS_DEFAULT.EMAIL}</span>
                   </label>
                 </div>
-                {!this.props.user.dataTemp.companyName &&
+                {!this.props.profile.dataTemp.companyName &&
                   <BirthDateForm location={this.props.location} />
                 }
               </form>
               {/* Only show tax receipt when no errors are dedected */}
             </section>
             <aside>
-              {this.props.user.data.salutationCode === '4' &&
+              {this.props.profile.data.salutationCode === '4' &&
                 <p className='warning-bg'>Sie sind bei uns als Familie registriert. Da die Spenden in Zukunft immer einer Person zugeordnet sein muss,
                   bitten wir Sie zu entscheiden, wer von Ihnen beiden die Spenden absetzen möchte. Dies gilt für alle Spenden die
                   Sie ab 1.1.2017 tätigen.</p>
                 }
-               {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode !== '4' && !this.props.user.data.companyName &&
+               {this.isFormCompleted() && this.props.profile.data.taxOptOut && this.props.profile.data.salutationCode !== '4' && !this.props.profile.data.companyName &&
                  <p className='warning-bg'>Ich{this.createSalutationString(false)} bestätige hiermit,
                   dass ich von meinem Widerrufsrecht Gebrauch mache und dadurch meine Spenden bei World Vision nicht mehr steuerlich absetzen kann.</p> 
                 } 
-                {this.isFormCompleted() && this.props.user.data.taxOptOut && this.props.user.data.salutationCode === '4' &&
+                {this.isFormCompleted() && this.props.profile.data.taxOptOut && this.props.profile.data.salutationCode === '4' &&
                  <p className='warning-bg'>Wir{this.createSalutationString(false)} bestätigen hiermit,
                   dass wir von unserem Widerrufsrecht Gebrauch machen und dadurch unsere Spenden bei World Vision nicht mehr steuerlich absetzen können.</p> 
                 } 
 
-              {this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>bestätigen Sie Ihre Daten</strong>,
+              {this.isFormCompleted() && !this.props.profile.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>bestätigen Sie Ihre Daten</strong>,
                 damit Sie in Zukunft Ihre Spenden steuerlich absetzen können.
               <button
-                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
+                onClick={(e) => this.props.sendProfileProfileUpdate(e, this.props.auth.apiKey, this.props.profile.data, this.props.router)}
                >
                 <span>DATEN BESTÄTIGEN UND SPENDEN-BESTÄTIGUNG AUFRUFEN</span></button>
               </p>}
-              {!this.isFormCompleted() && !this.props.user.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>vervollständigen das Formular</strong>,
+              {!this.isFormCompleted() && !this.props.profile.data.taxOptOut && <p>{this.createSalutationString()} bitte <strong>vervollständigen das Formular</strong>,
                 damit Sie in Zukunft Ihre Spenden steuerlich absetzen können:
               <button
                 className='button disabled'>
@@ -227,12 +227,12 @@ class User extends Component {
               </button>
                 </p>
               }
-              {this.props.user.data.taxOptOut && <p>
+              {this.props.profile.data.taxOptOut && <p>
               <button
                 className={!this.isFormCompleted() && 'button disabled'}
-                onClick={(e) => this.props.sendUserProfileUpdate(e, this.props.auth.apiKey, this.props.user.data, this.props.router)}
+                onClick={(e) => this.props.sendProfileProfileUpdate(e, this.props.auth.apiKey, this.props.profile.data, this.props.router)}
                >
-                {!this.props.user.data.companyName
+                {!this.props.profile.data.companyName
                 ? <span>WIDERRUF BESTÄTIGEN UND SPENDENBESTÄTIGUNG AUFRUFEN</span>
                 : <span>SPENDENBESTÄTIGUNG AUFRUFEN</span>
                   
@@ -244,26 +244,26 @@ class User extends Component {
           </main>
           
           }
-          {!this.props.user.errorArray.length && this.props.children}
+          {!this.props.profile.errorArray.length && this.props.children}
         </div>)
     }
   }
 }
 
-User.propTypes = {
+Profile.propTypes = {
   children : PropTypes.element,
-  user: PropTypes.object.isRequired,
+  profile: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  fetchUserProfile: PropTypes.func.isRequired,
+  fetchProfileProfile: PropTypes.func.isRequired,
   changeInput: PropTypes.func.isRequired,
   changeInputWithValidation: PropTypes.func.isRequired,
-  userDataValidation: PropTypes.func.isRequired,
-  confirmUserForm: PropTypes.func.isRequired,
+  profileDataValidation: PropTypes.func.isRequired,
+  confirmProfileForm: PropTypes.func.isRequired,
   _validateEmail: PropTypes.func,
-  sendUserProfileUpdate: PropTypes.func,
+  sendProfileProfileUpdate: PropTypes.func,
   changeTitleInput: PropTypes.func,
   auth: PropTypes.object
 }
 
-export default User
+export default Profile

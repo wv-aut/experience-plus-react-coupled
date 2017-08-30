@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { changeDate } from '../modules/userForm'
-import { changeInput, changeInputWithValidation } from '../../../modules/user'
+import { changeDate } from '../modules/profileForm'
+import { changeInput, changeInputWithValidation } from '../../../modules/profile'
 
 import BirthDateForm from '../components/BirthDateForm'
 
@@ -11,7 +11,7 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user
+  profile: state.profile
 }
 )
 

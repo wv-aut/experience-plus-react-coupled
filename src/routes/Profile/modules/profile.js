@@ -2,7 +2,7 @@
 // Constants
 // ------------------------------------
 
-import { CHANGE_DATE } from '../userElements/BirthDateForm/modules/userForm'
+import { CHANGE_DATE } from '../profileElements/BirthDateForm/modules/profileForm'
 import { API } from '../config/formFields.config'
 import { checkIfFieldIsRequired, _validateEmail } from '../config/requiredFields.config'
 import { API_URL, TITLES } from 'config/obelix.config'
@@ -19,19 +19,19 @@ export const CONFIRM_USER_PROFILE_UPDATE = 'CONFIRM_USER_PROFILE_UPDATE'
 export const TITLE_TEXT_TO_TITLE_CODE = 'TITLE_TEXT_TO_TITLE_CODE'
 
 // ------------------------------------
-// Actions User
+// Actions Profile
 // ------------------------------------
 
-// Retrieving user data
+// Retrieving profile data
 
 /**
- * Start fetching user data asynchronously with API key
+ * Start fetching profile data asynchronously with API key
  * @param {string} apiKey
  * @return {function} dispatch
  */
-export function fetchUserProfile (apiKey, partnerID) {
+export function fetchProfileProfile (apiKey, partnerID) {
   return dispatch => {
-    dispatch(requestUserProfile(apiKey))
+    dispatch(requestProfileProfile(apiKey))
     const header = new Headers({
       'apikey': apiKey
     })
@@ -52,14 +52,14 @@ export function fetchUserProfile (apiKey, partnerID) {
             if (json.data.attributes.companyName) {
               json.data.attributes.taxOptOut = true
             }
-            return dispatch(receiveUserProfile(json.data.attributes, dispatch))
+            return dispatch(receiveProfileProfile(json.data.attributes, dispatch))
           }
         }
             ).catch(err => console.log(err))
   }
 }
 
-function requestUserProfile (tempKey = null) {
+function requestProfileProfile (tempKey = null) {
   return {
     type: REQUEST_USER_PROFILE
   }
@@ -70,28 +70,28 @@ function requestUserProfile (tempKey = null) {
  * @param {object} json
  * @return {object} action
  */
-function receiveUserProfile (userData, dispatch) {
-  const dataTemp = userData.tempUserData[0] || []
-  dataTemp.donationSum = userData.donationSum || null
-  userData.birthdate = userData.birthdate || ''
+function receiveProfileProfile (profileData, dispatch) {
+  const dataTemp = profileData.tempProfileData[0] || []
+  dataTemp.donationSum = profileData.donationSum || null
+  profileData.birthdate = profileData.birthdate || ''
 
   return {
     type: RECEIVE_USER_PROFILE,
-    userData,
+    profileData,
     dataTemp
   }
 }
 
-// Sending user data back
+// Sending profile data back
 /**
- * Start sending updated or confirmed user data to the server
- * @param {object} userData
+ * Start sending updated or confirmed profile data to the server
+ * @param {object} profileData
  * @param {string} apiKey
  * @return {function} dispatch
  */
-export function sendUserProfileUpdate (e, apiKey, userData, router) {
+export function sendProfileProfileUpdate (e, apiKey, profileData, router) {
   return dispatch => {
-    dispatch(requestUserProfileUpdate())
+    dispatch(requestProfileProfileUpdate())
     const header = new Headers({
       'apikey': apiKey,
       'Content-Type': 'application/json'
@@ -99,28 +99,28 @@ export function sendUserProfileUpdate (e, apiKey, userData, router) {
     const init = {
       method: 'PUT',
       headers: header,
-      body: JSON.stringify(userData),
+      body: JSON.stringify(profileData),
       mode: 'cors',
       cache: 'default'
     }
-    const request = new Request(`${API_URL}donors/${userData.partnerID}`, init)
+    const request = new Request(`${API_URL}donors/${profileData.partnerID}`, init)
     return fetch(request)
     .then(response => {
       router.push('/spender/spendenbestaetigung/drucken')
       return response.json()
     })
-    .then(json => dispatch(confirmUserProfileUpdate())
+    .then(json => dispatch(confirmProfileProfileUpdate())
     ).catch(err => console.log(err.message))
   }
 }
 
-function requestUserProfileUpdate () {
+function requestProfileProfileUpdate () {
   return {
     type: REQUEST_USER_PROFILE_UPDATE
   }
 }
 
-function confirmUserProfileUpdate () {
+function confirmProfileProfileUpdate () {
   return {
     type: CONFIRM_USER_PROFILE_UPDATE
   }
@@ -149,7 +149,7 @@ function titleTextToTitleCode (titleText) {
 export function changeInputWithValidation (event, props) {
   return dispatch => {
     dispatch(changeInput(event))
-    dispatch(userDataValidation(props))
+    dispatch(profileDataValidation(props))
   }
 }
 
@@ -171,26 +171,26 @@ export function changeInput (event) {
   }
 }
 
-export function confirmUserForm (event) {
+export function confirmProfileForm (event) {
   return {
     type: CONFIRM_USER_FORM,
     confirmedForm: true
   }
 }
 
-export function userDataValidation (props) {
-  const userData = props.user.data
-  // let errorArray = props.user.errorArray || []
+export function profileDataValidation (props) {
+  const profileData = props.profile.data
+  // let errorArray = props.profile.errorArray || []
   let errorArray = []
-  for (let item in userData) {
+  for (let item in profileData) {
     // SalutationCode for family is treated like 0 as family donations are deprecated
-    if (checkIfFieldIsRequired(item, userData, props.location.pathname) && !_isValue(userData[item], item, props.user.data.taxOptOut)) {
+    if (checkIfFieldIsRequired(item, profileData, props.location.pathname) && !_isValue(profileData[item], item, props.profile.data.taxOptOut)) {
       errorArray.push(item)
     }
   }
   return {
     type: USER_DATA_VALIDATION,
-    userErrorArray: errorArray
+    profileErrorArray: errorArray
   }
 }
 
@@ -209,7 +209,7 @@ export function _isValue (value, field = '', taxOptOut = false) {
   }
 }
 
-function _userErrorArray (errorOperation, form, errorItems) {
+function _profileErrorArray (errorOperation, form, errorItems) {
   errorItems = errorItems || []
   let newErrorArray = errorItems
   if (errorOperation === 'deduct') {
@@ -234,7 +234,7 @@ function _userErrorArray (errorOperation, form, errorItems) {
 //       setTimeout(() => {
 //         dispatch({
 //           type    : COUNTER_DOUBLE_ASYNC,
-//           payload : getState().user
+//           payload : getState().profile
 //         })
 //         resolve()
 //       }, 200)
@@ -248,17 +248,17 @@ function _userErrorArray (errorOperation, form, errorItems) {
 const ACTION_HANDLERS = {
   [REQUEST_USER_PROFILE]: (state, action) => Object.assign({}, state, { isFetching: true }),
   [RECEIVE_USER_PROFILE]: (state, action) => {
-    return Object.assign({}, state, { data: action.userData, dataTemp: action.dataTemp, isFetching: false })
+    return Object.assign({}, state, { data: action.profileData, dataTemp: action.dataTemp, isFetching: false })
   },
   [CHANGE_DATE]: (state, action) => {
     let date = Object.assign({}, state)
-    date.errorArray = _userErrorArray(action.errorOperation, API.BIRTH_DATE, date.errorArray)
+    date.errorArray = _profileErrorArray(action.errorOperation, API.BIRTH_DATE, date.errorArray)
     date.data.birthdate = action.data
     return date
   },
   [CHANGE_INPUT]: (state, action) => {
     let input = Object.assign({}, state)
-    input.errorArray = _userErrorArray(action.errorOperation, action.form, input.errorArray)
+    input.errorArray = _profileErrorArray(action.errorOperation, action.form, input.errorArray)
     input.data[action.form] = action.data
     return input
   },
@@ -269,7 +269,7 @@ const ACTION_HANDLERS = {
   },
   [USER_DATA_VALIDATION]: (state, action) => {
     let data = Object.assign({}, state)
-    data.errorArray = action.userErrorArray
+    data.errorArray = action.profileErrorArray
     return data
   },
   [CONFIRM_USER_FORM]: (state, action) => {
@@ -278,18 +278,18 @@ const ACTION_HANDLERS = {
     return data
   },
   [REQUEST_USER_PROFILE_UPDATE]: (state, action) => {
-    let user = Object.assign({}, state)
-    user.isFetching = true
-    return user
+    let profile = Object.assign({}, state)
+    profile.isFetching = true
+    return profile
   },
   [CONFIRM_USER_PROFILE_UPDATE]: (state, action) => {
     return Object.assign({}, state, { isFetching: false })
   },
   [TITLE_TEXT_TO_TITLE_CODE]: (state, action) => {
-    let user = Object.assign({}, state)
-    user.data.titleCode = action.titleCode
-    user.data.titleText = action.titleText
-    return user
+    let profile = Object.assign({}, state)
+    profile.data.titleCode = action.titleCode
+    profile.data.titleText = action.titleText
+    return profile
   }
 }
 
@@ -297,7 +297,7 @@ const ACTION_HANDLERS = {
 // Reducer
 // ------------------------------------
 const initialState = 0
-export default function userReducer (state = initialState, action) {
+export default function profileReducer (state = initialState, action) {
   const handler = ACTION_HANDLERS[action.type]
 
   return handler ? handler(state, action) : state
