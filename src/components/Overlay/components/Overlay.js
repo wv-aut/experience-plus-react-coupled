@@ -40,7 +40,7 @@ const Overlay = (props) => {
 
 Overlay.propTypes = {
   header: PropTypes.string.isRequired,
-  subheader: PropTypes.string.isRequired
+  subheader: PropTypes.string
 }
 
 export default Overlay
