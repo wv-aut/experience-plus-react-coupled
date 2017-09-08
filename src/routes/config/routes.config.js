@@ -1,7 +1,7 @@
 
 // The url defines the process of the form elements and the process bar
 
-const APP_NAMESPACE = 'spender'
+const APP_NAMESPACE = '/spender'
 
 export const PRINT = 'drucken'
 
