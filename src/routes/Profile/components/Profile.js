@@ -10,7 +10,6 @@ import { API, DESCRIPTION, FORM_ERRORS_DEFAULT } from '../config/formFields.conf
 import { checkIfFieldIsRequired, showErrorMessage } from '../config/requiredFields.config'
 import { TAX_RECEIPT_PROFILE_ROUTE } from '../../config/routes.config'
 
-
 class Profile extends Component {
 
   componentWillReceiveProps (nextProps) {
@@ -91,9 +90,11 @@ class Profile extends Component {
 
   render () {
     if (this.props.auth.networkError) {
+      console.log('network Error')
       return null
     }
     if (!this.props.profile.data) {
+      console.log('No Data')
       return null
     }
     if (typeof this.props.profile.errorArray === 'undefined' || this.props.profile.isFetching) {
@@ -106,7 +107,7 @@ class Profile extends Component {
         <div>
           <header className='center' />
           <Progress location={this.props.location} />
-          {this.props.location.pathname === '/' + TAX_RECEIPT_PROFILE_ROUTE &&
+          {this.props.location.pathname === TAX_RECEIPT_PROFILE_ROUTE &&
           <main className='main'>
             <section>
               <form className='form'>
@@ -228,6 +229,7 @@ class Profile extends Component {
                 </p>
               }
               {this.props.profile.data.taxOptOut && <p>
+                {/* his.props.router is obsolete */}
               <button
                 className={!this.isFormCompleted() && 'button disabled'}
                 onClick={(e) => this.props.sendProfileProfileUpdate(e, this.props.auth.apiKey, this.props.profile.data, this.props.router)}
@@ -253,7 +255,7 @@ class Profile extends Component {
 Profile.propTypes = {
   children : PropTypes.element,
   profile: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
+  router: PropTypes.object,
   location: PropTypes.object.isRequired,
   fetchProfileProfile: PropTypes.func.isRequired,
   changeInput: PropTypes.func.isRequired,
