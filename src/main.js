@@ -2,14 +2,17 @@ import 'babel-polyfill'
 import 'whatwg-fetch'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import datalayerInit from './store/datalayer'
 import createStore from './store/createStore'
-import AppContainer from './components/App/containers/AppContainer'
+import App from './App'
 // import fetchApiKeyifNeeded from './store/auth'
 
 // ========================================================
 // Store Instantiation
 // ========================================================
 export const initialState = Object.assign(window.___INITIAL_STATE__, { initLocation: 'schritt/1/2/spendenbestaetigung' })
+
+// export const initialState = datalayerInit
 
 const store = createStore(initialState)
 
@@ -19,10 +22,10 @@ const store = createStore(initialState)
 const MOUNT_NODE = document.getElementById('root')
 
 let render = () => {
-  const routes = require('./routes/index').createRoutes(store)
+  // const routes = require('./routes/index').createRoutes(store)
 
   ReactDOM.render(
-    <AppContainer store={store} routes={routes} />,
+    <App store={store} />,
     MOUNT_NODE
   )
 }
