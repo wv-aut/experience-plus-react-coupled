@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import { fetchProfileProfile,
   changeInput,
   confirmProfileForm,
-  userDataValidation,
+  profileDataValidation,
   sendProfileProfileUpdate,
   titleTextToTitleCode,
   changeTitleInput,
@@ -11,7 +11,7 @@ import { fetchProfileProfile,
 /*  This is a container component. Notice it does not contain any JSX,
     nor does it import React. This component is **only** responsible for
     wiring in the actions and state necessary to render a presentational
-    component - in this case, the user:   */
+    component - in this case, the profile:   */
 
 import Profile from '../components/Profile'
 
@@ -23,7 +23,7 @@ const mapDispatchToProps = {
   fetchProfileProfile,
   changeInput,
   confirmProfileForm,
-  userDataValidation,
+  profileDataValidation,
   sendProfileProfileUpdate,
   titleTextToTitleCode,
   changeTitleInput,
@@ -31,17 +31,17 @@ const mapDispatchToProps = {
 }
 
 const mapStateToProps = (state) => ({
-  user : state.user,
+  profile : state.profile,
   auth : state.auth
 })
 
 /*  Note: mapStateToProps is where you should use `reselect` to create selectors, ie:
 
     import { createSelector } from 'reselect'
-    const user = (state) => state.user
-    const tripleCount = createSelector(user, (count) => count * 3)
+    const profile = (state) => state.profile
+    const tripleCount = createSelector(profile, (count) => count * 3)
     const mapStateToProps = (state) => ({
-      user: tripleCount(state)
+      profile: tripleCount(state)
     })
 
     Selectors can compute derived data, allowing Redux to store the minimal possible state.

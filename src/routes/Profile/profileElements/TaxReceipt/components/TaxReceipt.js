@@ -102,7 +102,7 @@ TaxReceipt.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  dataTemp: state.user.dataTemp
+  dataTemp: state.profile.dataTemp
 })
 
 export default connect(mapStateToProps)(TaxReceipt)
