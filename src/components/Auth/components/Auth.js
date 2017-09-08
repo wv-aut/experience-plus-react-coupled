@@ -47,7 +47,7 @@ class Auth extends Component {
           mode='run' />
       } else if (this.props.auth.tempKey === null) {
         message = message = <Overlay
-          header='Sie haben keinen Berechtigung für diese Seite'
+          header='Bitte geben Sie Ihre E-Mailadresse ein, um sich anzumelden'
           subheader='Sie können nur mit einem gültigen Zugangslink Ihre Daten abfragen. Sie haben ihn per E-Mail erhalten.'
           text='Für die Sicherheit Ihrer Daten, können Sie Zugangslinks immer nur einmal verwenden.'
           icon='lock'
