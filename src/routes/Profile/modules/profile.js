@@ -52,6 +52,7 @@ export function fetchProfileProfile (apiKey, partnerID) {
             if (json.data.attributes.companyName) {
               json.data.attributes.taxOptOut = true
             }
+            console.log(json.data.attributes)
             return dispatch(receiveProfileProfile(json.data.attributes, dispatch))
           }
         }
@@ -71,7 +72,7 @@ function requestProfileProfile (tempKey = null) {
  * @return {object} action
  */
 function receiveProfileProfile (profileData, dispatch) {
-  const dataTemp = profileData.tempProfileData[0] || []
+  const dataTemp = profileData.tempUserData[0] || []
   dataTemp.donationSum = profileData.donationSum || null
   profileData.birthdate = profileData.birthdate || ''
 
@@ -106,7 +107,7 @@ export function sendProfileProfileUpdate (e, apiKey, profileData, router) {
     const request = new Request(`${API_URL}donors/${profileData.partnerID}`, init)
     return fetch(request)
     .then(response => {
-      router.push('/spender/spendenbestaetigung/drucken')
+      // router.push('/spender/spendenbestaetigung/drucken')
       return response.json()
     })
     .then(json => dispatch(confirmProfileProfileUpdate())
